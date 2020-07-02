@@ -1,0 +1,1 @@
+Pls keep images you display at 20-30kb
