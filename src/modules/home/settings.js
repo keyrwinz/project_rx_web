@@ -1,11 +1,11 @@
 export default {
   page: [{
-    title: 'BirdsEye: COVID-19 Contact Tracing',
-    subtitle: 'Trace places, transportation and individuals easily!',
-    description: 'Centralize application for LGU to monitor and trace individuals using visited places, transportation used, temperature and symptoms reported!',
-    image: require('assets/img/logo.svg'),
+    title: 'Runway Express',
+    subtitle: 'Delivering food to your home!',
+    description: 'This is a test here!',
+    image: null,
     template: 'right',
-    background: '#005b96',
+    background: '#ff5B04',
     textColor: 'text-white'
   }]
 }
