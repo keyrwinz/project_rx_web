@@ -84,6 +84,20 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/products/',
+    name: 'products',
+    component: resolve => require(['components/increment/imarketvue/product/Products.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/product/edit/:code?',
+    name: 'editProduct',
+    component: resolve => require(['components/increment/imarketvue/product/EditProduct.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
