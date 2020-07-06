@@ -123,11 +123,9 @@ export default{
   props: {
   },
   components: {
-    'trend': require('modules/places/Trend.vue'),
     QrcodeVue,
     'data-summary': require('modules/dashboard/Summary.vue'),
-    'increment-modal': require('components/increment/generic/modal/Modal.vue'),
-    'qr-code-scanner': require('modules/scan/QrCodeScanner.vue')
+    'increment-modal': require('components/increment/generic/modal/Modal.vue')
   },
   methods: {
     retrieve(){
