@@ -1,15 +1,12 @@
 export default {
   sidebarMenu: [
-    {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard', flag: false, subMenu: null}
+    {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard', flag: false, subMenu: null},
+    {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer', path: 'products', flag: false, subMenu: null}
   ],
   profileMenu: [{
     title: 'My Profile',
     icon: 'fa fa-cog',
     route: '/profile'
-  }, {
-    title: 'Linked Accounts',
-    icon: 'fa fa-users',
-    route: '/linked_accounts'
   }, {
     title: 'Invite Friends',
     icon: 'fa fa-users',
@@ -31,7 +28,9 @@ export default {
   header: ['status', 'notification'], // 'messenger', '',
   settingsMenu: [
     {title: 'Profile', type: 'profile', allowed: ['cellular_number', 'address', 'sex', 'birth_date']},
-    {title: 'Account', type: 'account', allowed: []}
+    {title: 'Account', type: 'account', allowed: []},
+    {title: 'Business Settings', type: 'merchant', allowed: ['prefix']},
+    {title: 'Notifications', type: 'notification', allowed: []}
   ],
   referral: {
     message: 'this is a test. ',
@@ -45,6 +44,44 @@ export default {
     notifications: 'Notifications',
     messages: 'Message',
     validation: 'Validation'
+  },
+  ecommerce: {
+    inventoryType: 'inventory',
+    editProductMenu: [{
+      title: 'Inventory',
+      flag: true
+    }, {
+      title: 'Variation',
+      flag: false
+    }, {
+      title: 'Price',
+      flag: false
+    }, {
+      title: 'Comment',
+      flag: false
+    }, {
+      title: 'Location',
+      flag: false
+    }],
+    editProductMenuRental: [{
+      title: 'Inventory',
+      flag: true
+    }, {
+      title: 'Variation',
+      flag: false
+    }, {
+      title: 'Price',
+      flag: false
+    }, {
+      title: 'Comment',
+      flag: false
+    }, {
+      title: 'Location',
+      flag: false
+    }],
+    productUnits: null,
+    productTitleLimit: 100,
+    variations: ['Size', 'Color']
   },
   broadcastingFlag: true,
   passwordLimit: 8,
