@@ -50,6 +50,7 @@
     "vue-directive-tooltip": "^1.4.5",
     "vue-echo": "^1.0.2",
     "vue-google-autocomplete": "^1.1.0",
+    "vue-google-login": "^2.0.5",
     "vue-paypal-checkout": "^3.2.0",
     "vue-pusher": "^1.0.0",
     "vue-qrcode-reader": "^2.3.1",
