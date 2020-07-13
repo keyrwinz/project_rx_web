@@ -73,7 +73,7 @@ export default{
   }, {
     path: '/profile/:parameter?',
     name: 'profile',
-    component: resolve => require(['components/increment/settings/UpdateBasic.vue'], resolve),
+    component: resolve => require(['modules/basic/UpdateBasic.vue'], resolve),
     meta: {
       tokenRequired: true
     }

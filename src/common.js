@@ -1,7 +1,7 @@
 export default {
   sidebarMenu: [
     {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard', flag: false, subMenu: null},
-    {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer', path: 'products', flag: false, subMenu: null}
+    {accountType: 'MERCHANT', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer', path: 'products', flag: false, subMenu: null}
   ],
   profileMenu: [{
     title: 'My Profile',
@@ -22,15 +22,20 @@ export default {
   USER_TYPE: [{
     title: 'USER'
   }, {
-    title: 'AGENCY'
+    title: 'MERCHANT'
+  }, {
+    title: 'RIDER'
+  }, {
+    title: 'ADMIN'
   }],
   plan: false,
   header: ['status', 'notification'], // 'messenger', '',
   settingsMenu: [
-    {title: 'Profile', type: 'profile', allowed: ['cellular_number', 'address', 'sex', 'birth_date']},
-    {title: 'Account', type: 'account', allowed: []},
-    {title: 'Business Settings', type: 'merchant', allowed: ['prefix']},
-    {title: 'Notifications', type: 'notification', allowed: []}
+    {title: 'Profile', hideFrom: ['MERCHANT'], type: 'profile', allowed: ['cellular_number', 'address', 'sex', 'birth_date']},
+    {title: 'Business Information', hideFrom: ['USER', 'RIDER'], type: 'merchant', allowed: ['email', 'prefix', 'website']},
+    {title: 'Business Locations', hideFrom: ['USER', 'RIDER'], type: 'merchant_locations', allowed: []},
+    {title: 'Account', hideFrom: [], type: 'account', allowed: []},
+    {title: 'Billing Information', hideFrom: [], type: 'billing_information'}
   ],
   referral: {
     message: 'this is a test. ',
