@@ -7,3 +7,6 @@ src/components/increment
 node_modules/
 src/config.js
 dist/
+package-lock.json
+package-lock.json
+package-lock.json
