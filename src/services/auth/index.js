@@ -342,7 +342,7 @@ export default {
     let subAccount = data[0].sub_account
     let location = data[0].location
     this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location)
-    ROUTER.push('/dashboard')
+    ROUTER.push('/marketplace')
   },
   setGoogleCode(code, scope){
     localStorage.setItem('google_code', code)
