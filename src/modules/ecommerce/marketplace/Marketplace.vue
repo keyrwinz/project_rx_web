@@ -118,6 +118,7 @@ import axios from 'axios'
 export default {
   mounted(){
     this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
+    this.test()
   },
   data(){
     return {
@@ -165,7 +166,8 @@ export default {
     'products': require('components/increment/imarketvue/marketplace/Products.vue'),
     'dynamic-empty': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
     'table-view': require('components/increment/imarketvue/product/TableView.vue'),
-    'generic-filter': require('components/increment/imarketvue/marketplace/Filter.vue')
+    'generic-filter': require('components/increment/imarketvue/marketplace/Filter.vue'),
+    'cards': require('./Cards.vue')
   },
   methods: {
     redirect(parameter){
@@ -173,6 +175,11 @@ export default {
       if(parameter === 'editor/v2'){
         AUTH.mode = 1
       }
+    },
+    test(){
+      this.APIRequest('locations/retrieve').then(response => {
+        console.log(response.data)
+      })
     },
     retrieve(sort, filter){
       let parameter = {

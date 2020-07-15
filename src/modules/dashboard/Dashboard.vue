@@ -1,6 +1,7 @@
 <template>
   <div style="margin-bottom: 200px;">
     <h1>Welcome to dashboard</h1>
+    <cards></cards>
   </div>
 </template>
 <style lang="scss" scoped> 
@@ -45,6 +46,7 @@ export default{
   props: {
   },
   components: {
+    'cards': require('modules/ecommerce/marketplace/Cards.vue')
   },
   methods: {
   }
