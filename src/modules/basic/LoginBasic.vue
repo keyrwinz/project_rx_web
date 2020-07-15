@@ -22,7 +22,7 @@
         <button class="btn btn-primary btn-block login-spacer" v-on:click="logIn()">Login</button>
         <button class="btn btn-warning btn-block login-spacer" v-on:click="redirect('/request_reset_password')">Forgot your Password?</button>
         <GoogleLogin :params="loginParam" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"></GoogleLogin>
-        <button class="btn btnFB btn-block login-spacer" @click="logInWithFacebook"> Login with Facebook</button>
+        <button class="btn btnFB btn-block login-spacer mt-3" @click="logInWithFacebook"> Login with Facebook</button>
         <br>
         <div class="container-fluid separator">
             or
