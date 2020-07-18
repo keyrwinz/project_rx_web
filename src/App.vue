@@ -207,7 +207,7 @@ export default {
   components: {
     'login-header': () => import('modules/home/Landing/Header.vue'),
     'system-header': () => import('components/increment/generic/frame/Header.vue'),
-    'system-sidebar': () => import('components/increment/generic/frame/Sidebar.vue'),
+    'system-sidebar': () => import('modules/frame/Sidebar.vue'),
     'system-content': () => import('modules/frame/Content.vue'),
     'system-footer': () => import('components/increment/generic/frame/Footer.vue'),
     'system-loading': () => import('components/loader/Loading.vue'),

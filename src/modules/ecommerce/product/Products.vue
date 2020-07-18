@@ -263,7 +263,7 @@ export default {
             guide: 'Click the New Product Button to get started.'
           }
         }
-        console.log('sup bitch')
+        console.log('sup hi')
         console.log(this.data)
       })
     },

@@ -1,6 +1,5 @@
 <template>
   <div style="margin-bottom: 200px;">
-    <h1>Welcome to dashboard</h1>
     <cards></cards>
   </div>
 </template>

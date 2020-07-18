@@ -4,72 +4,17 @@
 		<div class="position-absolute w-100">
 			<!-- <img class="img-fluid" src="https://www.arborday.org/images/hero/medium/hero-aerial-forest-evergreen-trees.jpg"> -->
 		</div>
-		<h1 class="display-4 text-white">Hello, world!</h1>
-		<p class="lead text-white">Init pa ang lumpia dong, naa sa'y utan diha if ganahan ka</p>
+		<h1 class="display-4 text-white">Express your love with Runway Express</h1>
+		<p class="lead text-white">Refer 5 friends and get a ₱100 coupon on us!</p>
 		<hr class="my-4">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm mb-4">
-						<div class="card" style="width: 18rem;">
+			<div class="container row m-0 justify-content-around w-100">
+						<!-- card starts -->
+						<div class="card mb-5" style="width: 18rem;" v-for="(item, index) in featured" :key="index" >
 							<!-- <img src="..." class="card-img-top" alt="..."> -->
 							<div class="card-body">
-								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								<a href="#" class="btn btn-primary">Go somewhere</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm mb-4">
-						<div class="card" style="width: 18rem;">
-							<!-- <img src="..." class="card-img-top" alt="..."> -->
-							<div class="card-body">
-								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								<a href="#" class="btn btn-primary">Go somewhere</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm mb-4">
-						<div class="card" style="width: 18rem;">
-							<!-- <img src="..." class="card-img-top" alt="..."> -->
-							<div class="card-body">
-								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								<a href="#" class="btn btn-primary">Go somewhere</a>
-							</div>
-						</div>
-					</div>
-				</div>
-                <div class="row">
-					<div class="col-sm mb-4">
-						<div class="card" style="width: 18rem;">
-							<!-- <img src="..." class="card-img-top" alt="..."> -->
-							<div class="card-body">
-								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								<a href="#" class="btn btn-primary">Go somewhere</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm mb-4">
-						<div class="card" style="width: 18rem;">
-							<!-- <img src="..." class="card-img-top" alt="..."> -->
-							<div class="card-body">
-								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								<a href="#" class="btn btn-primary">Go somewhere</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm mb-4">
-						<div class="card" style="width: 18rem;">
-							<!-- <img src="..." class="card-img-top" alt="..."> -->
-							<div class="card-body">
-								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								<a href="#" class="btn btn-primary">Go somewhere</a>
-							</div>
-						</div>
+								<h5 class="card-title"><img class="img-fluid" :src="'http://' + item.img_url"> </h5>
+								<p class="card-text">{{item.text}}</p>
+								<a href="#" class="btn btn-primary">Link to somewhere</a>
 					</div>
 				</div>
                 
@@ -78,7 +23,7 @@
 		</div>
 	</div>
 </template>
-<style>
+<style scoped>
     #banner{
        z-index: -1;
        top: 0;
@@ -86,8 +31,11 @@
        background-color:orange;
     }
     #jumboID{
-        background:url(https://www.arborday.org/images/hero/medium/hero-aerial-forest-evergreen-trees.jpg) top/100% no-repeat;
-    }
+        background:url(~assets/img/featured.png) top/100% no-repeat;
+	}
+	.container{
+		max-width: unset;
+	}
     .empty{
       width: 100%;
       margin-top: 25px;
@@ -114,11 +62,16 @@ import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
 import COMMON from 'src/common.js'
 import axios from 'axios'
+import {featuredProducts} from 'src/data-test.js'
 export default {
+  mounted(){
+    console.log(this.featured)
+  },
   data(){
     return {
       user: AUTH.user,
-      config: CONFIG
+      config: CONFIG,
+      featured: featuredProducts
     }
   },
   props: ['title', 'action'],
