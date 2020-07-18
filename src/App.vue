@@ -2,10 +2,17 @@
   <div id="app">
     <div v-bind:style="(globalVariables.showModal) ? 'overflow-y:hidden; height:'+deviceHeight+'px!important': ''">
       <div v-if="tokenData.token !== null && parseInt(user.userID) > 0">
-       <system-header></system-header>
-       <system-sidebar></system-sidebar>
+       <system-header v-bind:sidebarFlag="menu" ref="header"></system-header>
+       <!-- <system-sidebar v-bind:menuFlag="menu" @toggleSidebar="toggleSidebar"></system-sidebar> -->
+       <div class="content-holder mx-auto container-fluid">
+         <system-notification></system-notification>
+          <transition >
+            <router-view ></router-view>
+          </transition>
+       </div>
        <!-- <support-messenger></support-messenger> -->
-       <system-footer></system-footer>
+       <!-- <system-footer></system-footer> -->
+       <landing-footer></landing-footer>
        <guide></guide>
        <!-- <tutorial></tutorial> -->
       </div>
@@ -40,6 +47,30 @@
 .container {
    min-height:100%;
    position:relative;
+}
+.content-holder{  
+  min-height: 200px;
+  overflow: hidden;
+  transition: all 1s ease 0s;
+  z-index: 1;
+  margin-top: 50px;
+}
+@media (min-width: 1200px){
+  .content-holder{
+    width: 94%;
+    margin-top: 60px;
+    margin-bottom: 1%;
+    float: right; /*- changed float left to right -*/
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px){
+  .content-holder{
+    width: 71%;
+    margin: 60px 0px 0px 0px;
+    margin-right: 1%;
+    float: right; /*- changed float from left to right -*/
+  }
 }
 
 /*
@@ -189,12 +220,17 @@ export default {
       appGlobal: {
         showModal: false
       },
+      menu: true,
       globalVariables: global
     }
   },
   methods: {
     logOut(){
       AUTH.deaunthenticate()
+    },
+    toggleSidebar(newFlag) {
+      this.menu = newFlag
+      this.$refs['header'].sidebar = newFlag
     },
     validate(){
       if(this.tokenData.verifyingToken === false && this.tokenData.token !== null){
@@ -206,7 +242,7 @@ export default {
   },
   components: {
     'login-header': () => import('modules/home/Landing/Header.vue'),
-    'system-header': () => import('components/increment/generic/frame/Header.vue'),
+    'system-header': () => import('modules/frame/Header.vue'),
     'system-sidebar': () => import('modules/frame/Sidebar.vue'),
     'system-content': () => import('modules/frame/Content.vue'),
     'system-footer': () => import('components/increment/generic/frame/Footer.vue'),
@@ -218,7 +254,8 @@ export default {
     'terms-and-conditions': () => import('modules/docs/TermsAndConditions.vue'),
     'guide': () => import('modules/guide/Guide.vue'),
     'support-messenger': () => import('components/increment/support/Support.vue'),
-    'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue')
+    'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue'),
+    'system-notification': require('components/increment/generic/system/Notifications.vue')
   }
 }
 </script>

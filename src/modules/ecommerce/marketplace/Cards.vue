@@ -65,7 +65,7 @@ import axios from 'axios'
 import {featuredProducts} from 'src/data-test.js'
 export default {
   mounted(){
-    console.log(this.featured)
+    // console.log(this.featured)
   },
   data(){
     return {

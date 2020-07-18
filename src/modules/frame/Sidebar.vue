@@ -1,10 +1,10 @@
 <template>
-  <div class="system-body"> 
+  <div> 
      <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide" id="idfactory" >
       <div class="sidebar">
         <ul class="sidebar-menu">
             <li class="header">
-                <span v-if="menuFlag === true" class="profile-photo">
+                <span v-if="showMenu === true" class="profile-photo">
                   <span class="profile-image-holder"  v-if="user.profile !== null">
                     <img v-bind:src="config.BACKEND_URL + user.profile.url">
                   </span>
@@ -12,9 +12,9 @@
                   <i class="fas fa-check text-primary profile-status" v-if="user.status === 'VERIFIED'"></i>
                   Hi {{user.username}}!
                 </span>
-                <i v-bind:class="toggleSidebar + ' pull-right'" aria-hidden="true" v-on:click="changeToggleSidebarIcon()" id="toggleIcon"></i>
+                <i v-bind:class="toggleSidebar + ' pull-right'" aria-hidden="true" v-on:click="updateFlag()" id="toggleIcon"></i>
             </li>
-            <li v-for="(item, index) in menu" :key="index" :class="item.flag || $route.path === '/' + item.path ? ' active-menu' : ''" v-on:click="setActive(index)" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && (item.accountStatus === 'ALL' || (user.subAccount === null || (user.subAccount !== null && user.subAccount.status === item.accountStatus))) && menuFlag === true" class="menu-holder">
+            <li v-for="(item, index) in menu" :key="index" :class="item.flag || $route.path === '/' + item.path ? ' active-menu' : ''" v-on:click="setActive(index)" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && (item.accountStatus === 'ALL' || (user.subAccount === null || (user.subAccount !== null && user.subAccount.status === item.accountStatus))) && showMenu === true" class="menu-holder">
               <i v-bind:class="item.icon" class=" visible"></i> 
               <label>{{item.description}}</label>
               <ul class="sub-menu" v-if="item.subMenu !== null">
@@ -24,7 +24,7 @@
                 </li>
               </ul>
             </li>
-            <li v-for="item, index in menuOff" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActiveOff(index)" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && menuFlag === false" class="menu-holder-hidden">
+            <li v-for="item, index in menuOff" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActiveOff(index)" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && showMenu === false" class="menu-holder-hidden">
               <i v-bind:class="item.icon"></i>
             </li>
           </ul>
@@ -58,6 +58,12 @@
     </div>
   </div>  
 </template>
+<style scoped lang="scss">
+@import "~assets/style/colors.scss";
+  .sidebar {
+    background: linear-gradient(to bottom, $primary, $darkPrimary)
+  }
+</style>
 <style lang="scss">
 @import "~assets/style/colors.scss";
 .main-sidebar, .content-holder{  
@@ -311,9 +317,7 @@
   .sidebar-menu .header span{
     display: none;
   }
-  .main-sidebar.hidden{
-    
-  }
+
   .header .input-group{
     width: 90%;
     margin: 0 5% 0 5%;
@@ -406,17 +410,18 @@ export default {
       menu: COMMON.sidebarMenu,
       menuOff: COMMON.sidebarMenu,
       toggleSidebar: 'fa fa-toggle-on',
-      hide: '',
+      showMenu: this.menuFlag,
+      hide: this.menuFlag ? '' : 'hidden',
       flag: false,
       confirmation: {
         message: null,
         action: null
       },
       prevMenu: 0,
-      subPrevMenu: 0,
-      menuFlag: true
+      subPrevMenu: 0
     }
   },
+  props: ['menuFlag'],
   components: {
     'system-notification': require('components/increment/generic/system/Notifications.vue')
   },
@@ -502,8 +507,13 @@ export default {
       ROUTER.push('/' + this.menu[this.prevMenu].subMenu[this.subPrevMenu].path)
       $('.navbar-collapse').collapse('hide')
     },
+    updateFlag(){
+      this.$emit('toggleSidebar', !this.showMenu)
+      this.showMenu = !this.showMenu
+      this.changeToggleSidebarIcon()
+    },
     changeToggleSidebarIcon(){
-      if(this.menuFlag === false){
+      if(this.showMenu === false){
         // from off
         this.menuOff[this.prevMenu].flag = false
         this.prevMenu = 0
@@ -516,9 +526,8 @@ export default {
         this.prevMenu = 0
         this.subPrevMenu = 0
       }
-      this.menuFlag = !this.menuFlag
-      this.toggleSidebar = (this.menuFlag === false) ? 'fa fa-toggle-off' : 'fa fa-toggle-on'
-      this.hide = (this.menuFlag === false) ? 'hidden' : ''
+      this.toggleSidebar = this.showMenu ? 'fa fa-toggle-on' : 'fa fa-toggle-off'
+      this.hide = this.showMenu ? '' : 'hidden'
     }
   }
 }
