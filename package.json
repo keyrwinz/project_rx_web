@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "@sinonjs/formatio": "^5.0.1",
     "@sinonjs/samsam": "^5.0.3",
     "axios": "^0.19.0",
@@ -24,7 +25,6 @@
     "config-js": "^1.1.13",
     "easy-countries-list": "^1.1.0",
     "export-to-csv": "^0.2.1",
-    "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
     "googleapis": "^27.0.0",
     "howler": "^2.0.12",
