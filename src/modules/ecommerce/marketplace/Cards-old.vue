@@ -9,14 +9,15 @@
 		<hr class="my-4">
 			<div class="container row m-0 justify-content-around w-100">
 						<!-- card starts -->
-						<div class="card mb-5" style="width: 18rem;" v-for="(item, index) in this.data" :key="index" >
+						<div class="card mb-5" style="width: 18rem;" v-for="(item, index) in featured" :key="index" >
 							<!-- <img src="..." class="card-img-top" alt="..."> -->
 							<div class="card-body">
-								<h5 class="card-title">{{item.title}}<img class="img-fluid" :src="config.BACKEND_URL + item.featured[0].url"> </h5>
-								<p class="card-text">{{item.price[0].currency === 'PHP' ? '₱' : ''}} {{item.price[0].price}}</p>
+								<h5 class="card-title"><img class="img-fluid" :src="'http://' + item.img_url"> </h5>
+								<p class="card-text">{{item.text}}</p>
 								<a href="#" class="btn btn-primary">Link to somewhere</a>
 					</div>
 				</div>
+                
 			</div>
 			<!-- <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
 		</div>
@@ -64,63 +65,19 @@ import axios from 'axios'
 import {featuredProducts} from 'src/data-test.js'
 export default {
   mounted(){
-    this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
+    console.log(this.featured)
   },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
-      featured: featuredProducts,
-      data: null
+      featured: featuredProducts
     }
   },
-  props: {
-    title: {
-      required: false
-    },
-    action: {
-      required: false
-    },
-    listType: {
-      required: false
-    }
-  },
+  props: ['title', 'action'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    retrieve(sort, filter){
-      let parameter = {
-        condition: [{
-          value: 'published',
-          column: 'status',
-          clause: '='
-        }, {
-          value: 'regular',
-          column: 'type',
-          clause: '='
-        }, {
-          value: filter.value + '%',
-          column: filter.column,
-          clause: 'like'
-        }],
-        sort: sort,
-        account_id: this.user.userID,
-        inventory_type: COMMON.ecommerce.inventoryType
-      }
-      $('#loading').css({display: 'block'})
-      this.APIRequest('products/retrieve_basic', parameter).then(response => {
-        $('#loading').css({display: 'none'})
-        if(response.data.length > 0){
-          this.data = response.data
-          console.log(this.data)
-          if(this.listType === 'featured'){
-            this.data = this.data.filter(product => product.featured !== null)
-            console.log('sulod')
-            console.log(this.data)
-          }
-        }
-      })
     }
   }
 }

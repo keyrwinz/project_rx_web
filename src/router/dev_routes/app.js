@@ -105,6 +105,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/traces/:code?',
+    name: 'traces',
+    component: resolve => require(['components/increment/imarketvue/trace/Traces.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
