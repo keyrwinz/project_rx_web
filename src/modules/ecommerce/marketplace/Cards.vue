@@ -11,9 +11,12 @@
 						<!-- card starts -->
 						<div class="card mb-5" style="width: 18rem;" v-for="(item, index) in this.data" :key="index" >
 							<!-- <img src="..." class="card-img-top" alt="..."> -->
-							<div class="card-body">
-								<h5 class="card-title">{{item.title}}<img class="img-fluid" :src="config.BACKEND_URL + item.featured[0].url"> </h5>
-								<p class="card-text">{{item.price[0].currency === 'PHP' ? '₱' : ''}} {{item.price[0].price}}</p>
+							<div class="card-body row m-0 flex-column justify-content-end">
+								<h5 class="card-title">
+                  <img class="card-img-top" :src="config.BACKEND_URL + item.featured[0].url">
+                  {{item.title}}
+                </h5>
+								<p class="card-text align-bottom">{{item.price[0].currency === 'PHP' ? '₱' : ''}} {{item.price[0].price}}</p>
 								<a href="#" class="btn btn-primary">Link to somewhere</a>
 					</div>
 				</div>
@@ -23,15 +26,18 @@
 	</div>
 </template>
 <style scoped>
-    #banner{
-       z-index: -1;
-       top: 0;
-       left: 0;
-       background-color:orange;
-    }
-    #jumboID{
-        background:url(~assets/img/featured.png) top/100% no-repeat;
-	}
+  #banner{
+     z-index: -1;
+     top: 0;
+     left: 0;
+     background-color:orange;
+  }
+  #jumboID{
+      background:url(~assets/img/featured.png) top/100% no-repeat;
+  }
+  /* .card .img-fluid{
+    min-height: 5rem;
+  } */
 	.container{
 		max-width: unset;
 	}
