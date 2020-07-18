@@ -1,9 +1,18 @@
 <template>
   <div>
     <div class="customModal" id="loading">
-      <span class="loading">
+      <div class="full d-flex justify-content-center align-items-center">
+        <div class="spinner-grow text-primary mr-3" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary mr-3" role="status">
+        </div>
+        <div class="spinner-grow text-primary mr-3" role="status">
+        </div>
+      </div>
+      <!-- <span class="loading">
         <i class="fas fa-circle-o-notch fa-spin"></i>
-      </span>
+      </span> -->
     </div>
   </div>
 </template>
@@ -11,9 +20,44 @@
 </script>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
+.spinner-grow {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: text-bottom;
+  background-color: $primary;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-animation: spinner-grow .75s linear infinite;
+  animation: spinner-grow .75s linear infinite;
+}
+.spinner-grow:nth-child(2) {
+  animation-delay: .1s;
+}
+.spinner-grow:nth-child(3) {
+  animation-delay: .2s;
+}
+@keyframes spinner-grow {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+.customModal .full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .customModal{
   position: fixed;
-  background: rgba(254, 254, 254, 0);
+  background: rgba(0,0,0, 0.8);
   top: 0;
   right: 0;
   bottom: 0;

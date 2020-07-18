@@ -19,7 +19,7 @@
             <td>{{item.route}}</td>
             <td>{{item.locality}}, {{item.region}}</td>
             <td class="text-center">
-              <button class="btn btn-success" @click="selectedBranch = item" type="button" data-toggle="modal" data-target="#newLocation"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-success" @click="selectedBranch = item, show()" type="button"><i class="fa fa-edit"></i></button>
               <button class="btn btn-danger" @click="selectedBranch = item" type="button" data-toggle="modal" data-target="#delete"><i class="fa fa-trash-alt"></i></button>
             </td>
           </tr>
@@ -43,7 +43,7 @@
               <label for="code">Branch Name</label>
               <input type="text" name="branch" id="branch" class="form-control" placeholder="Enter Branch Name">
             </div>
-            <div v-if="customLocation === false && !selectedItem">
+            <div v-if="customLocation === false">
               <div class="row mb-3 justify-content-end mx-0">
                 <button class="btn btn-primary" @click="customLocation = true">Use Custom Location</button>
               </div>
@@ -58,7 +58,7 @@
                 </google-autocomplete-location>
               </div>
             </div>
-            <div v-if="customLocation === true && !selectedItem">
+            <div v-if="customLocation === true">
               <div class="row mb-3 justify-content-end mx-0">
                 <button class="btn btn-primary" @click="customLocation = false">Use Google Autocomplete</button>
               </div>
@@ -101,6 +101,32 @@
           <div class="modal-footer">
             <button class="btn btn-dark" data-dismiss="modal" @click="selectedBranch = null">Cancel</button>
             <button class="btn btn-secondary" data-dismiss="modal" @click="deleteBranch()">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT BRANCH MODAL -->
+    <div class="modal fade right" id="edit" tabindex="-1" role="dialog" aria-labelledby="editHeader"
+     aria-hidden="true">
+      <div class="modal-dialog modal-side modal-notify modal-primary" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editheader">Rename Branch</h5>
+            <button type="button" class="close" aria-label="Close" @click="hide()">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="form-group">
+              <label for="branchName" class="font-weight-bold">New Branch Name</label>
+              <input type="text" name="branchName" id="branchName" class="form-control" :class="[{'is-invalid': editFlag}]">
+              <div class="invalid-feedback">Name is required!</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-dark" @click="hide()">Cancel</button>
+            <button class="btn btn-success" @click="editBranch()">Rename</button>
           </div>
         </div>
       </div>
@@ -178,6 +204,7 @@ export default {
       config: CONFIG,
       data: null,
       location: null,
+      editFlag: false,
       selectedBranch: null,
       customLocation: false,
       googleProperty: {
@@ -229,6 +256,14 @@ export default {
       }
       this.location = location
     },
+    show() {
+      $('#edit').modal('show')
+    },
+    hide() {
+      $('#edit').modal('hide')
+      this.selectedBranch = null
+      this.editFlag = false
+    },
     addNew() {
       console.log('Submit')
       let branchName = $('#branch').val()
@@ -267,6 +302,26 @@ export default {
           this.retrieve()
           this.hideModal()
         })
+      }
+    },
+    editBranch() {
+      this.editFlag = false
+      if(this.selectedBranch !== null) {
+        let newName = $('#branchName').val()
+        if(newName === '' || !newName) {
+          this.editFlag = true
+        } else {
+          let par = {
+            id: this.selectedBranch.id,
+            route: newName
+          }
+          $('#loading').css({display: 'block'})
+          this.APIRequest('locations/update', par).then(response => {
+            $('#loading').css({display: 'none'})
+            this.hide()
+            this.retrieve()
+          })
+        }
       }
     },
     deleteBranch() {
