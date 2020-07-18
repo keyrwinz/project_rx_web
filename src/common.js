@@ -2,7 +2,7 @@ export default {
   sidebarMenu: [
     {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer-alt', path: 'dashboard', flag: false, subMenu: null},
     {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Marketplace', icon: 'fa fa-tachometer-alt', path: 'marketplace', flag: false, subMenu: null},
-    {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer-alt', path: 'products', flag: false, subMenu: null}
+    {accountType: 'MERCHANT', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer-alt', path: 'products', flag: false, subMenu: null}
   ],
   profileMenu: [{
     title: 'My Profile',
@@ -14,7 +14,7 @@ export default {
     route: '/referrals'
   }],
   APP_NAME: 'RunwayExpress',
-  APP_NAME_HTML: 'RunwayExpress',
+  APP_NAME_HTML: 'Runway Express',
   APP_EMAIL: 'support@runwayexpress.com',
   COMPANY: 'RunwayExpress',
   COMPANY_URL: 'https://runwayexpress.com',
