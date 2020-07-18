@@ -72,6 +72,10 @@
   z-index: 10000;
 }
 
+.pull-right {
+  float: right;
+}
+
 .sidebar{
   min-height: 100vh;
   overflow-y: auto;
