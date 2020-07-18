@@ -65,7 +65,6 @@ import axios from 'axios'
 import {featuredProducts} from 'src/data-test.js'
 export default {
   mounted(){
-    this.retrieve({'title': 'asc'}, {column: 'status', value: 'featured'})
     console.log(this.featured)
   },
   data(){
@@ -79,40 +78,6 @@ export default {
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    retrieve(sort, filter){
-      let parameter = {
-        condition: [{
-          value: this.currentFilter.value + '%',
-          column: this.currentFilter.column,
-          clause: 'like'
-        }, {
-          value: this.user.subAccount.merchant.id,
-          column: 'merchant_id',
-          clause: '='
-        }],
-        sort: this.currentSort,
-        account_id: this.user.userID,
-        inventory_type: this.common.ecommerce.inventoryType
-      }
-      $('#loading').css({'display': 'block'})
-      this.APIRequest('products/retrieve_basic', parameter).then(response => {
-        $('#loading').css({'display': 'none'})
-        if(response.data.length > 0){
-          this.data = response.data
-          if(this.selectedItem !== null){
-            this.selectedItem = this.data[this.selectedIndex]
-          }
-        }else{
-          this.data = null
-          this.selectedIndex = null
-          this.selectedItem = null
-          this.empty = {
-            title: 'Looks like you have not added a product!',
-            guide: 'Click the New Product Button to get started.'
-          }
-        }
-      })
     }
   }
 }
