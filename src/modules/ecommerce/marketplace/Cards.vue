@@ -1,6 +1,6 @@
 <template>
 <div class="empty">
-	<div class="jumbotron" id="jumboID">
+	<div class="jumbotron mb-0" id="jumboID">
 		<div class="position-absolute w-100">
 			<!-- <img class="img-fluid" src="https://www.arborday.org/images/hero/medium/hero-aerial-forest-evergreen-trees.jpg"> -->
 		</div>
