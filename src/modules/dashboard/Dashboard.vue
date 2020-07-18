@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 200px;">
-    <cards></cards>
+    <cards :listType="'featured'"></cards>
   </div>
 </template>
 <style lang="scss" scoped> 
