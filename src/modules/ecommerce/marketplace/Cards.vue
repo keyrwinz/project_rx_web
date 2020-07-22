@@ -4,8 +4,8 @@
 		<div class="position-absolute w-100">
 			<!-- <img class="img-fluid" src="https://www.arborday.org/images/hero/medium/hero-aerial-forest-evergreen-trees.jpg"> -->
 		</div>
-		<h1 class="display-4 text-white">Express your love with Runway Express</h1>
-		<p class="lead text-white">Refer 5 friends and get a ₱100 coupon on us!</p>
+		<h1 class="display-4 text-white">{{header}}</h1>
+		<p class="lead text-white">{{subheader}}</p>
 		<hr class="my-4">
 			<div class="container row m-0 justify-content-around w-100">
 						<!-- card starts -->
@@ -89,6 +89,12 @@ export default {
     },
     listType: {
       required: false
+    },
+    header: {
+      required: false
+    },
+    subheader: {
+      required: false
     }
   },
   methods: {
@@ -121,7 +127,7 @@ export default {
           this.data = response.data
           console.log(this.data)
           if(this.listType === 'featured'){
-            this.data = this.data.filter(product => product.featured !== null)
+            this.data = this.data.filter(product => product.status !== 'featured')
             console.log('sulod')
             console.log(this.data)
           }

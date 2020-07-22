@@ -1,6 +1,8 @@
 <template>
   <div style="margin-bottom: 200px;">
-    <cards :listType="'featured'"></cards>
+    <cards  :listType="'featured'"
+            :header="'Express your love with Runway Express'"
+            :subheader="'Refer 5 friends and get a ₱100 coupon on us!'"></cards>
   </div>
 </template>
 <style lang="scss" scoped> 

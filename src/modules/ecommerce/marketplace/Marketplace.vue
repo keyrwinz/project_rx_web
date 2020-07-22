@@ -1,19 +1,7 @@
 <template>
-  <div class="marketplace-holder">
-    <div class="product-holder">
-      <generic-filter v-bind:category="category" 
-        :activeCategoryIndex="1"
-        :activeSortingIndex="0"
-        @changeSortEvent="retrieve($event.sort, $event.filter)"
-        @changeStyle="manageGrid($event)"
-        :grid="['list']">
-        </generic-filter>
-      <div class="results">
-        <products v-if="data !== null" :data="data" :listStyle="listStyle"></products> 
-        <dynamic-empty v-if="data === null" :title="'No products yet!'" :action="'Please be back soon.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></dynamic-empty>
-      </div>
-    </div>
-    <table-view :data="data" v-if="listStyle === 'list' && data !== null" :type="'products'"></table-view>
+  <div>
+    <cards :header="'Hungry?'"
+            :subheader="'Grab a snickers :D'"></cards>
   </div>
 </template>
 <style scoped lang="scss">
