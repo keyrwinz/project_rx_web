@@ -27,6 +27,7 @@
     "export-to-csv": "^0.2.1",
     "fs": "0.0.1-security",
     "googleapis": "^27.0.0",
+    "handbrake-js": "^5.0.0",
     "howler": "^2.0.12",
     "jquery": "^3.4.1",
     "laravel-echo": "^1.8.0",
