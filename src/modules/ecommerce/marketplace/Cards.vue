@@ -49,7 +49,7 @@
       min-height: 450px;
       overflow-y: hidden;
       text-align: center;
-      border: solid 1px #ddd;
+      /* border: solid 1px #ddd; */
     }   .empty i{
       font-size: 100px;
       padding-top: 150px;

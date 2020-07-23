@@ -4,7 +4,7 @@
       <div v-if="tokenData.token !== null && parseInt(user.userID) > 0">
        <system-header v-bind:sidebarFlag="menu" ref="header"></system-header>
        <!-- <system-sidebar v-bind:menuFlag="menu" @toggleSidebar="toggleSidebar"></system-sidebar> -->
-       <div class="content-holder mx-auto container-fluid">
+       <div class="content-holder mx-auto container-fluid" :class="[{'login': tokenData.token !== null && parseInt(user.userID) > 0}]">
          <system-notification></system-notification>
           <transition >
             <router-view ></router-view>
@@ -53,14 +53,20 @@
   overflow: hidden;
   transition: all 1s ease 0s;
   z-index: 1;
+}
+
+.content-holder.login {
   margin-top: 50px;
 }
 @media (min-width: 1200px){
   .content-holder{
     width: 94%;
-    margin-top: 60px;
     margin-bottom: 1%;
     float: right; /*- changed float left to right -*/
+  }
+
+  .content-holder.login {
+    margin-top: 60px;
   }
 }
 
@@ -197,6 +203,31 @@ td i:hover{
 .table tbody td{
   height: 35px !important;
   padding: .50rem !important;
+}
+
+body .modal-backdrop {
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.modal {
+  background: rgba(0,0,0,0.5);
+}
+
+.shadow-none {
+    box-shadow: none!important;
+}
+
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+}
+
+.shadow {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
 }
 
 </style>
