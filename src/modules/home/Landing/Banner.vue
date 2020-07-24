@@ -1,4 +1,5 @@
 <template>
+
 	<div class="incre-row">
     <div v-for="(item, index) in settings.page" :key="index" class="cw-banner" :style="{'background': item.background}">
       <div class="image" v-if="item.template === 'left'">

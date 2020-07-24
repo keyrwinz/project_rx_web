@@ -38,7 +38,7 @@ export default{
   }, {
     path: '/login',
     name: 'loginAccount',
-    component: resolve => require(['components/increment/basic/LogInBasic.vue'], resolve),
+    component: resolve => require(['modules/basic/LoginBasic.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -71,9 +71,16 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/marketplace',
+    name: 'marketplace',
+    component: resolve => require(['modules/ecommerce/marketplace/Marketplace.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/profile/:parameter?',
     name: 'profile',
-    component: resolve => require(['components/increment/settings/UpdateBasic.vue'], resolve),
+    component: resolve => require(['modules/basic/UpdateBasic.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -87,7 +94,7 @@ export default{
   }, {
     path: '/products/',
     name: 'products',
-    component: resolve => require(['components/increment/imarketvue/product/Products.vue'], resolve),
+    component: resolve => require(['modules/ecommerce/product/Products.vue'], resolve),
     meta: {
       tokenRequired: true
     }
@@ -95,6 +102,13 @@ export default{
     path: '/product/edit/:code?',
     name: 'editProduct',
     component: resolve => require(['components/increment/imarketvue/product/EditProduct.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/traces/:code?',
+    name: 'traces',
+    component: resolve => require(['components/increment/imarketvue/trace/Traces.vue'], resolve),
     meta: {
       tokenRequired: true
     }

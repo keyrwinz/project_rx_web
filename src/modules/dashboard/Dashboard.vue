@@ -1,6 +1,8 @@
 <template>
   <div style="margin-bottom: 200px;">
-    <h1>Welcome to dashboard</h1>
+    <cards  :listType="'featured'"
+            :header="'Express your love with Runway Express'"
+            :subheader="'Refer 5 friends and get a ₱100 coupon on us!'"></cards>
   </div>
 </template>
 <style lang="scss" scoped> 
@@ -45,6 +47,7 @@ export default{
   props: {
   },
   components: {
+    'cards': require('modules/ecommerce/marketplace/Cards.vue')
   },
   methods: {
   }

@@ -13,8 +13,9 @@
             <ul class="first-ul">
               <li><strong>Terms and Conditions</strong></li>
               <li>
+                <!-- with centralized precautions and contact tracing to fight covid-19. Our program includes a wide variety of features, designed to provide a comprehensive tracing tool which are available on -->
                 <p>
-                  Thank you for choosing {{common.COMPANY}} (“we, us, our”) to provide you (“you, your, yours, user”) with centralized precautions and contact tracing to fight covid-19. Our program includes a wide variety of features, designed to provide a comprehensive tracing tool which are available on (i) applications available to download on mobile devices (“Apps”) and at our website https://birds-eye.org/ (“Website”), or any other device, collectively being our services to you (“Program”).
+                  Thank you for choosing {{common.COMPANY}} (“we, us, our”) to provide you (“you, your, yours, user”) with a delivery service, designed to give you easier access to merchants and have items delivered at your front door. You can avail of our services through (i) applications available to download on mobile devices (“Apps”) and at our website https://runwayexpress.co.uk (“Website”), or any other device, collectively being our services to you (“Program”).
                 </p>
                 <p>
                   In order to access our program, whether or not you are an existing or former user, you confirm that you have read these Terms of Use (“Terms”). Whenever you use our services, you acknowledge that you understand and agree to these Terms, and you also agree to our Privacy and Cookie Policies. We recommend that you print a copy of these Terms for future reference. We may terminate your access to the Services if you breach our Terms.
@@ -40,10 +41,10 @@
               </li>
               <li>
                 <p>
-                  You must register for an account by: providing a username, a valid email address and any other information we may require from time to time (“account”). You are responsible for maintaining the confidentiality of your account details and you are fully responsible for all activities that occur under your account. Your account must be used only by you and must not be shared with, or transferred to any other individual. You must immediately notify us via our contact us page of any suspected or actual, unauthorized or fraudulent use of your account or any other breach of security.
+                  You must register for an account by: providing a username, a valid email address and any other information we may require from time to time (“account”). You are responsible for maintaining the confidentiality of your account details and you are fully responsible for all activities that occur under your account. Your account must be used only by you and any person you share your credentials to. You must immediately notify us via our contact us page of any suspected or actual, unauthorized or fraudulent use of your account or any other breach of security.
                 </p>
                 <p>
-                  Once you have an account, you do the following: update your profile, visited locations, used transportations, report symptoms, view your daily temperature record and (2) be personally responsible for the information you provide in your profile. We reserve the right to delete your profile and suspend or terminate your account if we, acting reasonably, suspect that any information you provide in your profile is untrue, inaccurate or does not comply with our terms.
+                  You must not use your account to impersonate any individual or business. We reserve the right to delete your profile and suspend or terminate your account if we, acting reasonably, suspect that any information you provide in your profile is untrue, inaccurate or does not comply with our terms.
                 </p>
               </li>
 
@@ -111,7 +112,7 @@
                   You agree to defend, indemnify and hold harmless {{common.COMPANY}} and its directors, officers, employees, contractors, agents, suppliers, licensors, successors and assigns, from and against any and all losses, claims, causes of action, obligations, liabilities and damages whatsoever, including attorneys’ fees, arising out of or relating to your access or use of the Program, any false representation made to us, your breach of any of these Terms and Conditions, or any claim that any translation we provide to you is inaccurate, inappropriate or defective in any way whatsoever.
                 </p>
               </li>
-              <li>
+              <!-- <li>
                 <strong>
                   SUBSCRIPTION FEES
                 </strong>
@@ -133,7 +134,7 @@
                 <p>
                   You also have a legal right to change your mind, without giving us a reason, and cancel your subscription (this includes a Yearly plan) within thirty(30) days of the date you activated your subscription in order to receive a refund. If you want to cancel your subscription within this thirty(14) days period, you can do so via our Contact Us page, or by getting in touch with our support team here (insert hyperlink).
                 </p>
-              </li>
+              </li> -->
               <li>
                 <strong>
                   DELETING YOUR ACCOUNT
