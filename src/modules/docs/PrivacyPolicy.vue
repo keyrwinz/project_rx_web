@@ -17,7 +17,7 @@
               </li>
               <li><strong>WHAT INFORMATION DO WE COLLECT ABOUT YOU?</strong></li>
               <li>
-                The information collected when you interact with our Program falls into two categories: (1) Personal information you voluntarily provide such as your name, address, email address, birthday, visited location, used transportation, symptoms reported, temperature recorded, health declaration, and your data reported by the Department of Health of the Philippines; and (2) non-personal information collected through technology, which includes tracking information collected by us as well as third parties.
+                The information collected when you interact with our Program falls into two categories: (1) Personal information you voluntarily provide such as your name, address, email address, birthday, address or any other delivery address you provide, business information, business address, and contact number; and (2) non-personal information collected through technology, which includes tracking information collected by us as well as third parties.
               </li>
               <li><strong>Personal Information You Provide Directly To Us:</strong></li>
               <li>
