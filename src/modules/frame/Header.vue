@@ -42,6 +42,7 @@
         <div class="h-100"> 
             <div class="dropdown row col-auto h-100 align-items-center" data-toggle="dropdown" id="messages" aria-haspopup="true" aria-expanded="false">
               <div>
+                
                 <i class="fas fa-envelope text-white"></i>
                 <label class="badge badge-danger" style="margin-left: -15px;" v-if="parseInt(user.messages.totalUnreadMessages) > 0">{{user.messages.totalUnreadMessages}}</label>
               </div>
@@ -67,8 +68,17 @@
 
         <!-- market options here -->
         <div class="h-100">
-          <div class="dropdown row col-auto h-100 align-items-center px-1">
-            
+          <div class="dropdown row col-auto h-100 align-items-center" id="merchantStuff" data-toggle="dropdown">
+            <i class="fa fa-store text-white"></i>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="merchantStuff">
+              <div class="dropdown-item dropdown-item-menu-title">
+                <label>Merchant Controls</label>
+              </div>
+              <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-file"></i>Ledger</div>
+              <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-credit-card"></i>Wallet</div>
+              <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-shopping-bag"></i>Summary of Orders</div>
+              <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-motorcycle"></i>Deliveries</div>
+            </div>
           </div>
         </div>
         <div class="h-100">
