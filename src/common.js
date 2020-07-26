@@ -20,7 +20,7 @@ export default {
   }, {
     title: 'Summary of Orders',
     icon: 'fa fa-shopping-bag',
-    route: '/404'
+    route: '/deliveries'
   }, {
     title: 'Deliveries',
     icon: 'fa fa-motorcycle',
