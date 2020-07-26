@@ -113,6 +113,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/marketplace/product/:code?/preview',
+    name: 'product preview',
+    component: resolve => require(['components/increment/imarketvue/marketplace/Product.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/traces/:code?',
     name: 'traces',
     component: resolve => require(['components/increment/imarketvue/trace/Traces.vue'], resolve),
