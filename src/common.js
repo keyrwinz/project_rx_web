@@ -16,7 +16,7 @@ export default {
   merchantMenu: [{
     title: 'Ledger',
     icon: 'fa fa-file',
-    route: '/404'
+    route: '/ledger'
   }, {
     title: 'Summary of Orders',
     icon: 'fa fa-shopping-bag',

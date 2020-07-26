@@ -49,7 +49,7 @@
    position:relative;
 }
 .content-holder{  
-  min-height: 200px;
+  min-height: 70.5vh;
   overflow: hidden;
   transition: all 1s ease 0s;
   z-index: 1;

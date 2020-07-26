@@ -119,6 +119,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/ledger',
+    name: 'ledger',
+    component: resolve => require(['modules/ecommerce/wallet/Ledger.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
