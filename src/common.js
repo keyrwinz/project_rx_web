@@ -39,8 +39,9 @@ export default {
     {title: 'Billing Information', hideFrom: [], type: 'billing_information'}
   ],
   referral: {
-    message: 'this is a test. ',
-    emailMessage: '.This is a test.'
+    message: 'to get deals on selected items!',
+    emailMessage: ', a brand new food delivery app. Check out their awesome deals!',
+    promotion: ''
   },
   socialMedia: {
     facebook: 'runwayexpress'

@@ -77,7 +77,7 @@
               <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-file"></i>Ledger</div>
               <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-credit-card"></i>Wallet</div>
               <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-shopping-bag"></i>Summary of Orders</div>
-              <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-motorcycle"></i>Deliveries</div>
+              <div class="dropdown-item" v-on:click="redirect('/deliveries')"><i class="fa fa-motorcycle"></i>Deliveries</div>
             </div>
           </div>
         </div>

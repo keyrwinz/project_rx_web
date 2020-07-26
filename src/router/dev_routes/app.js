@@ -106,6 +106,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/deliveries',
+    name: 'deliveries',
+    component: resolve => require(['modules/ecommerce/deliveries/deliveryMgt.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/traces/:code?',
     name: 'traces',
     component: resolve => require(['components/increment/imarketvue/trace/Traces.vue'], resolve),
