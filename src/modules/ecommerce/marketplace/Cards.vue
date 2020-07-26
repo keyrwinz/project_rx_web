@@ -17,7 +17,7 @@
                   {{item.title}}
                 </h5>
 								<p class="card-text align-bottom">{{item.price[0].currency === 'PHP' ? '₱' : ''}} {{item.price[0].price}}</p>
-								<a href="#" class="btn btn-primary">Link to somewhere</a>
+								<button @click="redirect('/marketplace/product/'+item.code+'/preview')" class="btn btn-primary">View product page</button>
 					</div>
 				</div>
 			</div>
@@ -98,8 +98,12 @@ export default {
     }
   },
   methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
+    redirect(parameter, item = null){
+      if(item === null){
+        AUTH.redirect(parameter)
+      }else{
+        this.updateMessages(parameter, item)
+      }
     },
     retrieve(sort, filter){
       let parameter = {

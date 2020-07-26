@@ -1,11 +1,24 @@
 <template>
-  <div class="col-12">
-    <div class="col-8 mx-auto">
+  <div>
+    <div class="col-12 display-4 text-center mb-2">
+      <label class="text-primary">{{this.user.subAccount.merchant.name}}
+      </label>
+      Delivery History
+    </div>
+    <div class="col-8 p-0 mx-auto">
       <b-table striped hover :items="items"></b-table>
     </div>
   </div>
 </template>
-<style>
+<style lang="scss">
+  @import "~assets/style/colors.scss";
+  .border-primary{
+    border-color: $primary !important;
+  }
+  .text-primary{
+    color: $primary !important;
+  }
+
   .empty{
     width: 100%;
     margin-top: 25px;
@@ -37,17 +50,44 @@ import CONFIG from 'src/config.js'
 import COMMON from 'src/common.js'
 import axios from 'axios'
 export default {
+  mounted(){
+    this.retrieveMerchant({'title': 'asc'}, {column: 'title', value: ''})
+  },
   data(){
     return {
+      data: null,
       user: AUTH.user,
       config: CONFIG,
-      items: [{ rider: 'Juan dela Cruz', locale: 'Cebu', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'complete' },
-              { rider: 'Elle', locale: 'Cebu', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'complete' }
+      items: [{ rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'In Progress', _rowVariant: 'warning' },
+              { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+              { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
+              { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Cancelled', _rowVariant: 'danger' },
+              { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+              { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
+              { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Not Received', _rowVariant: 'danger' },
+              { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+              { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
       ]
     }
   },
   props: ['title', 'action'],
   methods: {
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'rider',
+          clause: '='
+        }]
+      }
+      this.APIRequest('merchants/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.data = this.response.data
+        }else{
+          console.log('No Data Retrieved')
+        }
+      })
+    },
     redirect(parameter){
       ROUTER.push(parameter)
     }
