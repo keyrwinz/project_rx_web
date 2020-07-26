@@ -16,7 +16,7 @@ export default {
   merchantMenu: [{
     title: 'Ledger',
     icon: 'fa fa-file',
-    route: '/deliveries'
+    route: '/404'
   }, {
     title: 'Summary of Orders',
     icon: 'fa fa-shopping-bag',
@@ -24,7 +24,7 @@ export default {
   }, {
     title: 'Deliveries',
     icon: 'fa fa-motorcycle',
-    route: '/404'
+    route: '/deliveries'
   }],
   APP_NAME: 'RunwayExpress',
   APP_NAME_HTML: 'Runway Express',
