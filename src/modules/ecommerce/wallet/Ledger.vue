@@ -61,12 +61,12 @@ export default {
       config: CONFIG,
       data: [
         {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', created_at: '2020-07-24 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Discord Inc'}},
-        {amount: -331.25, description: 'Phoenix Wright: The Ace Attorney', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-26 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
-        {amount: -75, description: 'Spotify Premium', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-26 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Spotify Finance Limited'}},
-        {amount: 127.47, description: 'Refund for games', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-26 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
-        {amount: -534.50, description: 'Rise of the Tomb Raider', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-26 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'wwww.steampowered.com'}},
-        {amount: 35, description: 'Commission', payment_payload: 'COD', currency: 'USD', created_at: '2020-07-26 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Leola Evans'}},
-        {amount: -126.12, description: 'Chicken from Burger King', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-26 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Burger King'}}
+        {amount: -331.25, description: 'Phoenix Wright: The Ace Attorney', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-18 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
+        {amount: -75, description: 'Spotify Premium', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-25 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Spotify Finance Limited'}},
+        {amount: 127.47, description: 'Refund for games', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-25 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
+        {amount: -534.50, description: 'Rise of the Tomb Raider', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-05 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'wwww.steampowered.com'}},
+        {amount: 35, description: 'Commission', payment_payload: 'COD', currency: 'USD', created_at: '2020-05-10 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Leola Evans'}},
+        {amount: -126.12, description: 'Chicken from Burger King', payment_payload: 'COD', currency: 'PHP', created_at: '2020-05-01 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Burger King'}}
       ]
     }
   },
