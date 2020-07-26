@@ -41,7 +41,8 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      items: [{ rider: 'Juan dela Cruz', locale: 'Cebu', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'complete' }
+      items: [{ rider: 'Juan dela Cruz', locale: 'Cebu', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'complete' },
+              { rider: 'Elle', locale: 'Cebu', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'complete' }
       ]
     }
   },

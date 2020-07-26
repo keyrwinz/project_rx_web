@@ -13,6 +13,19 @@ export default {
     icon: 'fa fa-users',
     route: '/referrals'
   }],
+  merchantMenu: [{
+    title: 'Ledger',
+    icon: 'fa fa-file',
+    route: '/deliveries'
+  }, {
+    title: 'Summary of Orders',
+    icon: 'fa fa-shopping-bag',
+    route: '/404'
+  }, {
+    title: 'Deliveries',
+    icon: 'fa fa-motorcycle',
+    route: '/404'
+  }],
   APP_NAME: 'RunwayExpress',
   APP_NAME_HTML: 'Runway Express',
   APP_EMAIL: 'support@runwayexpress.com',
