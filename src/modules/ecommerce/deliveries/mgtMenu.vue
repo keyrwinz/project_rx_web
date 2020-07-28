@@ -76,7 +76,7 @@
           class="mb-0">
           <b-form-checkbox-group v-model="filterOn" class="mt-1">
             <b-form-checkbox value="name">Name</b-form-checkbox>
-            <b-form-checkbox value="age">Age</b-form-checkbox>
+            <b-form-checkbox value="status">Status</b-form-checkbox>
             <b-form-checkbox value="isActive">Active</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
@@ -119,7 +119,7 @@
       show-empty
       small
       stacked="md"
-      :items="items"
+      :items="data"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -130,10 +130,6 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <template v-slot:cell(name)="row">
-        {{ row.value.first }} {{ row.value.last }}
-      </template>
-
       <template v-slot:cell(actions)="row">
         <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
           Info modal
@@ -226,9 +222,11 @@ export default {
       ],
       fields: [
         { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'age', label: 'Person age', sortable: true, class: 'text-center' },
-        {
-          key: 'isActive',
+        { key: 'locale', label: 'Locale', sortable: true, class: 'text-center' },
+        { key: 'source', label: 'Source', sortable: true, class: 'text-center' },
+        { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
+        { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
+        { key: 'isActive',
           label: 'is Active',
           formatter: (value, key, item) => {
             return value ? 'Yes' : 'No'
@@ -268,6 +266,20 @@ export default {
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length
+  },
+  props: {
+    title: {
+      required: false
+    },
+    action: {
+      required: false
+    },
+    type: {
+      required: false
+    },
+    data: {
+      required: true
+    }
   },
   methods: {
     info(item, index, button) {
