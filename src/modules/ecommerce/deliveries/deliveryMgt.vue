@@ -6,7 +6,7 @@
       Delivery History
     </div>
     <div class="col-8 p-0 mx-auto">
-      <b-table striped hover :items="items"></b-table>
+      <mgtMenu :data="items"></mgtMenu>
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ import COMMON from 'src/common.js'
 import axios from 'axios'
 export default {
   mounted(){
-    this.retrieveMerchant({'title': 'asc'}, {column: 'title', value: ''})
+    // this.retrieveMerchant({'title': 'asc'}, {column: 'title', value: ''})
   },
   data(){
     return {
@@ -69,6 +69,9 @@ export default {
               { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
       ]
     }
+  },
+  components: {
+    'mgtMenu': require('./mgtMenu.vue')
   },
   props: ['title', 'action'],
   methods: {
