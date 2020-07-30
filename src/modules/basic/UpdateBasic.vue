@@ -19,7 +19,7 @@
     <div class="content">
       <profile v-if="activeType === 'profile'" :allowed="allowed"></profile>
       <account v-if="activeType === 'account'"></account>
-      <payment v-if="activeType === 'merchant_locations'"></payment>
+      <locations v-if="activeType === 'merchant_locations'"></locations>
       <billing-information v-if="activeType === 'billing_information'"></billing-information>
       <merchant v-if="activeType === 'merchant'" :title="title" :allowed="businessAllowed"></merchant>
       <notification v-if="activeType === 'notification'"></notification>
@@ -119,16 +119,18 @@ export default {
         }
       }
       if(flag === false){
-        this.makeActive(this.menu[0])
+        if(this.user.type === 'MERCHANT') {
+          this.activeType = 'merchant'
+        } else {
+          this.activeType = 'profile'
+        }
       }
     }else{
-      this.makeActive(this.menu[0])
-    }
-
-    if(this.user.type === 'MERCHANT') {
-      this.activeType = 'merchant'
-    } else {
-      this.activeType = 'profile'
+      if(this.user.type === 'MERCHANT') {
+        this.activeType = 'merchant'
+      } else {
+        this.activeType = 'profile'
+      }
     }
   },
   data(){
@@ -147,7 +149,7 @@ export default {
   components: {
     'profile': require('components/increment/settings/Profile.vue'),
     'account': require('components/increment/settings/Account.vue'),
-    'payment': require('modules/basic/Locations.vue'),
+    'locations': require('modules/basic/Locations.vue'),
     'billing-information': require('components/increment/settings/BillingInformation.vue'),
     'merchant': require('components/increment/settings/Merchant.vue'),
     'notification': require('components/increment/settings/Notification.vue')

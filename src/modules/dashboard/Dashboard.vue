@@ -1,10 +1,13 @@
 <template>
   <div style="margin-bottom: 200px;">
     <div class="container w-75 mx-auto mt-4 row">
-      <h4 class="text-uppercase col-12">Hello, 
-        <span class="text-primary" v-if="user.subAccount.merchant === null">{{user.username}}</span>
-        <span class="text-primary" v-else>{{user.subAccount.merchant.name}}</span>
-      </h4>
+      <div class="col-12">
+        <h4 class="text-uppercase col-12">Hello, 
+          <span class="text-primary" v-if="user.subAccount.merchant === null">{{user.username}}</span>
+          <span class="text-primary" v-else>{{user.subAccount.merchant.name}}</span>
+        </h4>
+        <small v-if="user.subAccount.merchant === null" class="ml-3 text-danger">Looks like you haven't setup your business information! <b @click="redirect('/profile/merchant')" class="link text-danger">Click here</b> to start!</small>
+      </div>
       <div class="col-6">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
           <div class="col-8">
@@ -58,6 +61,8 @@
         </div>
       </div>
     </div>
+
+    <otp></otp>
   </div>
 </template>
 <style lang="scss" scoped> 
@@ -181,7 +186,8 @@ export default{
   props: {
   },
   components: {
-    'cards': require('modules/ecommerce/marketplace/Cards.vue')
+    'cards': require('modules/ecommerce/marketplace/Cards.vue'),
+    'otp': require('components/increment/generic/otp/Otp.vue')
   },
   methods: {
     redirect(parameter){
