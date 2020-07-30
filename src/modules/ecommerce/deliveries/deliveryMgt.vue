@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="col-12 display-4 text-center mb-2">
-      <label class="text-primary">{{this.user.subAccount.merchant.name}}
+      <label class="text-primary">{{user.subAccount.merchant.name}}
       </label>
       Delivery History
     </div>

@@ -71,6 +71,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/featured',
+    name: 'featured',
+    component: resolve => require(['modules/ecommerce/marketplace/Featured.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/marketplace',
     name: 'marketplace',
     component: resolve => require(['modules/ecommerce/marketplace/Marketplace.vue'], resolve),
@@ -130,6 +137,13 @@ export default{
     path: '/ledger',
     name: 'ledger',
     component: resolve => require(['modules/ecommerce/wallet/Ledger.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/wallet',
+    name: 'wallet',
+    component: resolve => require(['modules/ecommerce/wallet/Wallet.vue'], resolve),
     meta: {
       tokenRequired: true
     }

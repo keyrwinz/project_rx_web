@@ -215,21 +215,75 @@ body .modal-backdrop {
 }
 
 .shadow-none {
-    box-shadow: none!important;
+  box-shadow: none!important;
 }
 
 .shadow-sm {
-    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
 }
 
 .shadow {
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
 
 .shadow-lg {
-    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
 }
 
+.link {
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+.link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link.text-primary {
+  color: $primary !important;
+}
+
+.link.text-primary:hover {
+  color: $darkPrimary !important;
+}
+
+.rounded-pill {
+  border-radius: 50rem!important;
+}
+
+.btn-outline-primary {
+  border-color: $primary !important;
+  color: $primary !important;
+}
+
+.btn-outline-primary:hover {
+  background: $primary !important;
+  color: white !important;
+}
+
+.btn.btn-outline-primary:focus {
+  box-shadow: 0 0 0 3px #{$primary}80;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #dee2e6!important;
+}
+
+.border-top {
+  border-top: 1px solid #dee2e6!important;
+}
+
+.border-right {
+  border-right: 1px solid #dee2e6!important;
+}
+
+.border-left {
+  border-left: 1px solid #dee2e6!important;
+}
 </style>
 <script>
 import ROUTER from './router'
