@@ -70,7 +70,7 @@
                   <ul>
                     <li><strong>DATA SUBJECT RIGHTS AND DATA RETENTION</strong></li>
                     <li>
-                      You can manage your account settings at by clicking <a href="#" @click="redirect('/profile')">here</a> to update, amend, and correct your information.
+                      You can manage your account settings at by clicking <span class="link" data-toggle="modal" data-target="#privacyModal" @click="redirect('/profile')">here</span> to update, amend, and correct your information.
                     </li>
                     <li>
                       You also have the following rights in relation to the personal data we hold about you, unless provided otherwise by local law:

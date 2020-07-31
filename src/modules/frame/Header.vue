@@ -1,13 +1,13 @@
  <template>
   <div>
     <nav class="header-navbar">
-      <div class="system-header">
+      <div class="system-header navbar navbar-expand-md">
         <a class="navbar-brand" v-on:click="redirect('dashboard')">
           <img :src="require('src/assets/img/favicon-alt.png')" class="logo-brand">
           <label class="navbar-brand hide-on-mobile text-white" v-html="common.APP_NAME_HTML"></label>
         </a>
       </div>
-      <span class="navbar-menu-toggler-md" v-bind:class="{'active-menu': menuFlag === true}" data-toggle="collapse" data-target="#idfactory" aria-controls="idfactory" aria-expanded="false" aria-label="Toggle navigation" v-on:click="makeActive('menu')">
+      <span class="navbar-menu-toggler-md" v-bind:class="{'active-menu': menuFlag === true}" data-toggle="collapse" data-target="#navPages" aria-controls="navPages" aria-expanded="false" aria-label="Toggle navigation" v-on:click="makeActive('menu')">
           <i class="fa fa-bars" aria-hidden="true"></i>
       </span>
       <span class="left-menu-icons">
@@ -18,6 +18,13 @@
           </li>
         </ul>
       </span>
+      <div class="navbar-collapse collapse" id="navPages">
+        <ul class="navbar-nav">
+          <li class="item" v-for="(item, index) in menu" :class="[{'selected': item.flag || $route.path === '/' + item.path}]" :key="index" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && (item.accountStatus === 'ALL' || (user.subAccount === null || (user.subAccount !== null && user.subAccount.status === item.accountStatus)))" @click="setActive(index)">
+            <span class="nav-link">{{item.description}}</span>
+          </li>
+        </ul>
+      </div>
       <div class="right-menu-icons d-flex ml-auto justify-content-end align-items-center pr-3 h-100">
         <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')"> 
             <span>
@@ -66,9 +73,22 @@
         <checkout-cart></checkout-cart>
 
         <!-- market options here -->
-        <div class="h-100">
-          <div class="dropdown row col-auto h-100 align-items-center px-1">
-            
+        <div class="h-100" v-if="user.type === 'MERCHANT'">
+          <div class="dropdown row col-auto h-100 align-items-center" id="merchantStuff" data-toggle="dropdown">
+            <i class="fa fa-store text-white"></i>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="merchantStuff">
+              <div class="dropdown-item dropdown-item-menu-title">
+                <label>Merchant Controls</label>
+              </div>
+              <div class="dropdown-item" v-on:click="redirect(item.route)" v-for="(item, index) in common.merchantMenu" :key="index">
+                  <i v-bind:class="item.icon"></i>
+                  <label>{{item.title}}</label>
+              </div>
+              <!-- <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-file"></i>Ledger</div>
+              <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-credit-card"></i>Wallet</div>
+              <div class="dropdown-item" v-on:click="redirect(replaceme)"><i class="fa fa-shopping-bag"></i>Summary of Orders</div>
+              <div class="dropdown-item" v-on:click="redirect('/deliveries')"><i class="fa fa-motorcycle"></i>Deliveries</div> -->
+            </div>
           </div>
         </div>
         <div class="h-100">
@@ -140,6 +160,27 @@
    </div>
   </div>
 </template>
+<style lang="scss">
+@media (max-width: 1200px) {
+  .navbar-collapse{
+    display: none;
+  }
+
+  .collapse.show {
+    display: none;
+  }
+}
+
+@media (max-width: 1199px) {
+  .collapsing {
+    display: block
+  }
+
+  .collapse.show {
+    display: block
+  }
+}
+</style>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
 
@@ -193,7 +234,6 @@ body{
     height: 50px;
     font-size: 24px;
     width: 18%;
-    background: $primary;
     text-align: center;
     position: fixed;
   }
@@ -218,6 +258,43 @@ body{
     font-weight: 900;
   }
   
+  #navPages {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    left: 0;
+  }
+
+  #navPages .navbar-nav {
+    padding-top: 15px;
+    justify-content: start;
+    align-items: start;
+    flex-flow: column;
+    background: white;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.4);
+  }
+
+  #navPages .navbar-nav .item {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 25px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  #navPages .navbar-nav .item .nav-link {
+    color: black;
+  }
+
+  #navPages .navbar-nav .item.selected {
+    background: $primary;
+  }
+
+  #navPages .navbar-nav .item.selected .nav-link {
+    color: white;
+  }
+
 /*---------------------------------------------
  
 
@@ -312,7 +389,8 @@ body{
   position: fixed;
   // z-index: 100;
 }
-.left-menu-icons{
+
+.navbar-menu-toggler-md {
   margin-left: 18%;
 }
 .nav-item span i{
@@ -649,6 +727,7 @@ body{
     }
     .left-menu-icons{
       width: 40% !important;
+      margin-left: 18%;
     }
     .right-menu-icons{
       width: 60% !important;
@@ -670,6 +749,7 @@ body{
     }
     .left-menu-icons{
       width: 60% !important;
+      margin-left: 25%;
     }
     .right-menu-icons{
       width: 40%;
@@ -681,19 +761,23 @@ body{
 
 @media (max-width: 991px){
    .system-header{
-      width: 30%;
+      width: 26%;
     }
-    .left-menu-icons{
-      margin-left: 20%;
-    }
+
     .header-navbar{
       width: 100%;
     }
    .header-navbar-nav{
       width: 30%;
     }
+
+    .left-menu-icons {
+      display: none;
+    }
+
     .navbar-menu-toggler-md{
       width: 10%;
+      margin-left: 25%;
       text-align: center;
       display: block;
     }
@@ -701,7 +785,7 @@ body{
       width: 30% !important;
     }
     .right-menu-icons{
-      width: 70% !important;
+      width: 65% !important;
     }
     .nav-item{
       width: 10%;
@@ -717,7 +801,8 @@ body{
     .system-header{
       width: 15%;
     }
-    .left-menu-icons {
+
+    .navbar-menu-toggler-md {
       margin-left: 15%;
     }
     .navbar-brand{
@@ -743,7 +828,7 @@ body{
     }
 
     .right-menu-icons{
-      width: 80% !important;
+      width: 75% !important;
     }
 
     .hide-on-mobile{
@@ -851,7 +936,7 @@ export default {
         this.menuFlag = false
         this.notifFlag = false
         console.log('settings')
-      }else if(icon === 'sidebar'){
+      }else if(icon === 'menu'){
         this.settingFlag = false
         this.menuFlag = true
         this.notifFlag = false

@@ -75,10 +75,10 @@
               </li>
               <li>
                 <p>
-                  The Program contains links to other websites controlled by third parties. {{common.COMPANY}} is not responsible for the contents or use of any linked site, or any consequence of making the link. These third party services are unrelated to the Sites, and your use of such third party services is subject to the terms and policies of those services.
+                  The Program contains links to other websites controlled by third parties. {{common.COMPANY}} is not responsible for the contents or use of any linked site, or any consequence of making the link. These third party services are unrelated to the Sites, and your use of such third-party services is subject to the terms and policies of those services.
                 </p>
                 <p>
-                  The Program contains links to other websites controlled by third parties. {{common.COMPANY}} is not responsible for the contents or use of any linked site, or any consequence of making the link. These third party services are unrelated to the Sites, and your use of such third party services is subject to the terms and policies of those services.
+                  The Program contains links to other websites controlled by third parties. {{common.COMPANY}} is not responsible for the contents or use of any linked site, or any consequence of making the link. These third party services are unrelated to the Sites, and your use of such third-party services is subject to the terms and policies of those services.
                 </p>
               </li>
               <li>

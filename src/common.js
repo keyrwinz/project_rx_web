@@ -1,6 +1,8 @@
 export default {
   sidebarMenu: [
-    {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer-alt', path: 'dashboard', flag: false, subMenu: null},
+    {accountType: 'MERCHANT', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer-alt', path: 'dashboard', flag: false, subMenu: null},
+    {accountType: 'RIDER', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer-alt', path: 'dashboard', flag: false, subMenu: null},
+    {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Featured', icon: 'fa fa-tachometer-alt', path: 'featured', flag: false, subMenu: null},
     {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Marketplace', icon: 'fa fa-tachometer-alt', path: 'marketplace', flag: false, subMenu: null},
     {accountType: 'MERCHANT', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer-alt', path: 'products', flag: false, subMenu: null}
   ],
@@ -12,6 +14,23 @@ export default {
     title: 'Invite Friends',
     icon: 'fa fa-users',
     route: '/referrals'
+  }],
+  merchantMenu: [{
+    title: 'Wallet',
+    icon: 'fa fa-wallet',
+    route: '/wallet'
+  }, {
+    title: 'Ledger',
+    icon: 'fa fa-clipboard-list',
+    route: '/ledger'
+  }, {
+    title: 'Summary of Orders',
+    icon: 'fa fa-shopping-bag',
+    route: '/deliveries'
+  }, {
+    title: 'Deliveries',
+    icon: 'fa fa-motorcycle',
+    route: '/deliveries'
   }],
   APP_NAME: 'RunwayExpress',
   APP_NAME_HTML: 'Runway Express',
@@ -39,8 +58,9 @@ export default {
     {title: 'Billing Information', hideFrom: [], type: 'billing_information'}
   ],
   referral: {
-    message: 'this is a test. ',
-    emailMessage: '.This is a test.'
+    message: 'to get deals on selected items!',
+    emailMessage: ', a brand new food delivery app. Check out their awesome deals!',
+    promotion: ''
   },
   socialMedia: {
     facebook: 'runwayexpress'

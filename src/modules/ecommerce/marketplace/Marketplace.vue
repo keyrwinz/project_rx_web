@@ -1,7 +1,9 @@
 <template>
   <div>
-    <cards :header="'Hungry?'"
-            :subheader="'Grab a snickers :D'"></cards>
+    <cards  :header="'Hungry?'"
+            :subheader="'Grab a snickers :D'"
+            :listType="'published'"
+    ></cards>
   </div>
 </template>
 <style scoped lang="scss">

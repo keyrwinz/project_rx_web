@@ -71,6 +71,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/featured',
+    name: 'featured',
+    component: resolve => require(['modules/ecommerce/marketplace/Featured.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/marketplace',
     name: 'marketplace',
     component: resolve => require(['modules/ecommerce/marketplace/Marketplace.vue'], resolve),
@@ -106,9 +113,37 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/deliveries',
+    name: 'deliveries',
+    component: resolve => require(['modules/ecommerce/deliveries/deliveryMgt.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/marketplace/product/:code?/preview',
+    name: 'product preview',
+    component: resolve => require(['components/increment/imarketvue/marketplace/Product.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/traces/:code?',
     name: 'traces',
     component: resolve => require(['components/increment/imarketvue/trace/Traces.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/ledger',
+    name: 'ledger',
+    component: resolve => require(['modules/ecommerce/wallet/Ledger.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/wallet',
+    name: 'wallet',
+    component: resolve => require(['modules/ecommerce/wallet/Wallet.vue'], resolve),
     meta: {
       tokenRequired: true
     }
