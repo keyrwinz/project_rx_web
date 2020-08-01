@@ -10,7 +10,7 @@
     </filter-product>
     <div class="products-holder" v-for="item, index in data" @click="redirect('/product/edit/' + item.code)" v-if="listStyle === 'columns'">
       <div class="products-image">
-        <img :src="config.BACKEND_URL + item.featured[0].url" v-if="item.featured !== null">
+        <img :src="config.BACKEND_URL + item.featured[0].url" v-if="item.featured !== null && getFileType(item.featured[0].url) === 'img'">
         <i class="fa fa-image" v-else></i>
       </div>
       <div class="products-details">
@@ -215,6 +215,10 @@ export default {
     'filter-product': require('components/increment/imarketvue/filter/Product.vue')
   },
   methods: {
+    getFileType(url){
+      console.log('endme')
+      return url.substring(url.lastIndexOf('.')) === '.webm' ? 'vid' : 'img'
+    },
     redirect(parameter){
       ROUTER.push(parameter)
     },
