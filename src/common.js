@@ -66,7 +66,7 @@ export default {
     facebook: 'runwayexpress'
   },
   pusher: {
-    channel: 'runwayexpress',
+    channel: 'runway',
     notifications: 'Notifications',
     messages: 'Message',
     validation: 'Validation'
