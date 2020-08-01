@@ -157,6 +157,9 @@ import CURRENCY from 'src/services/currency.js'
 import moment from 'moment'
 export default{
   mounted(){
+    if(this.user.type === 'USER') {
+      ROUTER.push('/featured')
+    }
     this.balance.map((bal, ind) => {
       if(bal.balance >= this.largest.balance) {
         this.largest = bal
