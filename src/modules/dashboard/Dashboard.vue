@@ -35,7 +35,7 @@
             <span class="font-weight-bold text-muted" style="opacity: .7">{{balance.length > 1 ? 'More Currency Available' : 'Available'}}</span>
           </div>
           <div class="col-12 mt-3">
-            <button type="button" class="btn btn-outline-primary rounded-pill">Transfer Funds</button>
+            <button type="button" class="btn btn-outline-primary rounded-pill" @click="$refs.funds.show()">Transfer Funds</button>
           </div>
         </div>
 
@@ -62,7 +62,8 @@
       </div>
     </div>
 
-    <otp></otp>
+    <otp ref="otp"></otp>
+    <transfer ref="funds" :balance="balance"></transfer>
   </div>
 </template>
 <style lang="scss" scoped> 
@@ -156,6 +157,9 @@ import CURRENCY from 'src/services/currency.js'
 import moment from 'moment'
 export default{
   mounted(){
+    if(this.user.type === 'USER') {
+      ROUTER.push('/featured')
+    }
     this.balance.map((bal, ind) => {
       if(bal.balance >= this.largest.balance) {
         this.largest = bal
@@ -170,9 +174,9 @@ export default{
       currency: CURRENCY,
       largest: {balance: 0},
       balance: [
-        {balance: 3000, currency: 'PHP'},
-        {balance: 215, currency: 'USD'},
-        {balance: 120, currency: 'EUR'}
+        {id: 10, balance: 3000, currency: 'PHP'},
+        {id: 12, balance: 215, currency: 'USD'},
+        {id: 22, balance: 120, currency: 'EUR'}
       ],
       ledger: [
         {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', created_at: '2020-07-24 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Discord Inc'}},
@@ -187,7 +191,8 @@ export default{
   },
   components: {
     'cards': require('modules/ecommerce/marketplace/Cards.vue'),
-    'otp': require('components/increment/generic/otp/Otp.vue')
+    'otp': require('components/increment/generic/otp/Otp.vue'),
+    'transfer': require('modules/ecommerce/wallet/Transfer.vue')
   },
   methods: {
     redirect(parameter){

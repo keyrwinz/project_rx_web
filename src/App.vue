@@ -265,7 +265,8 @@ body .modal-backdrop {
   color: white !important;
 }
 
-.btn.btn-outline-primary:focus {
+.btn.btn-outline-primary:focus,
+.btn.btn-primary:focus {
   box-shadow: 0 0 0 3px #{$primary}80;
 }
 
