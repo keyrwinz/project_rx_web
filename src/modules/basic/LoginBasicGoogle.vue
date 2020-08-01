@@ -21,6 +21,7 @@
         </div>
         <button class="btn btn-primary btn-block login-spacer" v-on:click="logIn()">Login</button>
         <button class="btn btn-warning btn-block login-spacer" v-on:click="redirect('/request_reset_password')">Forgot your Password?</button>
+        <GoogleLogin :params="loginParam" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"></GoogleLogin>
         <!-- <button class="btn btnFB btn-block login-spacer mt-3" @click="logInWithFacebook"> Login with Facebook</button> -->
         <br>
         <div class="container-fluid separator">
@@ -181,7 +182,50 @@ export default {
       }
     }
   },
+  components: {
+    GoogleLogin
+  },
   methods: {
+    async logInWithFacebook() {
+      await this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
+      await this.initFacebook()
+      window.FB.login(function(response) {
+        console.log(response)
+        if (response.authResponse) {
+          alert('You are logged in &amp; cookie set!')
+          this.testAPI()
+        } else {
+          alert('User cancelled login or did not fully authorize.')
+        }
+      }, { scope: 'email' })
+      return false
+    },
+    async initFacebook() {
+      window.fbAsyncInit = function() {
+        window.FB.init({
+          appId: '810134826187860', // RunwayExpress appID
+          cookie: true, // This is important, it's not enabled by default
+          version: 'v7.0'
+        })
+      }
+    },
+    testAPI() {
+      console.log('Welcome!  Fetching your information.... ')
+      window.FB.api('/me', function(response) {
+        console.log('Good to see you, ' + response.name + '.' + ' Email: ' + response.email + ' Facebook ID: ' + response.id)
+      })
+    },
+    async loadFacebookSDK(d, s, id) {
+      var js, fjs
+      fjs = d.getElementsByTagName(s)[0]
+      if (d.getElementById(id)) {
+        return
+      }
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      fjs.parentNode.insertBefore(js, fjs)
+    },
     logIn(){
       if(this.username !== null && this.username !== '' && this.password !== null && this.password !== ''){
         $('#loading').css({'display': 'block'})
@@ -195,6 +239,17 @@ export default {
       }else{
         this.errorMessage = 'Please fill up all the required fields.'
       }
+    },
+    onSuccess(googleUser) {
+      console.log(googleUser.getBasicProfile())
+    },
+    onFailure() {
+      $('#google-error').remove()
+      $('<small>', {
+        id: 'google-error',
+        class: 'text-danger text-center',
+        html: 'Something went wrong! Please refresh the page and try again.'
+      }).insertBefore('[id*="google-signin"]')
     },
     redirect(parameter){
       ROUTER.push(parameter)
