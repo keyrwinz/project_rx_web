@@ -157,9 +157,14 @@ import CURRENCY from 'src/services/currency.js'
 import moment from 'moment'
 export default{
   mounted(){
-    if(this.user.type === 'USER') {
+    if(!this.user || this.user.type === 'USER') {
       ROUTER.push('/featured')
     }
+
+    console.log(this.user)
+
+    this.retrieve()
+
     this.balance.map((bal, ind) => {
       if(bal.balance >= this.largest.balance) {
         this.largest = bal
@@ -176,7 +181,7 @@ export default{
       balance: [
         {id: 10, balance: 3000, currency: 'PHP'},
         {id: 12, balance: 215, currency: 'USD'},
-        {id: 22, balance: 120, currency: 'EUR'}
+        {id: 22, balance: 4120, currency: 'EUR'}
       ],
       ledger: [
         {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', created_at: '2020-07-24 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Discord Inc'}},
@@ -197,6 +202,18 @@ export default{
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    retrieve() {
+      let par = {
+        code: this.user.subAccount.merchant.id,
+        offset: 0,
+        limit: 5
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('ledger/retrieve_merchant', par).then(response => {
+        $('#loading').css({display: 'none'})
+        console.log('there was a response!')
+      })
     },
     getMonth(dateString) {
       return moment(dateString).format('MMM')

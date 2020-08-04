@@ -147,6 +147,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/accounts',
+    name: 'accounts',
+    component: resolve => require(['modules/admin/Accounts.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

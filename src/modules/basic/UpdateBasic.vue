@@ -151,7 +151,7 @@ export default {
     'account': require('components/increment/settings/Account.vue'),
     'locations': require('modules/basic/Locations.vue'),
     'billing-information': require('components/increment/settings/BillingInformation.vue'),
-    'merchant': require('components/increment/settings/Merchant.vue'),
+    'merchant': require('modules/basic/Merchant.vue'),
     'notification': require('components/increment/settings/Notification.vue')
   },
   methods: {

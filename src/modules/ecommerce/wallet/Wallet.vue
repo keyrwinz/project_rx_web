@@ -24,7 +24,7 @@
           </div>
           <div class="card col-12">
             <div class="card-body text-center">
-              Use your balance to buy, or withdraw it. OTP is required to your withdraw money.
+              Use your balance to buy, or withdraw it. OTP is required to withdraw money.
             </div>
           </div>
         </div>
