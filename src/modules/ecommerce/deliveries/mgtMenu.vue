@@ -9,8 +9,8 @@
           label-align-sm="right"
           label-size="sm"
           label-for="sortBySelect"
-          class="mb-0"
-        >
+          class="mb-0">
+          
           <b-input-group size="sm">
             <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
               <template v-slot:first>
