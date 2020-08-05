@@ -17,7 +17,8 @@
         </div>
         <div class="input-group login-spacer">
           <span class="input-group-addon" id="addon-2"><i class="fa fa-key"></i></span>
-          <input type="password" class="form-control form-control-login" placeholder="********" aria-describedby="addon-2" v-model="password" @keyup.enter="logIn()">
+          <input :type="showPassword ? 'text' : 'password'" class="form-control form-control-login" placeholder="********" aria-describedby="addon-2" v-model="password" @keyup.enter="logIn()">
+          <button type="button" class="input-group-addon" id="showPassword" @click="showPassword = !showPassword"><i :class="['fa', {'fa-eye': !showPassword}, {'fa-eye-slash': showPassword}]"></i></button>
         </div>
         <button class="btn btn-primary btn-block login-spacer" v-on:click="logIn()">Login</button>
         <button class="btn btn-warning btn-block login-spacer" v-on:click="redirect('/request_reset_password')">Forgot your Password?</button>
@@ -43,6 +44,15 @@
 </style>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
+
+#showPassword {
+  width: 10% !important;
+  border-right: 1px solid rgba(0,0,0,.15);
+}
+
+#showPassword:focus {
+  outline: none;
+}
 
 .btnFB{
   background-color: $skyBlue
@@ -169,6 +179,7 @@ export default {
       errorMessage: null,
       user: AUTH.user,
       tokenData: AUTH.tokenData,
+      showPassword: false,
       otpCode: null,
       otpErrorCode: null,
       common: COMMON,
