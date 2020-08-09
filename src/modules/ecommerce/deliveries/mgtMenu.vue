@@ -196,6 +196,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      user: AUTH.user,
       items: [
         { isActive: true, age: 40, name: { first: 'Dickerson', last: 'Macdonald' } },
         { isActive: false, age: 21, name: { first: 'Larsen', last: 'Shaw' } },
@@ -266,6 +267,7 @@ export default {
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length
+    this.retrieve()
   },
   props: {
     title: {
@@ -282,6 +284,25 @@ export default {
     }
   },
   methods: {
+    retrieve(sort, filter){
+      console.log('retrieving...')
+      console.log(this.user)
+      let parameter = {
+        condition: [{
+          value: this.user.subAccount.merchant.id,
+          column: 'merchant_id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('deliveries/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+          console.log(this.data)
+        }
+      })
+    },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
       this.infoModal.content = JSON.stringify(item, null, 2)
