@@ -73,7 +73,7 @@ export default {
     if(!this.user || this.user.type === 'USER') {
       ROUTER.push('/featured')
     }
-    
+
     this.retrieve()
   },
   data() {
