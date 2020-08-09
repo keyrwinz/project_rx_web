@@ -48,11 +48,11 @@
             <div v-for="(item, index) in ledger" :key="index" class="card ledger col-12 py-2 px-0">
               <div class="card-header row m-0 align-items-center px-0">
                 <div class="col-2 p-0 text-center">
-                  <h5 class="text-muted text-uppercase font-weight-bold">{{getMonth(item.created_at)}}</h5>
-                  <h5 class="text-muted font-weight-light" style="opacity: .7">{{getDay(item.created_at)}}</h5>
+                  <h5 class="text-muted text-uppercase font-weight-bold">{{item.created_at ? getMonth(item.created_at) : ''}}</h5>
+                  <h5 class="text-muted font-weight-light" style="opacity: .7">{{item.created_at ? getDay(item.created_at) : ''}}</h5>
                 </div>
-                <div class="col-6 font-weight-bold p-0">{{item.merchant.name}}</div>
-                <div class="col-4 text-right font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
+                <div class="col-5 font-weight-bold p-0">{{item.merchant ? item.merchant.name : ''}}</div>
+                <div class="col-5 text-right font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
                   {{item.amount > 0 ? '+ ' : '- '}}{{item.amount > 0 ? currency.displayWithCurrency(item.amount, item.currency) : currency.displayWithCurrency(item.amount * -1, item.currency)}}
                 </div>
               </div>
@@ -161,8 +161,6 @@ export default{
       ROUTER.push('/featured')
     }
 
-    console.log(this.user)
-
     this.retrieve()
 
     this.balance.map((bal, ind) => {
@@ -205,21 +203,23 @@ export default{
     },
     retrieve() {
       let par = {
-        code: this.user.subAccount.merchant.id,
+        code: this.user.code,
         offset: 0,
         limit: 5
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('ledger/retrieve_merchant', par).then(response => {
         $('#loading').css({display: 'none'})
-        console.log('there was a response!')
+        if(response.length > 0) {
+          this.ledger = response
+        }
       })
     },
     getMonth(dateString) {
-      return moment(dateString).format('MMM')
+      return moment(String(dateString)).format('MMM')
     },
     getDay(dateString) {
-      return moment(dateString).format('DD')
+      return moment(String(dateString)).format('DD')
     }
   }
 }

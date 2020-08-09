@@ -6,11 +6,11 @@
         <div class="card-header" :id="'heading-'+index">
           <button class="btn p-0 bg-transparent btn-block d-flex align-items-center" @click="changeIcon" type="button" data-toggle='collapse' :data-target="'#collapse-'+index" aria-expanded="false" :aria-controls="'collapse-'+index">
 
-            <img :src="item.merchant.logo" alt="logo" class="logo shadow-sm rounded-circle display-inline">
+            <img :src="item.merchant && item.merchant.logo ? item.merchant.logo : defaultLogo" alt="logo" class="logo shadow-sm rounded-circle display-inline">
 
             <div class="col-auto text-left ml-3">
-              <span class="font-weight-bold col-auto">{{item.merchant.name}}</span><br>
-              <span class="text-muted col-auto">{{formatDate(item.created_at)}}</span>
+              <span class="font-weight-bold col-auto">{{item.merchant ? item.merchant.name : 'Anonymous'}}</span><br>
+              <span class="text-muted col-auto">{{item.created_at ? formatDate(item.created_at) : 'No date specified'}}</span>
             </div>
 
             <div class="col-auto text-right ml-auto pr-0">
@@ -70,6 +70,7 @@ import CURRENCY from 'src/services/currency.js'
 import moment from 'moment'
 export default {
   mounted(){
+    this.retrieve()
   },
   data() {
     return {
@@ -77,6 +78,7 @@ export default {
       common: COMMON,
       config: CONFIG,
       currency: CURRENCY,
+      defaultLogo: require('assets/img/favicon-alt.png'),
       data: [
         {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', created_at: '2020-07-24 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Discord Inc'}},
         {amount: -331.25, description: 'Phoenix Wright: The Ace Attorney', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-18 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
@@ -91,19 +93,15 @@ export default {
   methods: {
     retrieve() {
       let par = {
-        condition: [{
-          value: this.user.userID,
-          clause: '=',
-          column: 'account_id'
-        }],
-        sort: {'created_at': 'desc'}
+        code: this.user.code,
+        offset: 0,
+        limit: 5
       }
-
-      this.APIRequest('ledger/retrieve', par).then(response => {
-        if(response.data.length > 0) {
-          this.data = response.data
-        } else {
-          this.data = null
+      $('#loading').css({display: 'block'})
+      this.APIRequest('ledger/retrieve_merchant', par).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.length > 0) {
+          this.data = response
         }
       })
     },
