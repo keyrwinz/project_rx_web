@@ -28,9 +28,15 @@
           </div>
         </div>
       </div>
+      <empty-dynamic v-if="data === null" :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
     </div>
   </div>
 </template>
+<style>
+.empty {
+  float: none !important;
+}
+</style>
 <style lang="scss" scoped>
   @import "~assets/style/colors.scss";
 
@@ -95,6 +101,9 @@ export default {
       ]
     }
   },
+  components: {
+    'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
+  },
   methods: {
     retrieve() {
       let par = {
@@ -107,6 +116,8 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.length > 0) {
           this.data = response
+        } else {
+          this.data = null
         }
       })
     },

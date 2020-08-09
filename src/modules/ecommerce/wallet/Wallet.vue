@@ -6,11 +6,11 @@
         </div>
         
         <h5 class="text-center font-weight-bold title mt-4">E-Wallet Balance</h5>
-        <div class="mt-4 balance text-center">{{currency.displayWithCurrency(largest.balance, largest.currency)}}</div>
-        <div class="mt-1 font-weight-bold text-muted text-center">Highest Balance</div>
+        <div class="mt-4 balance text-center">{{balance !== null ? currency.displayWithCurrency(largest.balance, largest.currency) : 'No Available Balance'}}</div>
+        <div class="mt-1 font-weight-bold text-muted text-center" v-if="balance !== null">Highest Balance</div>
         
         <div class="container row w-75 justify-content-center m-0 mt-3 mx-auto pb-4 border-bottom border-bottom-lg">
-          <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" @click="$refs.otp.show()">Transfer Funds</button>
+          <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" v-if="balance !== null" @click="$refs.otp.show()">Transfer Funds</button>
         </div>
 
         <div class="container row px-0 w-75 flow-column justify-content-center m-0 mt-3 mx-auto">
@@ -83,11 +83,13 @@ export default {
       ROUTER.push('/featured')
     }
 
-    this.balance.map((bal, ind) => {
-      if(bal.balance >= this.largest.balance) {
-        this.largest = bal
-      }
-    })
+    if(this.balance !== null) {
+      this.balance.map((bal, ind) => {
+        if(bal.balance >= this.largest.balance) {
+          this.largest = bal
+        }
+      })
+    }
   },
   data() {
     return {
@@ -96,7 +98,8 @@ export default {
       config: CONFIG,
       currency: CURRENCY,
       largest: {balance: 0},
-      balance: [
+      balance: null,
+      balanceOld: [
         {balance: 3000, currency: 'PHP'},
         {balance: 215, currency: 'USD'},
         {balance: 120, currency: 'EUR'}
