@@ -70,6 +70,10 @@ import CURRENCY from 'src/services/currency.js'
 import moment from 'moment'
 export default {
   mounted(){
+    if(!this.user || this.user.type === 'USER') {
+      ROUTER.push('/featured')
+    }
+    
     this.retrieve()
   },
   data() {
@@ -79,7 +83,8 @@ export default {
       config: CONFIG,
       currency: CURRENCY,
       defaultLogo: require('assets/img/favicon-alt.png'),
-      data: [
+      data: null,
+      dataOld: [
         {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', created_at: '2020-07-24 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Discord Inc'}},
         {amount: -331.25, description: 'Phoenix Wright: The Ace Attorney', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-18 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
         {amount: -75, description: 'Spotify Premium', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-25 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Spotify Finance Limited'}},
