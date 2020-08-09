@@ -77,7 +77,6 @@
           <b-form-checkbox-group v-model="filterOn" class="mt-1">
             <b-form-checkbox value="name">Name</b-form-checkbox>
             <b-form-checkbox value="status">Status</b-form-checkbox>
-            <b-form-checkbox value="isActive">Active</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
       </b-col>
@@ -132,7 +131,7 @@
     >
       <template v-slot:cell(actions)="row">
         <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-          Info modal
+          {{modalButton}}
         </b-button>
         <b-button size="sm" @click="row.toggleDetails">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
@@ -150,7 +149,11 @@
 
     <!-- Info modal -->
     <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-      <pre>{{ infoModal.content }}</pre>
+      <pre>
+        Assign a Rider
+        <input type="text form-control">
+        <button class="btn mt-1">Submit</button>
+      </pre>
     </b-modal>
   </b-container>
 </template>
@@ -222,20 +225,11 @@ export default {
         { isActive: false, age: 29, name: { first: 'Dick', last: 'Dunlap' } }
       ],
       fields: [
-        { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'locale', label: 'Locale', sortable: true, class: 'text-center' },
+        { key: 'rider', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
+        { key: 'checkout_id', label: 'Product', sortable: true, class: 'text-center' },
         { key: 'source', label: 'Source', sortable: true, class: 'text-center' },
         { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
-        { key: 'isActive',
-          label: 'is Active',
-          formatter: (value, key, item) => {
-            return value ? 'Yes' : 'No'
-          },
-          sortable: true,
-          sortByFormatted: true,
-          filterByFormatted: true
-        },
         { key: 'actions', label: 'Actions' }
       ],
       totalRows: 1,
@@ -267,7 +261,7 @@ export default {
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length
-    this.retrieve()
+    console.log(this.data)
   },
   props: {
     title: {
@@ -281,31 +275,14 @@ export default {
     },
     data: {
       required: true
+    },
+    modalButton: {
+      required: true
     }
   },
   methods: {
-    retrieve(sort, filter){
-      console.log('retrieving...')
-      console.log(this.user)
-      let parameter = {
-        condition: [{
-          value: this.user.subAccount.merchant.id,
-          column: 'merchant_id',
-          clause: '='
-        }]
-      }
-      $('#loading').css({display: 'block'})
-      this.APIRequest('deliveries/retrieve', parameter).then(response => {
-        $('#loading').css({display: 'none'})
-        if(response.data.length > 0){
-          this.data = response.data
-          console.log(this.data)
-        }
-      })
-    },
     info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`
-      this.infoModal.content = JSON.stringify(item, null, 2)
+      this.infoModal.title = `Assign Rider`
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     },
     resetInfoModal() {
