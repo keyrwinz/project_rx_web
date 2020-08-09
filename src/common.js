@@ -4,7 +4,7 @@ export default {
     {accountType: 'RIDER', accountStatus: 'ALL', showOnAdmin: true, description: 'Dashboard', icon: 'fa fa-tachometer-alt', path: 'dashboard', flag: false, subMenu: null},
     {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Featured', icon: 'fa fa-tachometer-alt', path: 'featured', flag: false, subMenu: null},
     {accountType: 'ALL', accountStatus: 'ALL', showOnAdmin: true, description: 'Marketplace', icon: 'fa fa-tachometer-alt', path: 'marketplace', flag: false, subMenu: null},
-    {accountType: 'MERCHANT', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer-alt', path: 'products', flag: false, subMenu: null},
+    // {accountType: 'MERCHANT', accountStatus: 'ALL', showOnAdmin: true, description: 'My Product', icon: 'fa fa-tachometer-alt', path: 'products', flag: false, subMenu: null},
     {accountType: 'ADMIN', accountStatus: 'ALL', showOnAdmin: true, description: 'Account', icon: 'fa fa-tachometer-alt', path: 'accounts', flag: false, subMenu: null}
   ],
   profileMenu: [{
@@ -17,6 +17,10 @@ export default {
     route: '/referrals'
   }],
   merchantMenu: [{
+    title: 'Inventory',
+    icon: 'fa fa-boxes',
+    route: '/products'
+  }, {
     title: 'Wallet',
     icon: 'fa fa-wallet',
     route: '/wallet'
@@ -67,7 +71,7 @@ export default {
     facebook: 'runwayexpress'
   },
   pusher: {
-    channel: 'runwayexpress',
+    channel: 'runway',
     notifications: 'Notifications',
     messages: 'Message',
     validation: 'Validation'
