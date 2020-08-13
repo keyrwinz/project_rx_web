@@ -2,7 +2,7 @@
   <b-container fluid>
     <!-- User Interface controls -->
     <b-row>
-      <b-col lg="6" class="my-1">
+      <!-- <b-col lg="6" class="my-1">
         <b-form-group
           label="Sort"
           label-cols-sm="3"
@@ -23,9 +23,9 @@
             </b-form-select>
           </b-input-group>
         </b-form-group>
-      </b-col>
+      </b-col> -->
 
-      <b-col lg="6" class="my-1">
+      <!-- <b-col lg="6" class="my-1">
         <b-form-group
           label="Initial sort"
           label-cols-sm="3"
@@ -41,7 +41,7 @@
             :options="['asc', 'desc', 'last']"
           ></b-form-select>
         </b-form-group>
-      </b-col>
+      </b-col> -->
 
       <b-col lg="6" class="my-1">
         <b-form-group
@@ -66,7 +66,7 @@
         </b-form-group>
       </b-col>
 
-      <b-col lg="6" class="my-1">
+      <!-- <b-col lg="6" class="my-1">
         <b-form-group
           label="Filter On"
           label-cols-sm="3"
@@ -79,7 +79,7 @@
             <b-form-checkbox value="status">Status</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
-      </b-col>
+      </b-col> -->
 
       <b-col sm="5" md="6" class="my-1">
         <b-form-group
@@ -102,14 +102,6 @@
       </b-col>
 
       <b-col sm="7" md="6" class="my-1">
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          align="fill"
-          size="sm"
-          class="my-0"
-        ></b-pagination>
       </b-col>
     </b-row>
 
@@ -146,7 +138,14 @@
         </b-card>
       </template>
     </b-table>
-
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      align="fill"
+      size="sm"
+      class="my-0 mx-auto col-2"
+    ></b-pagination>
     <!-- Info modal -->
     <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
       <pre>
@@ -226,10 +225,10 @@ export default {
       ],
       fields: [
         { key: 'rider', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'checkout_id', label: 'Product', sortable: true, class: 'text-center' },
-        { key: 'source', label: 'Source', sortable: true, class: 'text-center' },
+        { key: 'checkout_id', label: 'Order Number', sortable: true, class: 'text-center' },
         { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
+        { key: 'amount', label: 'Amount', sortable: true, class: 'text-center' },
         { key: 'actions', label: 'Actions' }
       ],
       totalRows: 1,

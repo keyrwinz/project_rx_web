@@ -59,16 +59,16 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      data: [{ rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'In Progress', _rowVariant: 'warning' },
-              { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-              { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
-              { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Cancelled', _rowVariant: 'danger' },
-              { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-              { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
-              { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Not Received', _rowVariant: 'danger' },
-              { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-              { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
-      ],
+      // data: [{ rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'In Progress', _rowVariant: 'warning' },
+      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Cancelled', _rowVariant: 'danger' },
+      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Not Received', _rowVariant: 'danger' },
+      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
+      // ],
       fields: [
         { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
         { key: 'locale', label: 'Locale', sortable: true, class: 'text-center' },
@@ -84,6 +84,78 @@ export default {
   },
   props: ['title', 'action'],
   methods: {
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'rider',
+          clause: '='
+        }]
+      }
+      // this.APIRequest('merchants/retrieve', parameter).then(response => {
+      //   if(response.data.length > 0){
+      //     this.data = this.response.data
+      //   }else{
+      //     console.log('No Data Retrieved')
+      //   }
+      // })
+      console.log('retrieving...')
+     // console.log(this.user)
+      parameter = {
+        condition: [{
+          value: 'this.user.subAccount.merchant.account_id',
+          column: 'merchant_id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('checkout/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+          console.log(this.data)
+          console.log('b4 retrieveRiders')
+          this.retrieveRiders()
+        }
+      })
+    },
+    retrieveRiders() {
+      console.log('hatdoggie')
+      this.data.forEach((items, index) => {
+        let parameter = {
+          condition: [{
+            value: items.rider,
+            column: 'account_id',
+            clause: '='
+          }]
+        }
+        $('#loading').css({display: 'block'})
+        this.APIRequest('account_informations/retrieve', parameter).then(response => {
+          $('#loading').css({display: 'none'})
+          if(response.data.length > 0){
+            this.data[index].rider = response.data[0].first_name + ' ' + response.data[0].last_name
+            console.log('retrieving ridername')
+            // console.log(this.data)
+          }
+        })
+        parameter = {
+          condition: [{
+            value: items.checkout_id,
+            column: 'id',
+            clause: '='
+          }],
+          inventory_type: COMMON.ecommerce.inventoryType,
+          account_id: this.user.userID
+        }
+        console.log(parameter)
+        this.APIRequest('products/retrieve', parameter).then(response => {
+          if(response.data.length > 0){
+            this.data[index].checkout_id = response.data[0].title
+            this.data[index].productCode = response.data[0].code
+          }
+        })
+      })
+    },
     redirect(parameter){
       ROUTER.push(parameter)
     }
