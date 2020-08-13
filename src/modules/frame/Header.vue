@@ -936,7 +936,6 @@ export default {
         this.settingFlag = true
         this.menuFlag = false
         this.notifFlag = false
-        console.log('settings')
       }else if(icon === 'menu'){
         this.settingFlag = false
         this.menuFlag = true
@@ -945,7 +944,6 @@ export default {
         this.settingFlag = false
         this.menuFlag = false
         this.notifFlag = true
-        console.log('notif')
       }else{
         this.settingFlag = false
         this.menuFlag = false
@@ -965,7 +963,6 @@ export default {
     display(){
     },
     initPusher(){
-      console.log('hi')
       if(CONFIG.PUSHER.flag === 'pusher'){
         window.Echo = new Echo({
           broadcaster: 'pusher',
