@@ -6,11 +6,11 @@
         </div>
         
         <h5 class="text-center font-weight-bold title mt-4">E-Wallet Balance</h5>
-        <div class="mt-4 balance text-center">{{currency.displayWithCurrency(largest.balance, largest.currency)}}</div>
-        <div class="mt-1 font-weight-bold text-muted text-center">Highest Balance</div>
+        <div class="mt-4 balance text-center">{{balance !== null ? currency.displayWithCurrency(largest.balance, largest.currency) : 'No Available Balance'}}</div>
+        <div class="mt-1 font-weight-bold text-muted text-center" v-if="balance !== null">Highest Balance</div>
         
         <div class="container row w-75 justify-content-center m-0 mt-3 mx-auto pb-4 border-bottom border-bottom-lg">
-          <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" @click="$refs.otp.show()">Transfer Funds</button>
+          <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" v-if="balance !== null" @click="$refs.otp.show()">Transfer Funds</button>
         </div>
 
         <div class="container row px-0 w-75 flow-column justify-content-center m-0 mt-3 mx-auto">
@@ -24,7 +24,7 @@
           </div>
           <div class="card col-12">
             <div class="card-body text-center">
-              Use your balance to buy, or withdraw it. OTP is required to your withdraw money.
+              Use your balance to buy, or withdraw it. OTP is required to withdraw money.
             </div>
           </div>
         </div>
@@ -79,11 +79,18 @@ import CONFIG from 'src/config.js'
 import CURRENCY from 'src/services/currency.js'
 export default {
   mounted(){
-    this.balance.map((bal, ind) => {
-      if(bal.balance >= this.largest.balance) {
-        this.largest = bal
-      }
-    })
+    if(!this.user || this.user.type === 'USER') {
+      ROUTER.push('/featured')
+    }
+
+    this.retrieve()
+    if(this.balance !== null) {
+      this.balance.map((bal, ind) => {
+        if(bal.balance >= this.largest.balance) {
+          this.largest = bal
+        }
+      })
+    }
   },
   data() {
     return {
@@ -92,7 +99,8 @@ export default {
       config: CONFIG,
       currency: CURRENCY,
       largest: {balance: 0},
-      balance: [
+      balance: null,
+      balanceOld: [
         {balance: 3000, currency: 'PHP'},
         {balance: 215, currency: 'USD'},
         {balance: 120, currency: 'EUR'}
@@ -104,6 +112,30 @@ export default {
     'transfer': require('modules/ecommerce/wallet/Transfer.vue')
   },
   methods: {
+    retrieve() {
+      let walletPar = {
+        account_id: this.user.userID,
+        account_code: this.user.code
+      }
+
+      $('#loading').css({display: 'block'})
+      this.APIRequest('ledger/summary', walletPar).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0) {
+          this.balance = response.data
+        } else {
+          this.balance = null
+        }
+
+        if(this.balance !== null) {
+          this.balance.map((bal, ind) => {
+            if(bal.balance >= this.largest.balance) {
+              this.largest = bal
+            }
+          })
+        }
+      })
+    },
     successOTP(){
       this.$refs.funds.show()
     }

@@ -2,15 +2,15 @@
   <b-container fluid>
     <!-- User Interface controls -->
     <b-row>
-      <b-col lg="6" class="my-1">
+      <!-- <b-col lg="6" class="my-1">
         <b-form-group
           label="Sort"
           label-cols-sm="3"
           label-align-sm="right"
           label-size="sm"
           label-for="sortBySelect"
-          class="mb-0"
-        >
+          class="mb-0">
+          
           <b-input-group size="sm">
             <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
               <template v-slot:first>
@@ -23,9 +23,9 @@
             </b-form-select>
           </b-input-group>
         </b-form-group>
-      </b-col>
+      </b-col> -->
 
-      <b-col lg="6" class="my-1">
+      <!-- <b-col lg="6" class="my-1">
         <b-form-group
           label="Initial sort"
           label-cols-sm="3"
@@ -41,7 +41,7 @@
             :options="['asc', 'desc', 'last']"
           ></b-form-select>
         </b-form-group>
-      </b-col>
+      </b-col> -->
 
       <b-col lg="6" class="my-1">
         <b-form-group
@@ -66,7 +66,7 @@
         </b-form-group>
       </b-col>
 
-      <b-col lg="6" class="my-1">
+      <!-- <b-col lg="6" class="my-1">
         <b-form-group
           label="Filter On"
           label-cols-sm="3"
@@ -77,10 +77,9 @@
           <b-form-checkbox-group v-model="filterOn" class="mt-1">
             <b-form-checkbox value="name">Name</b-form-checkbox>
             <b-form-checkbox value="status">Status</b-form-checkbox>
-            <b-form-checkbox value="isActive">Active</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
-      </b-col>
+      </b-col> -->
 
       <b-col sm="5" md="6" class="my-1">
         <b-form-group
@@ -103,14 +102,6 @@
       </b-col>
 
       <b-col sm="7" md="6" class="my-1">
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          align="fill"
-          size="sm"
-          class="my-0"
-        ></b-pagination>
       </b-col>
     </b-row>
 
@@ -132,7 +123,7 @@
     >
       <template v-slot:cell(actions)="row">
         <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-          Info modal
+          {{modalButton}}
         </b-button>
         <b-button size="sm" @click="row.toggleDetails">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
@@ -147,10 +138,21 @@
         </b-card>
       </template>
     </b-table>
-
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      align="fill"
+      size="sm"
+      class="my-0 mx-auto col-2"
+    ></b-pagination>
     <!-- Info modal -->
     <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-      <pre>{{ infoModal.content }}</pre>
+      <pre>
+        Assign a Rider
+        <input type="text form-control">
+        <button class="btn mt-1">Submit</button>
+      </pre>
     </b-modal>
   </b-container>
 </template>
@@ -196,6 +198,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      user: AUTH.user,
       items: [
         { isActive: true, age: 40, name: { first: 'Dickerson', last: 'Macdonald' } },
         { isActive: false, age: 21, name: { first: 'Larsen', last: 'Shaw' } },
@@ -221,20 +224,11 @@ export default {
         { isActive: false, age: 29, name: { first: 'Dick', last: 'Dunlap' } }
       ],
       fields: [
-        { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'locale', label: 'Locale', sortable: true, class: 'text-center' },
-        { key: 'source', label: 'Source', sortable: true, class: 'text-center' },
+        { key: 'rider', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
+        { key: 'checkout_id', label: 'Order Number', sortable: true, class: 'text-center' },
         { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
-        { key: 'isActive',
-          label: 'is Active',
-          formatter: (value, key, item) => {
-            return value ? 'Yes' : 'No'
-          },
-          sortable: true,
-          sortByFormatted: true,
-          filterByFormatted: true
-        },
+        { key: 'amount', label: 'Amount', sortable: true, class: 'text-center' },
         { key: 'actions', label: 'Actions' }
       ],
       totalRows: 1,
@@ -266,6 +260,7 @@ export default {
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length
+    console.log(this.data)
   },
   props: {
     title: {
@@ -279,12 +274,14 @@ export default {
     },
     data: {
       required: true
+    },
+    modalButton: {
+      required: true
     }
   },
   methods: {
     info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`
-      this.infoModal.content = JSON.stringify(item, null, 2)
+      this.infoModal.title = `Assign Rider`
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     },
     resetInfoModal() {

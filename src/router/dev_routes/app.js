@@ -120,6 +120,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/orders',
+    name: 'orders',
+    component: resolve => require(['modules/ecommerce/deliveries/orderMgt.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/marketplace/product/:code?/preview',
     name: 'product preview',
     component: resolve => require(['components/increment/imarketvue/marketplace/Product.vue'], resolve),
@@ -144,6 +151,20 @@ export default{
     path: '/wallet',
     name: 'wallet',
     component: resolve => require(['modules/ecommerce/wallet/Wallet.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/createRequestBorrow',
+    name: 'createRequestBorrow',
+    component: resolve => require(['components/increment/imarketvue/shipping/CheckoutShipping.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/accounts',
+    name: 'accounts',
+    component: resolve => require(['modules/admin/Accounts.vue'], resolve),
     meta: {
       tokenRequired: true
     }

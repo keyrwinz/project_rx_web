@@ -25,7 +25,8 @@
           </li>
         </ul>
       </div>
-      <div class="right-menu-icons d-flex ml-auto justify-content-end align-items-center pr-3 h-100">
+      <div class="right-menu-icons d-flex ml-auto justify-content-end align-items-center pr-0 h-100">
+        <span v-if="user.subAccount.merchant" class="pr-3 text-white">Logged in as: <b class="pl-2">{{user.subAccount.merchant.name}}</b></span>
         <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')"> 
             <span>
               <i class="fa fa-bell text-white"></i>
@@ -95,7 +96,7 @@
           <div class="dropdown row col-auto h-100 align-items-center px-1" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')"> 
             <!-- <div class="nav-item"> -->
                 <!-- <i class="fa fa-cog my-auto text-white"></i> -->
-              <div v-if="user.profile && user.profile.url" style="width: 35px; height: 35px; overflow: hidden; border-width: 3px !important;" class="rounded-circle border border-white bg-white">
+              <div v-if="user.profile && user.profile.url" style="width: 35px; height: 35px; overflow: hidden; border-width: 3px !important;" class="rounded-circle border border-white bg-white px-3">
                 <img :src="config.BACKEND_URL + user.profile.url" class="img-fluid">
               </div>
               <i v-else class="far fa-user-circle text-white" style="font-size: 30px;"></i>
@@ -935,7 +936,6 @@ export default {
         this.settingFlag = true
         this.menuFlag = false
         this.notifFlag = false
-        console.log('settings')
       }else if(icon === 'menu'){
         this.settingFlag = false
         this.menuFlag = true
@@ -944,7 +944,6 @@ export default {
         this.settingFlag = false
         this.menuFlag = false
         this.notifFlag = true
-        console.log('notif')
       }else{
         this.settingFlag = false
         this.menuFlag = false
@@ -964,7 +963,6 @@ export default {
     display(){
     },
     initPusher(){
-      console.log('hi')
       if(CONFIG.PUSHER.flag === 'pusher'){
         window.Echo = new Echo({
           broadcaster: 'pusher',

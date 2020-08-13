@@ -3,11 +3,11 @@
     <div class="col-12 display-4 text-center mb-2">
       <label class="text-primary">{{user.subAccount.merchant.name}}
       </label>
-      Delivery History
+      Order History
     </div>
     <div class="col-8 p-0 mx-auto">
       <mgtMenu  :data="data"
-                :modalButton="'Temporary'"></mgtMenu>
+                :modalButton="'Assign Rider'"></mgtMenu>
     </div>
   </div>
 </template>
@@ -57,18 +57,17 @@ export default {
   },
   data(){
     return {
-      data: null,
       user: AUTH.user,
       config: CONFIG,
-      // items: [{ name: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'In Progress', _rowVariant: 'warning' },
-      //         { name: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-      //         { name: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
-      //         { name: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Cancelled', _rowVariant: 'danger' },
-      //         { name: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-      //         { name: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
-      //         { name: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Not Received', _rowVariant: 'danger' },
-      //         { name: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-      //         { name: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
+      // data: [{ rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'In Progress', _rowVariant: 'warning' },
+      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Cancelled', _rowVariant: 'danger' },
+      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Not Received', _rowVariant: 'danger' },
+      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
+      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
       // ],
       fields: [
         { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
@@ -93,24 +92,24 @@ export default {
           clause: '='
         }]
       }
-      this.APIRequest('merchants/retrieve', parameter).then(response => {
-        if(response.data.length > 0){
-          this.data = this.response.data
-        }else{
-          console.log('No Data Retrieved')
-        }
-      })
+      // this.APIRequest('merchants/retrieve', parameter).then(response => {
+      //   if(response.data.length > 0){
+      //     this.data = this.response.data
+      //   }else{
+      //     console.log('No Data Retrieved')
+      //   }
+      // })
       console.log('retrieving...')
-      console.log(this.user)
+     // console.log(this.user)
       parameter = {
         condition: [{
-          value: this.user.subAccount.merchant.id,
+          value: 'this.user.subAccount.merchant.account_id',
           column: 'merchant_id',
           clause: '='
         }]
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('deliveries/retrieve', parameter).then(response => {
+      this.APIRequest('checkouts/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -136,7 +135,7 @@ export default {
           if(response.data.length > 0){
             this.data[index].rider = response.data[0].first_name + ' ' + response.data[0].last_name
             console.log('retrieving ridername')
-            console.log(this.data)
+            // console.log(this.data)
           }
         })
         parameter = {

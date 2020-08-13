@@ -245,7 +245,6 @@ export default {
       })
     },
     getLocation(event) {
-      console.log('getting location')
 
       let location = {
         locality: event.locality,
@@ -265,12 +264,9 @@ export default {
       this.editFlag = false
     },
     addNew() {
-      console.log('Submit')
       let branchName = $('#branch').val()
       let error = false
       $('#newLocation .error-msg').remove()
-      console.log(this.location)
-      console.log(branchName)
       if(this.location === null) {
         $('<div>', {
           class: 'form-group text-danger error-msg',
