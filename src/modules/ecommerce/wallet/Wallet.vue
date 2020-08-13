@@ -83,6 +83,7 @@ export default {
       ROUTER.push('/featured')
     }
 
+    this.retrieve()
     if(this.balance !== null) {
       this.balance.map((bal, ind) => {
         if(bal.balance >= this.largest.balance) {
@@ -111,6 +112,30 @@ export default {
     'transfer': require('modules/ecommerce/wallet/Transfer.vue')
   },
   methods: {
+    retrieve() {
+      let walletPar = {
+        account_id: this.user.userID,
+        account_code: this.user.code
+      }
+
+      $('#loading').css({display: 'block'})
+      this.APIRequest('ledger/summary', walletPar).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0) {
+          this.balance = response.data
+        } else {
+          this.balance = null
+        }
+
+        if(this.balance !== null) {
+          this.balance.map((bal, ind) => {
+            if(bal.balance >= this.largest.balance) {
+              this.largest = bal
+            }
+          })
+        }
+      })
+    },
     successOTP(){
       this.$refs.funds.show()
     }
