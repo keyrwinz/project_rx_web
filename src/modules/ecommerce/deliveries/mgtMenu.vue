@@ -277,6 +277,9 @@ export default {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
+    retrieve() {
+      this.$parent.retrieve()
+    },
     show(item) {
       this.checkoutItem = item
       this.$parent.retrieveItems(item.id)

@@ -119,7 +119,6 @@ export default {
           // console.log('b4 retrieveRiders')
           // console.log(this.data)
           this.retrieveRiders()
-          this.retrieveItems()
         }
       })
     },
