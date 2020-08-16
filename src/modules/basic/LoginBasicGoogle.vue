@@ -190,7 +190,6 @@ export default {
       await this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
       await this.initFacebook()
       window.FB.login(function(response) {
-        console.log(response)
         if (response.authResponse) {
           alert('You are logged in &amp; cookie set!')
           this.testAPI()
@@ -210,7 +209,6 @@ export default {
       }
     },
     testAPI() {
-      console.log('Welcome!  Fetching your information.... ')
       window.FB.api('/me', function(response) {
         console.log('Good to see you, ' + response.name + '.' + ' Email: ' + response.email + ' Facebook ID: ' + response.id)
       })

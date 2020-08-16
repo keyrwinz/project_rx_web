@@ -6,11 +6,11 @@
         <div class="card-header" :id="'heading-'+index">
           <button class="btn p-0 bg-transparent btn-block d-flex align-items-center" @click="changeIcon" type="button" data-toggle='collapse' :data-target="'#collapse-'+index" aria-expanded="false" :aria-controls="'collapse-'+index">
 
-            <img :src="item.merchant && item.merchant.logo ? item.merchant.logo : defaultLogo" alt="logo" class="logo shadow-sm rounded-circle display-inline">
+            <img :src="item.logo ? item.logo : defaultLogo" alt="logo" class="logo shadow-sm rounded-circle display-inline">
 
             <div class="col-auto text-left ml-3">
-              <span class="font-weight-bold col-auto">{{item.merchant ? item.merchant.name : 'Anonymous'}}</span><br>
-              <span class="text-muted col-auto">{{item.created_at ? formatDate(item.created_at) : 'No date specified'}}</span>
+              <span class="font-weight-bold col-auto">{{item.name ? item.name : 'Anonymous'}}</span><br>
+              <span class="text-muted col-auto">{{item.created_at ? formatDate(item.cash_methods_created) : 'No date specified'}}</span>
             </div>
 
             <div class="col-auto text-right ml-auto pr-0">

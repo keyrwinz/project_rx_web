@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 200px;">
-    <div class="container w-75 mx-auto mt-4 row">
+    <div class="container w-90 mx-auto mt-4 row">
       <div class="col-12">
         <h4 class="text-uppercase col-12">Hello, 
           <span class="text-primary" v-if="user.subAccount.merchant === null">{{user.username}}</span>
@@ -35,7 +35,7 @@
             <span class="font-weight-bold text-muted" style="opacity: .7">{{balance === null ? '' : balance.length > 1 ? 'More Currency Available' : 'Available'}}</span>
           </div>
           <div class="col-12 mt-3" v-if="balance !== null">
-            <button type="button" class="btn btn-outline-primary rounded-pill" @click="$refs.funds.show()">Transfer Funds</button>
+            <button type="button" class="btn btn-outline-primary rounded-pill" @click="$refs.otp.show()">Transfer Funds</button>
           </div>
         </div>
 
@@ -48,10 +48,10 @@
             <div v-for="(item, index) in ledger" :key="index" class="card ledger col-12 py-2 px-0">
               <div class="card-header row m-0 align-items-center px-0">
                 <div class="col-2 p-0 text-center">
-                  <h5 class="text-muted text-uppercase font-weight-bold">{{item.created_at ? getMonth(item.created_at) : ''}}</h5>
-                  <h5 class="text-muted font-weight-light" style="opacity: .7">{{item.created_at ? getDay(item.created_at) : ''}}</h5>
+                  <h5 class="text-muted text-uppercase font-weight-bold">{{item.cash_methods_created ? getMonth(item.cash_methods_created) : ''}}</h5>
+                  <h5 class="text-muted font-weight-light" style="opacity: .7">{{item.cash_methods_created ? getDay(item.cash_methods_created) : ''}}</h5>
                 </div>
-                <div class="col-5 font-weight-bold p-0">{{item.merchant ? item.merchant.name : ''}}</div>
+                <div class="col-5 font-weight-bold p-0">{{item.name ? item.name : ''}}</div>
                 <div class="col-5 text-right font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
                   {{item.amount > 0 ? '+ ' : '- '}}{{item.amount > 0 ? currency.displayWithCurrency(item.amount, item.currency) : currency.displayWithCurrency(item.amount * -1, item.currency)}}
                 </div>
@@ -69,6 +69,10 @@
 </template>
 <style lang="scss" scoped> 
 @import "~assets/style/colors.scss";
+.w-90 {
+  width: 90% !important;
+}
+
 .bg-primary{
   background: $primary !important;
 }
@@ -163,13 +167,6 @@ export default{
     }
 
     this.retrieve()
-    if(this.balance !== null) {
-      this.balance.map((bal, ind) => {
-        if(bal.balance >= this.largest.balance) {
-          this.largest = bal
-        }
-      })
-    }
   },
   data(){
     return {
@@ -221,12 +218,37 @@ export default{
           this.ledger = null
         }
       })
+      let walletPar = {
+        account_id: this.user.userID,
+        account_code: this.user.code
+      }
+
+      $('#loading').css({display: 'block'})
+      this.APIRequest('ledger/summary', walletPar).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0) {
+          this.balance = response.data
+        } else {
+          this.balance = null
+        }
+
+        if(this.balance !== null) {
+          this.balance.map((bal, ind) => {
+            if(bal.balance >= this.largest.balance) {
+              this.largest = bal
+            }
+          })
+        }
+      })
     },
     getMonth(dateString) {
       return moment(String(dateString)).format('MMM')
     },
     getDay(dateString) {
       return moment(String(dateString)).format('DD')
+    },
+    successOTP(){
+      this.$refs.funds.show()
     }
   }
 }
