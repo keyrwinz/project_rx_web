@@ -122,21 +122,16 @@
       @filtered="onFiltered"
     >
       <template v-slot:cell(actions)="row">
-        <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+        <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
           {{modalButton}}
-        </b-button>
-        <b-button size="sm" @click="row.toggleDetails">
+        </b-button> -->
+        <b-button variant="success" size="lg" @click="row.detailsShowing ? $refs.viewProducts.hideModal() : show(row.item)">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
         </b-button>
       </template>
 
-      <template v-slot:row-details="row">
-        <b-card>
-          <ul>
-            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-          </ul>
-        </b-card>
-      </template>
+      <!-- <template v-slot:row-details="row"> -->
+      <!-- </template> -->
     </b-table>
     <b-pagination
       v-model="currentPage"
@@ -154,6 +149,11 @@
         <button class="btn mt-1">Submit</button>
       </pre>
     </b-modal>
+
+    <viewProducts
+        :data="modalItems"
+        :checkout="checkoutItem"
+        ref="viewProducts"></viewProducts>
   </b-container>
 </template>
 <style lang="scss">
@@ -199,36 +199,12 @@ export default {
   data() {
     return {
       user: AUTH.user,
-      items: [
-        { isActive: true, age: 40, name: { first: 'Dickerson', last: 'Macdonald' } },
-        { isActive: false, age: 21, name: { first: 'Larsen', last: 'Shaw' } },
-        {
-          isActive: false,
-          age: 9,
-          name: { first: 'Mini', last: 'Navarro' }
-          // _rowVariant: 'success'
-        },
-        { isActive: false, age: 89, name: { first: 'Geneva', last: 'Wilson' } },
-        { isActive: true, age: 38, name: { first: 'Jami', last: 'Carney' } },
-        { isActive: false, age: 27, name: { first: 'Essie', last: 'Dunlap' } },
-        { isActive: true, age: 40, name: { first: 'Thor', last: 'Macdonald' } },
-        {
-          isActive: true,
-          age: 87,
-          name: { first: 'Larsen', last: 'Shaw' }
-          // _cellVariants: { age: 'danger', isActive: 'warning' }
-        },
-        { isActive: false, age: 26, name: { first: 'Mitzi', last: 'Navarro' } },
-        { isActive: false, age: 22, name: { first: 'Genevieve', last: 'Wilson' } },
-        { isActive: true, age: 38, name: { first: 'John', last: 'Carney' } },
-        { isActive: false, age: 29, name: { first: 'Dick', last: 'Dunlap' } }
-      ],
       fields: [
         { key: 'rider', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'checkout_id', label: 'Order Number', sortable: true, class: 'text-center' },
+        { key: 'account_id', label: 'Order Number', sortable: true, class: 'text-center' },
         { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
-        { key: 'amount', label: 'Amount', sortable: true, class: 'text-center' },
+        { key: 'total', label: 'Amount', sortable: true, class: 'text-center' },
         { key: 'actions', label: 'Actions' }
       ],
       totalRows: 1,
@@ -244,8 +220,12 @@ export default {
         id: 'info-modal',
         title: '',
         content: ''
-      }
+      },
+      checkoutItem: null
     }
+  },
+  components: {
+    'viewProducts': require('components/increment/imarketvue/delivery/ViewProducts.vue')
   },
   computed: {
     sortOptions() {
@@ -259,8 +239,9 @@ export default {
   },
   mounted() {
     // Set the initial number of items
-    this.totalRows = this.items.length
-    console.log(this.data)
+    this.totalRows = this.data ? this.data.length : 0
+    // console.log('received:')
+    // console.log(this.data)
   },
   props: {
     title: {
@@ -277,6 +258,9 @@ export default {
     },
     modalButton: {
       required: true
+    },
+    modalItems: {
+      required: true
     }
   },
   methods: {
@@ -292,6 +276,11 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length
       this.currentPage = 1
+    },
+    show(item) {
+      this.checkoutItem = item
+      this.$parent.retrieveItems(item.id)
+      $('#viewProductOnModal').modal('show')
     }
   }
 }

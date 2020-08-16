@@ -7,7 +7,8 @@
     </div>
     <div class="col-8 p-0 mx-auto">
       <mgtMenu  :data="data"
-                :modalButton="'Assign Rider'"></mgtMenu>
+                :modalButton="'Assign Rider'"
+                :modalItems="itemData"></mgtMenu>
     </div>
   </div>
 </template>
@@ -69,6 +70,7 @@ export default {
       //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
       //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
       // ],
+      data: null,
       fields: [
         { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
         { key: 'locale', label: 'Locale', sortable: true, class: 'text-center' },
@@ -76,7 +78,8 @@ export default {
         { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
         { key: 'actions', label: 'Actions' }
-      ]
+      ],
+      itemData: null
     }
   },
   components: {
@@ -85,13 +88,13 @@ export default {
   props: ['title', 'action'],
   methods: {
     retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'rider',
-          clause: '='
-        }]
-      }
+      // let parameter = {
+      //   condition: [{
+      //     value: this.user.userID,
+      //     column: 'rider',
+      //     clause: '='
+      //   }]
+      // }
       // this.APIRequest('merchants/retrieve', parameter).then(response => {
       //   if(response.data.length > 0){
       //     this.data = this.response.data
@@ -99,11 +102,11 @@ export default {
       //     console.log('No Data Retrieved')
       //   }
       // })
-      console.log('retrieving...')
+      // console.log('retrieving...')
      // console.log(this.user)
-      parameter = {
+      let parameter = {
         condition: [{
-          value: 'this.user.subAccount.merchant.account_id',
+          value: this.user.subAccount.merchant.id,
           column: 'merchant_id',
           clause: '='
         }]
@@ -113,18 +116,38 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
-          console.log(this.data)
-          console.log('b4 retrieveRiders')
+          // console.log('b4 retrieveRiders')
+          // console.log(this.data)
           this.retrieveRiders()
+          this.retrieveItems()
+        }
+      })
+    },
+    retrieveItems(id) {
+      let parameter = {
+        condition: [{
+          value: id,
+          column: 'checkout_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('checkout_items/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        // console.log('sulod')
+        console.log(response.data)
+        if(response.data.length > 0){
+          this.itemData = response.data
+        } else {
+          this.itemData = null
         }
       })
     },
     retrieveRiders() {
-      console.log('hatdoggie')
+      // console.log('hatdoggie')
       this.data.forEach((items, index) => {
         let parameter = {
           condition: [{
-            value: items.rider,
+            value: items.account_id,
             column: 'account_id',
             clause: '='
           }]
@@ -134,7 +157,7 @@ export default {
           $('#loading').css({display: 'none'})
           if(response.data.length > 0){
             this.data[index].rider = response.data[0].first_name + ' ' + response.data[0].last_name
-            console.log('retrieving ridername')
+            // console.log('retrieving ridername')
             // console.log(this.data)
           }
         })
@@ -147,7 +170,7 @@ export default {
           inventory_type: COMMON.ecommerce.inventoryType,
           account_id: this.user.userID
         }
-        console.log(parameter)
+        // console.log(parameter)
         this.APIRequest('products/retrieve', parameter).then(response => {
           if(response.data.length > 0){
             this.data[index].checkout_id = response.data[0].title
