@@ -134,7 +134,7 @@ export default {
         this.APIRequest('account_informations/retrieve', parameter).then(response => {
           $('#loading').css({display: 'none'})
           if(response.data.length > 0){
-            this.data[index].rider = response.data[0].first_name + ' ' + response.data[0].last_name
+            this.data[index].name = response.data[0].first_name + ' ' + response.data[0].last_name
             console.log('retrieving ridername')
             console.log(this.data)
           }

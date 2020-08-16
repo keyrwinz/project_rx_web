@@ -122,20 +122,17 @@
       @filtered="onFiltered"
     >
       <template v-slot:cell(actions)="row">
-        <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+        <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
           {{modalButton}}
-        </b-button>
-        <b-button size="sm" @click="row.toggleDetails">
+        </b-button> -->
+        <b-button variant="success" size="lg" data-toggle="modal" data-target="#viewProductOnModal">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
         </b-button>
       </template>
 
       <template v-slot:row-details="row">
-        <b-card>
-          <ul>
-            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-          </ul>
-        </b-card>
+        <viewProducts
+        :checkout="data"></viewProducts>
       </template>
     </b-table>
     <b-pagination
@@ -225,10 +222,10 @@ export default {
       ],
       fields: [
         { key: 'rider', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'checkout_id', label: 'Order Number', sortable: true, class: 'text-center' },
+        { key: 'account_id', label: 'Order Number', sortable: true, class: 'text-center' },
         { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
-        { key: 'amount', label: 'Amount', sortable: true, class: 'text-center' },
+        { key: 'total', label: 'Amount', sortable: true, class: 'text-center' },
         { key: 'actions', label: 'Actions' }
       ],
       totalRows: 1,
@@ -247,6 +244,9 @@ export default {
       }
     }
   },
+  components: {
+    'viewProducts': require('components/increment/imarketvue/delivery/ViewProducts.vue')
+  },
   computed: {
     sortOptions() {
       // Create an options list from our fields
@@ -260,6 +260,7 @@ export default {
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length
+    console.log('received:')
     console.log(this.data)
   },
   props: {

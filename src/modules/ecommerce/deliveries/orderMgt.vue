@@ -85,13 +85,13 @@ export default {
   props: ['title', 'action'],
   methods: {
     retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'rider',
-          clause: '='
-        }]
-      }
+      // let parameter = {
+      //   condition: [{
+      //     value: this.user.userID,
+      //     column: 'rider',
+      //     clause: '='
+      //   }]
+      // }
       // this.APIRequest('merchants/retrieve', parameter).then(response => {
       //   if(response.data.length > 0){
       //     this.data = this.response.data
@@ -99,22 +99,38 @@ export default {
       //     console.log('No Data Retrieved')
       //   }
       // })
-      console.log('retrieving...')
+      // console.log('retrieving...')
      // console.log(this.user)
-      parameter = {
+      let parameter = {
         condition: [{
-          value: 'this.user.subAccount.merchant.account_id',
+          value: this.user.subAccount.merchant.id,
           column: 'merchant_id',
           clause: '='
         }]
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('checkout/retrieve', parameter).then(response => {
+      this.APIRequest('checkouts/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
-          console.log(this.data)
           console.log('b4 retrieveRiders')
+          console.log(this.data)
+          this.retrieveRiders()
+        }
+      })
+      parameter = {
+        condition: [{
+          value: this.data[0].id,
+          column: 'checkout_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('checkout-items/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.itemData = response.data
+          console.log('b4 retrieveRiders')
+          console.log(this.itemData)
           this.retrieveRiders()
         }
       })
@@ -124,7 +140,7 @@ export default {
       this.data.forEach((items, index) => {
         let parameter = {
           condition: [{
-            value: items.rider,
+            value: items.account_id,
             column: 'account_id',
             clause: '='
           }]
@@ -135,7 +151,7 @@ export default {
           if(response.data.length > 0){
             this.data[index].rider = response.data[0].first_name + ' ' + response.data[0].last_name
             console.log('retrieving ridername')
-            // console.log(this.data)
+            console.log(this.data)
           }
         })
         parameter = {
