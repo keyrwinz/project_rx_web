@@ -7,7 +7,8 @@
     </div>
     <div class="col-8 p-0 mx-auto">
       <mgtMenu  :data="data"
-                :modalButton="'Assign Rider'"></mgtMenu>
+                :modalButton="'Assign Rider'"
+                :modalItems="itemData"></mgtMenu>
     </div>
   </div>
 </template>
@@ -69,6 +70,7 @@ export default {
       //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
       //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
       // ],
+      data: null,
       fields: [
         { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
         { key: 'locale', label: 'Locale', sortable: true, class: 'text-center' },
@@ -76,7 +78,8 @@ export default {
         { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
         { key: 'actions', label: 'Actions' }
-      ]
+      ],
+      itemData: null
     }
   },
   components: {
@@ -113,30 +116,34 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
-          console.log('b4 retrieveRiders')
-          console.log(this.data)
+          // console.log('b4 retrieveRiders')
+          // console.log(this.data)
           this.retrieveRiders()
+          this.retrieveItems()
         }
       })
-      parameter = {
+    },
+    retrieveItems(id) {
+      let parameter = {
         condition: [{
-          value: this.data[0].id,
+          value: id,
           column: 'checkout_id',
           clause: '='
         }]
       }
-      this.APIRequest('checkout-items/retrieve', parameter).then(response => {
+      this.APIRequest('checkout_items/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
+        // console.log('sulod')
+        console.log(response.data)
         if(response.data.length > 0){
           this.itemData = response.data
-          console.log('b4 retrieveRiders')
-          console.log(this.itemData)
-          this.retrieveRiders()
+        } else {
+          this.itemData = null
         }
       })
     },
     retrieveRiders() {
-      console.log('hatdoggie')
+      // console.log('hatdoggie')
       this.data.forEach((items, index) => {
         let parameter = {
           condition: [{
@@ -150,8 +157,8 @@ export default {
           $('#loading').css({display: 'none'})
           if(response.data.length > 0){
             this.data[index].rider = response.data[0].first_name + ' ' + response.data[0].last_name
-            console.log('retrieving ridername')
-            console.log(this.data)
+            // console.log('retrieving ridername')
+            // console.log(this.data)
           }
         })
         parameter = {
@@ -163,7 +170,7 @@ export default {
           inventory_type: COMMON.ecommerce.inventoryType,
           account_id: this.user.userID
         }
-        console.log(parameter)
+        // console.log(parameter)
         this.APIRequest('products/retrieve', parameter).then(response => {
           if(response.data.length > 0){
             this.data[index].checkout_id = response.data[0].title

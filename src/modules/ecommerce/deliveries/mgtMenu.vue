@@ -125,15 +125,13 @@
         <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
           {{modalButton}}
         </b-button> -->
-        <b-button variant="success" size="lg" data-toggle="modal" data-target="#viewProductOnModal">
+        <b-button variant="success" size="lg" @click="row.detailsShowing ? $refs.viewProducts.hideModal() : show(row.item)">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
         </b-button>
       </template>
 
-      <template v-slot:row-details="row">
-        <viewProducts
-        :checkout="data"></viewProducts>
-      </template>
+      <!-- <template v-slot:row-details="row"> -->
+      <!-- </template> -->
     </b-table>
     <b-pagination
       v-model="currentPage"
@@ -151,6 +149,11 @@
         <button class="btn mt-1">Submit</button>
       </pre>
     </b-modal>
+
+    <viewProducts
+        :data="modalItems"
+        :checkout="checkoutItem"
+        ref="viewProducts"></viewProducts>
   </b-container>
 </template>
 <style lang="scss">
@@ -217,7 +220,8 @@ export default {
         id: 'info-modal',
         title: '',
         content: ''
-      }
+      },
+      checkoutItem: null
     }
   },
   components: {
@@ -235,9 +239,9 @@ export default {
   },
   mounted() {
     // Set the initial number of items
-    this.totalRows = this.items.length
-    console.log('received:')
-    console.log(this.data)
+    this.totalRows = this.data ? this.data.length : 0
+    // console.log('received:')
+    // console.log(this.data)
   },
   props: {
     title: {
@@ -254,6 +258,9 @@ export default {
     },
     modalButton: {
       required: true
+    },
+    modalItems: {
+      required: true
     }
   },
   methods: {
@@ -269,6 +276,11 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length
       this.currentPage = 1
+    },
+    show(item) {
+      this.checkoutItem = item
+      this.$parent.retrieveItems(item.id)
+      $('#viewProductOnModal').modal('show')
     }
   }
 }
