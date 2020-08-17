@@ -5,11 +5,10 @@
       </label>
       Order History
     </div>
-    <div class="col-8 p-0 mx-auto">
       <mgtMenu  :data="data"
                 :modalButton="'Assign Rider'"
-                :modalItems="itemData"></mgtMenu>
-    </div>
+                :modalItems="itemData"
+                :fields="fields"></mgtMenu>
   </div>
 </template>
 <style lang="scss">
@@ -72,18 +71,17 @@ export default {
       // ],
       data: null,
       fields: [
-        { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'locale', label: 'Locale', sortable: true, class: 'text-center' },
-        { key: 'source', label: 'Source', sortable: true, class: 'text-center' },
-        { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
+        { key: 'rider', label: 'Full name', sortable: true, sortDirection: 'desc' },
+        { key: 'account_id', label: 'Order Number', sortable: true, class: 'text-center' },
         { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
+        { key: 'total', label: 'Amount', sortable: true, class: 'text-center' },
         { key: 'actions', label: 'Actions' }
       ],
       itemData: null
     }
   },
   components: {
-    'mgtMenu': require('./mgtMenu.vue')
+    'mgtMenu': require('./managementMenu.vue')
   },
   props: ['title', 'action'],
   methods: {
@@ -119,7 +117,6 @@ export default {
           // console.log('b4 retrieveRiders')
           // console.log(this.data)
           this.retrieveRiders()
-          this.retrieveItems()
         }
       })
     },

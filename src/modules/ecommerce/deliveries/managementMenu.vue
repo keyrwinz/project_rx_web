@@ -125,7 +125,7 @@
         <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
           {{modalButton}}
         </b-button> -->
-        <b-button variant="success" size="lg" @click="row.detailsShowing ? $refs.viewProducts.hideModal() : show(row.item)">
+        <b-button variant="success" @click="row.detailsShowing ? $refs.viewProducts.hideModal() : show(row.item)">
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
         </b-button>
       </template>
@@ -199,14 +199,6 @@ export default {
   data() {
     return {
       user: AUTH.user,
-      fields: [
-        { key: 'rider', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'account_id', label: 'Order Number', sortable: true, class: 'text-center' },
-        { key: 'destination', label: 'Destination', sortable: true, class: 'text-center' },
-        { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
-        { key: 'total', label: 'Amount', sortable: true, class: 'text-center' },
-        { key: 'actions', label: 'Actions' }
-      ],
       totalRows: 1,
       currentPage: 1,
       perPage: 5,
@@ -261,6 +253,9 @@ export default {
     },
     modalItems: {
       required: true
+    },
+    fields: {
+      required: true
     }
   },
   methods: {
@@ -276,6 +271,9 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length
       this.currentPage = 1
+    },
+    retrieve() {
+      this.$parent.retrieve()
     },
     show(item) {
       this.checkoutItem = item
