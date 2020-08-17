@@ -984,6 +984,10 @@ export default {
       .listen('Call', e => {
         console.log(e)
       })
+      .listen(COMMON.pusher.orders, order => {
+        console.log({ order })
+        AUTH.addOrder(order)
+      })
       .listen(COMMON.pusher.notifications, e => {
         console.log(e)
         AUTH.addNotification(e.data)

@@ -82,10 +82,11 @@ export default {
     facebook: 'runwayexpress'
   },
   pusher: {
-    channel: 'runway',
+    channel: 'increment',
     notifications: 'Notifications',
     messages: 'Message',
-    validation: 'Validation'
+    validation: 'Validation',
+    orders: 'Orders'
   },
   ecommerce: {
     inventoryType: 'inventory',
