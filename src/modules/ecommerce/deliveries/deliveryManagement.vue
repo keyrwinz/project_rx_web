@@ -81,7 +81,7 @@ export default {
     }
   },
   components: {
-    'mgtMenu': require('./mgtMenu.vue')
+    'mgtMenu': require('./managementMenu.vue')
   },
   props: ['title', 'action'],
   methods: {

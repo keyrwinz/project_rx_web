@@ -115,14 +115,14 @@ export default{
   }, {
     path: '/deliveries',
     name: 'deliveries',
-    component: resolve => require(['modules/ecommerce/deliveries/deliveryMgt.vue'], resolve),
+    component: resolve => require(['modules/ecommerce/deliveries/deliveryManagement.vue'], resolve),
     meta: {
       tokenRequired: true
     }
   }, {
     path: '/orders',
     name: 'orders',
-    component: resolve => require(['modules/ecommerce/deliveries/orderMgt.vue'], resolve),
+    component: resolve => require(['modules/ecommerce/deliveries/orderManagement.vue'], resolve),
     meta: {
       tokenRequired: true
     }
