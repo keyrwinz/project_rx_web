@@ -35,7 +35,7 @@
             <span class="font-weight-bold text-muted" style="opacity: .7">{{balance === null ? '' : balance.length > 1 ? 'More Currency Available' : 'Available'}}</span>
           </div>
           <div class="col-12 mt-3" v-if="balance !== null">
-            <button type="button" class="btn btn-outline-primary rounded-pill" @click="$refs.otp.show()">Transfer Funds</button>
+            <button type="button" class="btn btn-outline-primary rounded-pill" @click="$refs.funds.show()">Transfer Funds</button>
           </div>
         </div>
 
@@ -63,7 +63,6 @@
       </div>
     </div>
 
-    <otp ref="otp"></otp>
     <transfer ref="funds" :balance="balance"></transfer>
   </div>
 </template>
@@ -195,7 +194,6 @@ export default{
   },
   components: {
     'cards': require('modules/ecommerce/marketplace/Cards.vue'),
-    'otp': require('components/increment/generic/otp/Otp.vue'),
     'transfer': require('modules/ecommerce/wallet/Transfer.vue'),
     'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
   },
@@ -246,9 +244,6 @@ export default{
     },
     getDay(dateString) {
       return moment(String(dateString)).format('DD')
-    },
-    successOTP(){
-      this.$refs.funds.show()
     }
   }
 }
