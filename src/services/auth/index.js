@@ -29,6 +29,7 @@ export default {
       data: null,
       totalUnreadMessages: 0
     },
+    orders: [],
     ledger: {
       amount: 0,
       currency: 'PHP'
@@ -242,6 +243,18 @@ export default {
     }else{
       $('#alertModal').modal('hide')
       COMMON.alertFlag = false
+    }
+  },
+  addOrder(order){
+    if (order.data) {
+      if (parseInt(this.user.userID) === parseInt(order.data.merchant_account_id)) {
+        this.user.orders.unshift(order.data)
+        let audio = require('src/assets/audio/notification.mp3')
+        let sound = new Howl({
+          src: [audio]
+        })
+        sound.play()
+      }
     }
   },
   retrieveMessages(accountId, type){
