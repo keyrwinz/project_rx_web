@@ -1,14 +1,6 @@
 <template>
   <div>
-    <div class="col-12 display-4 text-center mb-2">
-      <label class="text-primary">{{user.subAccount.merchant.name}}
-      </label>
-      Order History
-    </div>
-      <mgtMenu  :data="data"
-                :modalButton="'Assign Rider'"
-                :modalItems="itemData"
-                :fields="fields"></mgtMenu>
+
   </div>
 </template>
 <style lang="scss">
@@ -59,24 +51,7 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      // data: [{ rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'In Progress', _rowVariant: 'warning' },
-      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
-      //         { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Cancelled', _rowVariant: 'danger' },
-      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' },
-      //         { rider: 'Kent', locale: 'Mandaue', source: 'McDonalds Tabok', destination: 'Palmas Verdes Subdivision, Tabok, Mandaue City', status: 'Not Received', _rowVariant: 'danger' },
-      //         { rider: 'Elle', locale: 'Cebu', source: 'Burger King Escario', destination: 'Tisa, Cebu City', status: 'Complete', _rowVariant: 'success' },
-      //         { rider: 'Ikaw L. Buot', locale: 'Lapu-lapu', source: 'McDonalds M.L. Quezon', destination: 'Pajo, Lapu-lapu City', status: 'Complete', _rowVariant: 'success' }
-      // ],
       data: null,
-      fields: [
-        { key: 'rider', label: 'Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'account_id', label: 'Order Number', sortable: true, class: 'text-center' },
-        { key: 'status', label: 'Status', sortable: true, class: 'text-center' },
-        { key: 'total', label: 'Amount', sortable: true, class: 'text-center' },
-        { key: 'actions', label: 'Actions' }
-      ],
       itemData: null
     }
   },
@@ -86,22 +61,6 @@ export default {
   props: ['title', 'action'],
   methods: {
     retrieve(){
-      // let parameter = {
-      //   condition: [{
-      //     value: this.user.userID,
-      //     column: 'rider',
-      //     clause: '='
-      //   }]
-      // }
-      // this.APIRequest('merchants/retrieve', parameter).then(response => {
-      //   if(response.data.length > 0){
-      //     this.data = this.response.data
-      //   }else{
-      //     console.log('No Data Retrieved')
-      //   }
-      // })
-      // console.log('retrieving...')
-     // console.log(this.user)
       let parameter = {
         condition: [{
           value: this.user.subAccount.merchant.id,
@@ -114,8 +73,6 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
-          // console.log('b4 retrieveRiders')
-          // console.log(this.data)
           this.retrieveRiders()
         }
       })
@@ -137,43 +94,6 @@ export default {
         } else {
           this.itemData = null
         }
-      })
-    },
-    retrieveRiders() {
-      // console.log('hatdoggie')
-      this.data.forEach((items, index) => {
-        let parameter = {
-          condition: [{
-            value: items.account_id,
-            column: 'account_id',
-            clause: '='
-          }]
-        }
-        $('#loading').css({display: 'block'})
-        this.APIRequest('account_informations/retrieve', parameter).then(response => {
-          $('#loading').css({display: 'none'})
-          if(response.data.length > 0){
-            this.data[index].rider = response.data[0].first_name + ' ' + response.data[0].last_name
-            // console.log('retrieving ridername')
-            // console.log(this.data)
-          }
-        })
-        parameter = {
-          condition: [{
-            value: items.checkout_id,
-            column: 'id',
-            clause: '='
-          }],
-          inventory_type: COMMON.ecommerce.inventoryType,
-          account_id: this.user.userID
-        }
-        // console.log(parameter)
-        this.APIRequest('products/retrieve', parameter).then(response => {
-          if(response.data.length > 0){
-            this.data[index].checkout_id = response.data[0].title
-            this.data[index].productCode = response.data[0].code
-          }
-        })
       })
     },
     redirect(parameter){
