@@ -4,12 +4,24 @@
       :pages="numPages"
       :active="activePage"
       :limit="limit"
-      v-if="auth.user.orders.length > 0"
+      v-if="data !== null"
     />
-    <table v-if="auth.user.orders.length > 0" class="table table-bordered table-responsive">
+    <div class="form-group text-center" v-if="auth.user.orders.length > 0">
+      <button class="btn btn-primary" @click="refresh()">
+        New order
+        <label class="badge badge-light">
+          4
+        </label>
+      </button>
+    </div>
+    
+    <table v-if="data !== null" class="table table-bordered table-responsive">
       <thead>
         <th>
           Date
+        </th>
+        <th>
+          Order #
         </th>
         <th>
           Name
@@ -30,9 +42,12 @@
         </th>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in auth.user.orders" :key="index">
+        <tr v-for="(item, index) in data" :key="index">
           <td>
             {{item.date}}
+          </td>
+          <td>
+            {{item.order_number}}
           </td>
           <td>
             {{item.name}}
@@ -52,6 +67,12 @@
             <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
             </button>
+            <button class="btn btn-success" @click="broadcastRiders(item)">
+              <i class="fa fa-biking"></i>
+            </button>
+            <button class="btn btn-default" @click="broadcastRiders(item)">
+              <i class="fa fa-print"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -61,7 +82,7 @@
       :checkout="selectedItem"
       ref="viewProducts"></viewProducts>
 
-    <empty v-if="auth.user.orders.length <= 0" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
+    <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -104,7 +125,8 @@ export default {
       auth: AUTH,
       currency: CURRENCY,
       selectedItem: null,
-      selectedProducts: null
+      selectedProducts: null,
+      data: null
     }
   },
   components: {
@@ -113,19 +135,31 @@ export default {
     Pager
   },
   methods: {
+    broadcastRiders(item){
+      // broadcasting here
+    },
+    refresh(){
+      AUTH.user.orders = []
+      this.retrieve()
+    },
     retrieve(){
       let parameter = {
         condition: [{
           value: this.user.subAccount.merchant.id,
           column: 'merchant_id',
           clause: '='
-        }]
+        }],
+        sort: {
+          status: 'desc'
+        }
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
-          AUTH.user.orders = response.data
+          this.data = response.data
+        }else{
+          this.data = null
         }
       })
     },
