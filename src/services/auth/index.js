@@ -63,6 +63,12 @@ export default {
     code: null,
     scope: null
   },
+  checkout: {
+    searchingRider: false,
+    id: null,
+    rider: null,
+    merchant: null
+  },
   echo: null,
   currentPath: false,
   setUser(userID, username, email, type, status, profile, notifSetting, subAccount, code, location){
@@ -88,9 +94,6 @@ export default {
     this.user.code = code
     this.user.location = location
     localStorage.setItem('account_id', this.user.userID)
-    if(this.user.userID > 0){
-      this.checkConsent(this.user.userID)
-    }
   },
   setToken(token){
     this.tokenData.token = token
@@ -375,23 +378,6 @@ export default {
     })
     return formatter.format(amount)
   },
-  checkConsent(userID){
-    let vue = new Vue()
-    let parameter = {
-      condition: [{
-        value: userID,
-        column: 'account_id',
-        clause: '='
-      }]
-    }
-    vue.APIRequest('consents/retrieve', parameter, (response) => {
-      if(response.data.length > 0){
-        $('#consentModal').modal('hide')
-      }else{
-        $('#consentModal').modal('show')
-      }
-    })
-  },
   displayAmountWithCurrency(amount, currency){
     var formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -406,6 +392,11 @@ export default {
       case 3: return 'Deposit'
       case 101: return 'Lending'
       case 102: return 'Installment'
+    }
+  },
+  manageRider(data){
+    if(parseInt(data.merchant_id) === this.user.subAccount.merchant.id){
+      //
     }
   }
 }

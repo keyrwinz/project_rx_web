@@ -19,23 +19,33 @@
       <thead>
         <th>
           Date
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'date')" v-if="sort.date === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'date')" v-if="sort.date === 'desc'"></i>
         </th>
         <th>
           Order #
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'order_number')" v-if="sort.order_number === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'order_number')" v-if="sort.order_number === 'desc'"></i>
         </th>
         <th>
           Name
-          <!-- <i class="fas fa-chevron-up pull-right action-link" @click="sortArrayName('desc')" v-if="activeSortName === 'asc'"></i>
-          <i class="fas fa-chevron-down  pull-right action-link" @click="sortArrayName('asc')" v-if="activeSortName === 'desc'"></i> -->
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'name')" v-if="sort.name === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'name')" v-if="sort.name === 'desc'"></i>
         </th>
         <th>
           Location
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'location')" v-if="sort.location === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'location')" v-if="sort.location === 'desc'"></i>
         </th>
         <th>
           Status
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'status')" v-if="sort.status === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'status')" v-if="sort.status === 'desc'"></i>
         </th>
         <th>
           Total Amount
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'total')" v-if="sort.total === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'total')" v-if="sort.total === 'desc'"></i>
         </th>
         <th>
           Actions
@@ -80,6 +90,7 @@
     <viewProducts
       :data="selectedProducts"
       :checkout="selectedItem"
+      v-if="selectedItem !== null"
       ref="viewProducts"></viewProducts>
 
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
@@ -89,7 +100,6 @@
 @import "~assets/style/colors.scss";
   .order-holder{  
     width: 90%;
-    float: left;
     margin-right: 5%;
     margin-left: 5%;
     margin-top: 25px;
@@ -111,6 +121,7 @@ import CURRENCY from 'src/services/currency.js'
 import CONFIG from 'src/config.js'
 import COMMON from 'src/common.js'
 import Pager from 'components/increment/generic/pager/Pager.vue'
+import Echo from 'laravel-echo'
 export default {
   mounted(){
     this.retrieve()
@@ -126,7 +137,15 @@ export default {
       currency: CURRENCY,
       selectedItem: null,
       selectedProducts: null,
-      data: null
+      data: null,
+      sort: {
+        date: 'asc',
+        name: 'asc',
+        order_number: 'asc',
+        location: 'asc',
+        status: 'asc',
+        total: 'asc'
+      }
     }
   },
   components: {
@@ -137,6 +156,30 @@ export default {
   methods: {
     broadcastRiders(item){
       // broadcasting here
+      let parameter = {
+        merchant_id: this.user.subAccount.merchant.id,
+        checkout_id: item.id
+      }
+      this.APIRequest('riders/search', parameter).then(response => {
+        AUTH.checkout = {
+          searchingRider: false,
+          id: item.id,
+          rider: null,
+          merchant: this.user.subAccount.merchant.id
+        }
+      })
+    },
+    sortData(order, column){
+      this.sort[column] = order
+      if(order === 'desc'){
+        this.data = this.data.sort((a, b) => {
+          return a[column] < b[column] ? -1 : 1
+        })
+      }else{
+        this.data = this.data.sort((a, b) => {
+          return a[column] > b[column] ? -1 : 1
+        })
+      }
     },
     refresh(){
       AUTH.user.orders = []
