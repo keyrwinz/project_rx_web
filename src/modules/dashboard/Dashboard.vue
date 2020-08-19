@@ -161,6 +161,7 @@ import CURRENCY from 'src/services/currency.js'
 import moment from 'moment'
 export default{
   mounted(){
+    $('#loading').css({display: 'block'})
     if(!this.user || this.user.type === 'USER') {
       ROUTER.push('/featured')
     }
