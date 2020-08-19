@@ -968,7 +968,8 @@ export default {
           broadcaster: 'pusher',
           key: CONFIG.PUSHER.key,
           cluster: 'ap1',
-          encrypted: true
+          encrypted: true,
+          authEndpoint: CONFIG.API_URL_BROADCAST + '?token=' + AUTH.tokenData.token + '&account_id=' + this.user.userID
         })
       }else{
         window.Echo = new Echo({
@@ -977,12 +978,16 @@ export default {
           wsHost: CONFIG.PUSHER.wsHost,
           wsPort: CONFIG.PUSHER.wsPort,
           disableStats: true,
-          enabledTransports: ['ws', 'wss']
+          enabledTransports: ['ws', 'wss'],
+          authEndpoint: CONFIG.API_URL_BROADCAST + '?token=' + AUTH.tokenData.token + '&account_id=' + this.user.userID
         })
       }
       window.Echo.channel(COMMON.pusher.channel)
       .listen('Call', e => {
-        console.log(e)
+        console.log('hello' + e)
+      })
+      .listen(COMMON.pusher.rider, data => {
+        AUTH.manageRider(data)
       })
       .listen(COMMON.pusher.orders, order => {
         console.log({ order })
@@ -993,6 +998,7 @@ export default {
         AUTH.addNotification(e.data)
       })
       .listen(COMMON.pusher.messages, e => {
+        console.log(e)
         AUTH.addMessage(e.data)
       })
       .listen(COMMON.pusher.messageGroup, e => {
@@ -1008,6 +1014,9 @@ export default {
             this.retrieveMessages(parseInt(e.data.id))
           }
         }
+      })
+      window.Echo.private(COMMON.pusher.channel).listenForWhisper('searching', e => {
+        console.log(e)
       })
     },
     retrieveMessages(id){

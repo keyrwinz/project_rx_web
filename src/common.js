@@ -82,8 +82,10 @@ export default {
     facebook: 'runwayexpress'
   },
   pusher: {
-    channel: 'increment',
+    channel: 'runway',
+    private: 'runway_broadcast',
     notifications: 'Notifications',
+    rider: 'Rider',
     messages: 'Message',
     validation: 'Validation',
     orders: 'Orders'

@@ -122,7 +122,7 @@ export default{
   }, {
     path: '/orders',
     name: 'orders',
-    component: resolve => require(['modules/ecommerce/deliveries/orderManagement.vue'], resolve),
+    component: resolve => require(['modules/ecommerce/order/List.vue'], resolve),
     meta: {
       tokenRequired: true
     }
