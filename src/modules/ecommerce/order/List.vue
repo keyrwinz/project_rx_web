@@ -10,7 +10,7 @@
       <button class="btn btn-primary" @click="refresh()">
         New {{auth.user.orders.length > 1 ? 'orders' : 'order'}}
         <label class="badge badge-light">
-          auth.user.orders.length
+          {{auth.user.orders.length}}
         </label>
       </button>
     </div>
