@@ -8,7 +8,7 @@
         </h4>
         <small v-if="user.subAccount.merchant === null" class="ml-3 text-danger">Looks like you haven't setup your business information! <b @click="redirect('/profile/merchant')" class="link text-danger">Click here</b> to start!</small>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
           <div class="col-8">
             <span v-on:click="redirect('/wallet')" class="font-weight-bold text-primary link">E-Wallet Balance</span>
@@ -59,6 +59,21 @@
             </div>
           </div>
           <empty-dynamic v-else :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
+          <h5 class="col m-0 p-0 font-weight-bold">Summary of sales</h5>
+        </div>
+        <div class="col-12 mt-4">
+            <topAffectedPlaces 
+              ref="realtimeChart" 
+              height="340" 
+              type="line" 
+              :options="options" 
+              :series="series"
+            >
+            </topAffectedPlaces>
         </div>
       </div>
     </div>
@@ -158,6 +173,7 @@ import AUTH from 'src/services/auth'
 import COMMON from 'src/common.js'
 import CONFIG from 'src/config.js'
 import CURRENCY from 'src/services/currency.js'
+import topAffectedPlaces from 'vue-apexcharts'
 import moment from 'moment'
 export default{
   mounted(){
@@ -189,7 +205,22 @@ export default{
         {amount: -75, description: 'Spotify Premium', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-25 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Spotify Finance Limited'}},
         {amount: 127.47, description: 'Refund for games', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-25 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
         {amount: -534.50, description: 'Rise of the Tomb Raider', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-05 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}}
-      ]
+      ],
+      options: {
+        chart: {
+          id: 'sales-summary'
+        },
+        xaxis: {
+          categories: [1, 2, 3, 4, 5, 6, 7]
+        }
+      },
+      series: [{
+        name: 'Completed',
+        data: [30, 40, 35, 50, 49, 60, 70, 91]
+      }, {
+        name: 'Cancelled',
+        data: [40, 35, 50, 49, 60, 70, 91, 1]
+      }]
     }
   },
   props: {
@@ -197,7 +228,8 @@ export default{
   components: {
     'cards': require('modules/ecommerce/marketplace/Cards.vue'),
     'transfer': require('modules/ecommerce/wallet/Transfer.vue'),
-    'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
+    'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue'),
+    topAffectedPlaces
   },
   methods: {
     redirect(parameter){
