@@ -7,7 +7,7 @@
       <span style="width:100%;float:left;text-align:center;font-size:20px;margin-bottom:20px;">
         Login to <b class="text-primary">{{common.APP_NAME}}</b>
       </span>
-      <div class="login-message-holder login-spacer" v-if="errorMessage != null">
+      <div class="login-message-holder login-spacer" v-if="errorMessage !== null">
         <span class="text-danger"><b>Oops!</b> {{errorMessage}}</span>
       </div>
       <div>

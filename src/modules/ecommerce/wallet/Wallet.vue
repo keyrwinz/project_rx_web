@@ -10,7 +10,7 @@
         <div class="mt-1 font-weight-bold text-muted text-center" v-if="balance !== null">Highest Balance</div>
         
         <div class="container row w-75 justify-content-center m-0 mt-3 mx-auto pb-4 border-bottom border-bottom-lg">
-          <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" v-if="balance !== null" @click="$refs.otp.show()">Transfer Funds</button>
+          <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" v-if="balance !== null" @click="$refs.funds.show()">Transfer Funds</button>
         </div>
 
         <div class="container row px-0 w-75 flow-column justify-content-center m-0 mt-3 mx-auto">
@@ -30,7 +30,6 @@
         </div>
     </div>
 
-    <otp ref="otp"></otp>
     <transfer ref="funds" :balance="balance"></transfer>
   </div>
 </template>
@@ -80,7 +79,8 @@ import CURRENCY from 'src/services/currency.js'
 export default {
   mounted(){
     if(!this.user || this.user.type === 'USER') {
-      ROUTER.push('/featured')
+      // ROUTER.push('/featured')
+      ROUTER.push('/welcome')
     }
 
     this.retrieve()
@@ -108,7 +108,6 @@ export default {
     }
   },
   components: {
-    'otp': require('components/increment/generic/otp/Otp.vue'),
     'transfer': require('modules/ecommerce/wallet/Transfer.vue')
   },
   methods: {
@@ -135,9 +134,6 @@ export default {
           })
         }
       })
-    },
-    successOTP(){
-      this.$refs.funds.show()
     }
   }
 }
