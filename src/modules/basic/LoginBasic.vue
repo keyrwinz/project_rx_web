@@ -197,14 +197,7 @@ export default {
       if(this.username !== null && this.username !== '' && this.password !== null && this.password !== ''){
         $('#loading').css({'display': 'block'})
         AUTH.authenticate(this.username, this.password, (response) => {
-          if(response.account_type === 'USER') {
-            this.errorMessage = 'Hello, dear customer! Please login using the mobile application.'
-            AUTH.deaunthenticate(false)
-            console.log('AAAAAAAAAHHHHHHHHHHHH')
-          } else {
-            this.errorMessage = null
-          }
-          console.log(this.errorMessage)
+          this.errorMessage = null
           $('#loading').css({'display': 'none'})
         }, (response, status) => {
           $('#loading').css({'display': 'none'})

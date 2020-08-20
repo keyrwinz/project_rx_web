@@ -38,6 +38,9 @@ import COMMON from 'src/common.js'
 import CONFIG from 'src/config.js'
 export default{
   mounted(){
+    if(this.user.type === 'USER') {
+      ROUTER.push('/welcome')
+    }
   },
   data(){
     return {

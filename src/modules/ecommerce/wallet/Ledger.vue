@@ -77,7 +77,8 @@ import moment from 'moment'
 export default {
   mounted(){
     if(!this.user || this.user.type === 'USER') {
-      ROUTER.push('/featured')
+      // ROUTER.push('/featured')
+      ROUTER.push('/welcome')
     }
 
     this.retrieve()

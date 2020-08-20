@@ -83,22 +83,22 @@ export default {
       subAccount = null
       code = null
       location = null
-    }
-    this.user.userID = userID * 1
-    this.user.username = username
-    this.user.email = email
-    this.user.type = type
-    this.user.status = status
-    this.user.profile = profile
-    this.user.notifSetting = notifSetting
-    this.user.subAccount = subAccount
-    this.user.code = code
-    this.user.location = location
-    localStorage.setItem('account_id', this.user.userID)
-    localStorage.setItem('account/' + code, JSON.stringify(this.user))
-    if(flag && type !== 'USER'){
-      ROUTER.push('/dashboard')
-      // this.deaunthenticate()
+    } else {
+      this.user.userID = userID * 1
+      this.user.username = username
+      this.user.email = email
+      this.user.type = type
+      this.user.status = status
+      this.user.profile = profile
+      this.user.notifSetting = notifSetting
+      this.user.subAccount = subAccount
+      this.user.code = code
+      this.user.location = location
+      localStorage.setItem('account_id', this.user.userID)
+      localStorage.setItem('account/' + code, JSON.stringify(this.user))
+      if(flag){
+        ROUTER.push(type === 'USER' ? '/welcome' : '/dashboard')
+      }
     }
     setTimeout(() => {
       this.tokenData.loading = false
@@ -205,7 +205,8 @@ export default {
     }
 
   },
-  deaunthenticate(redirect = true){
+  deaunthenticate(){
+    console.log('logging out')
     this.tokenData.loading = true
     localStorage.removeItem('usertoken')
     localStorage.removeItem('account_id')
@@ -216,11 +217,7 @@ export default {
     vue.APIRequest('authenticate/invalidate')
     this.clearNotifTimer()
     this.tokenData.token = null
-    console.log('send help')
-    if(redirect === true) {
-      console.log('redirect')
-      ROUTER.go('/')
-    }
+    ROUTER.go('/')
   },
   retrieveNotifications(accountId){
     let vue = new Vue()
