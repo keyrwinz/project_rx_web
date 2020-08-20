@@ -42,3 +42,7 @@
     min-height: unset;
   }
 }
+
+.pull-right {
+  float: right;
+}
