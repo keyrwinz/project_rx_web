@@ -987,6 +987,7 @@ export default {
         console.log('hello' + e)
       })
       .listen(COMMON.pusher.rider, data => {
+        console.log(data)
         AUTH.manageRider(data)
       })
       .listen(COMMON.pusher.orders, order => {

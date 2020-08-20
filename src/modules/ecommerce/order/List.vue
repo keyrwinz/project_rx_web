@@ -8,9 +8,9 @@
     />
     <div class="form-group text-center" v-if="auth.user.orders.length > 0">
       <button class="btn btn-primary" @click="refresh()">
-        New order
+        New {{auth.user.orders.length > 1 ? 'orders' : 'order'}}
         <label class="badge badge-light">
-          4
+          {{auth.user.orders.length}}
         </label>
       </button>
     </div>
@@ -77,8 +77,8 @@
             <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
             </button>
-            <button class="btn btn-success" @click="broadcastRiders(item)">
-              <i class="fa fa-biking"></i>
+            <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending'">
+              <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button>
             <button class="btn btn-default" @click="broadcastRiders(item)">
               <i class="fa fa-print"></i>
@@ -113,6 +113,10 @@
     background-color: $primary !important;
     color: white
   }
+
+  .fa-spin{
+    animation-duration: 0.50s;
+  }
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -145,7 +149,8 @@ export default {
         location: 'asc',
         status: 'asc',
         total: 'asc'
-      }
+      },
+      waitingBroadcast: []
     }
   },
   components: {
@@ -160,6 +165,7 @@ export default {
         merchant_id: this.user.subAccount.merchant.id,
         checkout_id: item.id
       }
+      this.waitingBroadcast.push(item.id)
       this.APIRequest('riders/search', parameter).then(response => {
         AUTH.checkout = {
           searchingRider: false,
