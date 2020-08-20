@@ -63,28 +63,15 @@
       </div>
       <div class="col-8">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
-          <label class="col m-0 p-0 font-weight-bold">Daily Summary</label>
+          <label class="col m-0 p-0 font-weight-bold">Summary today</label>
           <button class="pull-right btn btn-primary" @click="redirect('/orders')">Go to orders</button>
         </div>
 
         <div class="col-12 mt-4 row">
-          <div class="card border-success mb-3 col-4" style="max-width: 18rem;">
-            <div class="card-header bg-transparent border-success">Completed amount</div>
-            <div class="card-body text-success">
-              <h5 class="card-title">{{currency.displayWithCurrency(200, 'PHP')}}</h5>
-            </div>
-          </div>
-          <div class="card border-success mb-3 col-4" style="max-width: 18rem;">
-            <div class="card-header bg-transparent border-success">Cancelled amount</div>
-            <div class="card-body text-danger">
-              <h5 class="card-title">{{currency.displayWithCurrency(200, 'PHP')}}</h5>
-            </div>
-          </div>
-
-          <div class="card border-success mb-3 col-4" style="max-width: 18rem;">
-            <div class="card-header bg-transparent border-success">Pending amount</div>
-            <div class="card-body text-warning">
-              <h5 class="card-title">{{currency.displayWithCurrency(200, 'PHP')}}</h5>
+          <div class="card border-success mb-3 col-4" style="max-width: 18rem;" v-for="(item, index) in dailySummary" :key="index">
+            <div class="card-header bg-transparent border-success text-uppercase">{{item.status}}</div>
+            <div class="card-body" :class="{'text-success': item.status === 'completed', 'text-warning': item.status === 'pending', 'text-danger': item.status === 'cancelled'}">
+              <h5 class="card-title">{{currency.displayWithCurrency(item.total, 'PHP')}}</h5>
             </div>
           </div>
         </div>
@@ -258,7 +245,8 @@ export default{
         }
       },
       series: [],
-      searchDate: null
+      searchDate: null,
+      dailySummary: []
     }
   },
   props: {
@@ -315,7 +303,29 @@ export default{
       return moment(String(dateString)).format('DD')
     },
     getDailySummary(date){
-      console.log(date)
+      let parameter = {
+        merchant_id: this.user.subAccount.merchant.id,
+        date: '2020-08-19'
+      }
+      this.APIRequest('checkouts/summary_of_daily_orders', parameter).then(response => {
+        if(response.data.length > 0){
+          this.dailySummary = response.data
+        }else{
+          this.dailySummary = [{
+            status: 'completed',
+            amount: 0,
+            currency: 'PHP'
+          }, {
+            status: 'cancelled',
+            amount: 0,
+            currency: 'PHP'
+          }, {
+            status: 'pending',
+            amount: 0,
+            currency: 'PHP'
+          }]
+        }
+      })
     },
     getSummary(){
       let parameter = {
