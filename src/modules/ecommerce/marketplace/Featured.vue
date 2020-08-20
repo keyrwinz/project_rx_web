@@ -33,6 +33,7 @@
 }
 </style>
 <script>
+import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import COMMON from 'src/common.js'
 import CONFIG from 'src/config.js'

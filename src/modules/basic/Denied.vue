@@ -4,13 +4,13 @@
       <h1 class="fa fa-store mb-4"></h1>
       <h2 class="mb-4">Hello, dear customer!</h2>
       <p>Unfortunately, the Runway Express website is only available for use for our merchants and riders.</p>
-      <p>Please access Runway Express on your mobile app.</p>
+      <p>Please access Runway Express through our mobile app.</p>
       <p><b>Download the app below!</b></p>
       <div class="container mx-auto row justify-content-center align-content-center w-75">
         <div class="col-md-3 col-sm-6"><img src="https://i.imgur.com/6aXmDH7.png" alt="Get it on Google Play" class="img-fluid"></div>
         <div class="col-md-3 col-sm-5 row align-items-center"><img src="https://i.imgur.com/UpykjFI.png" alt="Get it on the AppStore" class="img-fluid"></div>
       </div>
-      <button type="button" class="btn btn-lg btn-primary font-weight-bold mt-4 mb-4" @click="AUTH.deaunthenticate()">Go Back</button>
+      <button type="button" class="btn btn-lg btn-primary font-weight-bold mt-4 mb-4" @click="goBack()">Go Back</button>
     </div>
   </div>
 </template>
@@ -35,6 +35,9 @@ import CONFIG from 'src/config.js'
 import COMMON from 'src/common.js'
 export default {
   mounted(){
+    if(!this.user.userID) {
+      ROUTER.push('/')
+    }
   },
   data(){
     return {
@@ -43,7 +46,7 @@ export default {
   },
   methods: {
     goBack() {
-      ROUTER.go('/')
+      AUTH.deaunthenticate()
     }
   }
 }
