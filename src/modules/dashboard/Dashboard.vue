@@ -184,6 +184,7 @@ export default{
     }
 
     this.retrieve()
+    this.getSummary()
   },
   data(){
     return {
@@ -207,20 +208,19 @@ export default{
         {amount: -534.50, description: 'Rise of the Tomb Raider', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-05 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}}
       ],
       options: {
+        colors: ['#28a745', '#FF0000'],
         chart: {
           id: 'sales-summary'
         },
         xaxis: {
-          categories: [1, 2, 3, 4, 5, 6, 7]
+          categories: []
+        },
+        stroke: {
+          width: 2,
+          curve: 'smooth'
         }
       },
-      series: [{
-        name: 'Completed',
-        data: [30, 40, 35, 50, 49, 60, 70, 91]
-      }, {
-        name: 'Cancelled',
-        data: [40, 35, 50, 49, 60, 70, 91, 1]
-      }]
+      series: []
     }
   },
   props: {
@@ -254,10 +254,7 @@ export default{
         account_id: this.user.userID,
         account_code: this.user.code
       }
-
-      $('#loading').css({display: 'block'})
       this.APIRequest('ledger/summary', walletPar).then(response => {
-        $('#loading').css({display: 'none'})
         if(response.data.length > 0) {
           this.balance = response.data
         } else {
@@ -278,6 +275,21 @@ export default{
     },
     getDay(dateString) {
       return moment(String(dateString)).format('DD')
+    },
+    getSummary(){
+      let parameter = {
+        merchant_id: this.user.subAccount.merchant.id,
+        date: '2020-08'
+      }
+      this.APIRequest('checkouts/summary_of_orders', parameter).then(response => {
+        if(response.data !== null){
+          this.series = response.data.series
+          this.optios.xaxis.categories = response.data.categories
+        }else{
+          this.series = []
+          this.optios.xaxis.categories = []
+        }
+      })
     }
   }
 }
