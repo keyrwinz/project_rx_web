@@ -216,6 +216,9 @@ import CURRENCY from 'src/services/currency.js'
 import axios from 'axios'
 export default {
   mounted(){
+    if(this.user.type === 'USER') {
+      ROUTER.push('/welcome')
+    }
   },
   data(){
     return {

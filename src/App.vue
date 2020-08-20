@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div v-bind:style="(globalVariables.showModal) ? 'overflow-y:hidden; height:'+deviceHeight+'px!important': ''">
-      <div v-if="tokenData.token !== null && parseInt(user.userID) > 0">
+      <div v-if="tokenData.token !== null && parseInt(user.userID) > 0 && tokenData.loading === false && user.type !== 'USER'">
        <system-header v-bind:sidebarFlag="menu" ref="header"></system-header>
        <!-- <system-sidebar v-bind:menuFlag="menu" @toggleSidebar="toggleSidebar"></system-sidebar> -->
        <div class="content-holder mx-auto container-fluid" :class="[{'login': tokenData.token !== null && parseInt(user.userID) > 0}]">
@@ -16,7 +16,10 @@
        <guide></guide>
        <!-- <tutorial></tutorial> -->
       </div>
-      <div v-else>
+      <div v-else-if="tokenData.loading === true">
+        <lazy-loading></lazy-loading>
+      </div>
+      <div v-else-if="tokenData.loading === false">
         <login-header></login-header>
         <system-content></system-content>
         <landing-footer></landing-footer>
@@ -341,7 +344,8 @@ export default {
     'guide': () => import('modules/guide/Guide.vue'),
     'support-messenger': () => import('components/increment/support/Support.vue'),
     'tutorial': () => import('components/increment/generic/tutorial/Tutorial.vue'),
-    'system-notification': require('components/increment/generic/system/Notifications.vue')
+    'system-notification': require('components/increment/generic/system/Notifications.vue'),
+    'lazy-loading': () => import('components/increment/generic/lazy/Loading.vue')
   }
 }
 </script>

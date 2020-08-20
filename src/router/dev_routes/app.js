@@ -168,6 +168,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/welcome',
+    name: 'welcome',
+    component: resolve => require(['modules/basic/Denied.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
   }
   ]
 }
