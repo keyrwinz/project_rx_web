@@ -64,6 +64,7 @@
       <div class="col-8">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
           <h5 class="col m-0 p-0 font-weight-bold">Summary of sales</h5>
+          <input type="month"  class="form-control" v-model="searchDate" @change="getSummary()">
         </div>
         <div class="col-12 mt-4">
             <topAffectedPlaces 
@@ -166,6 +167,11 @@ h4 {
   text-align: left;
   width: 50%;
 }
+
+.form-control{
+  width: 200px !important;
+  float: right !important;
+}
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -184,6 +190,9 @@ export default{
     }
 
     this.retrieve()
+    let date = new Date()
+    let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
+    this.searchDate = date.getFullYear() + '-' + month
     this.getSummary()
   },
   data(){
@@ -220,7 +229,8 @@ export default{
           curve: 'smooth'
         }
       },
-      series: []
+      series: [],
+      searchDate: null
     }
   },
   props: {
@@ -279,7 +289,7 @@ export default{
     getSummary(){
       let parameter = {
         merchant_id: this.user.subAccount.merchant.id,
-        date: '2020-08'
+        date: this.searchDate
       }
       this.APIRequest('checkouts/summary_of_orders', parameter).then(response => {
         if(response.data !== null){
