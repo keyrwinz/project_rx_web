@@ -93,7 +93,7 @@
             <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
             </button>
-            <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending'">
+            <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button>
             <button class="btn btn-default" @click="broadcastRiders(item)">

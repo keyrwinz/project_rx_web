@@ -63,7 +63,34 @@
       </div>
       <div class="col-8">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
-          <h5 class="col m-0 p-0 font-weight-bold">Summary of sales</h5>
+          <label class="col m-0 p-0 font-weight-bold">Daily Summary</label>
+          <button class="pull-right btn btn-primary" @click="redirect('/orders')">Go to orders</button>
+        </div>
+
+        <div class="col-12 mt-4 row">
+          <div class="card border-success mb-3 col-4" style="max-width: 18rem;">
+            <div class="card-header bg-transparent border-success">Completed amount</div>
+            <div class="card-body text-success">
+              <h5 class="card-title">{{currency.displayWithCurrency(200, 'PHP')}}</h5>
+            </div>
+          </div>
+          <div class="card border-success mb-3 col-4" style="max-width: 18rem;">
+            <div class="card-header bg-transparent border-success">Cancelled amount</div>
+            <div class="card-body text-danger">
+              <h5 class="card-title">{{currency.displayWithCurrency(200, 'PHP')}}</h5>
+            </div>
+          </div>
+
+          <div class="card border-success mb-3 col-4" style="max-width: 18rem;">
+            <div class="card-header bg-transparent border-success">Pending amount</div>
+            <div class="card-body text-warning">
+              <h5 class="card-title">{{currency.displayWithCurrency(200, 'PHP')}}</h5>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
+          <p class="col m-0 p-0 font-weight-bold">Summary of sales</p>
           <input type="month"  class="form-control" v-model="searchDate" @change="getSummary()">
         </div>
         <div class="col-12 mt-4">
@@ -85,7 +112,7 @@
 <style lang="scss" scoped> 
 @import "~assets/style/colors.scss";
 .w-90 {
-  width: 90% !important;
+  width: 94% !important;
 }
 
 .bg-primary{
@@ -194,6 +221,7 @@ export default{
     let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
     this.searchDate = date.getFullYear() + '-' + month
     this.getSummary()
+    this.getDailySummary(date.getFullYear() + '-' + month + '-' + date.getDate())
   },
   data(){
     return {
@@ -285,6 +313,9 @@ export default{
     },
     getDay(dateString) {
       return moment(String(dateString)).format('DD')
+    },
+    getDailySummary(date){
+      console.log(date)
     },
     getSummary(){
       let parameter = {
