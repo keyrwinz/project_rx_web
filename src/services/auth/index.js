@@ -30,6 +30,7 @@ export default {
       totalUnreadMessages: 0
     },
     orders: [],
+    riders: [],
     ledger: {
       amount: 0,
       currency: 'PHP'
@@ -63,12 +64,6 @@ export default {
   google: {
     code: null,
     scope: null
-  },
-  checkout: {
-    searchingRider: false,
-    id: null,
-    rider: null,
-    merchant: null
   },
   echo: null,
   currentPath: false,
@@ -328,6 +323,13 @@ export default {
       ROUTER.go('/')
     }
   },
+  playNotificationSoundOnce(){
+    let audio = require('src/assets/audio/notification.mp3')
+    let sound = new Howl({
+      src: [audio]
+    })
+    sound.play()
+  },
   checkPlan(){
     if(Config.plan === true){
       if(this.user.plan !== null){
@@ -409,8 +411,10 @@ export default {
     }
   },
   manageRider(data){
-    if(parseInt(data.merchant_id) === this.user.subAccount.merchant.id){
-      //
+    if(data.merchant === this.user.subAccount.merchant.code && data.assigned_rider !== undefined){
+      this.user.riders.push(data)
+      this.playNotificationSoundOnce()
+    }else{
     }
   }
 }

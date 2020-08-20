@@ -4,12 +4,6 @@
       <input type="date" class="form-control form-control-custom" v-model="date">
       <button class="btn btn-primary" style="margin-left: 5px;" @click="exportFile()">Export</button>
       <button class="btn btn-warning" @click="searchByDate()">Search</button>
-      <Pager
-        :pages="numPages"
-        :active="activePage"
-        :limit="limit"
-        v-if="data !== null"
-      />
     </div>
 
     <div class="form-group text-center" v-if="auth.user.orders.length > 0">
@@ -103,11 +97,24 @@
         </tr>
       </tbody>
     </table>
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    />
     <viewProducts
       :data="selectedProducts"
       :checkout="selectedItem"
       v-if="selectedItem !== null"
       ref="viewProducts"></viewProducts>
+
+
+    <DeliveryConfirmation
+      v-if="auth.user.riders.length > 0"
+      @updateRow="manageUpdateRow"
+      ref="confirmedRiderModal"
+    ></DeliveryConfirmation>
 
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
   </div>
@@ -147,6 +154,7 @@ import COMMON from 'src/common.js'
 import Pager from 'components/increment/generic/pager/Pager.vue'
 import Echo from 'laravel-echo'
 import DatePicker from 'vue2-datepicker'
+import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
 export default {
   mounted(){
     this.retrieve()
@@ -179,7 +187,8 @@ export default {
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'viewProducts': require('components/increment/imarketvue/delivery/ViewProducts.vue'),
     Pager,
-    DatePicker
+    DatePicker,
+    DeliveryConfirmation
   },
   methods: {
     exportFile(){
@@ -191,10 +200,27 @@ export default {
     disabledDates(date) {
       return date > new Date()
     },
+    manageUpdateRow(){
+      let rider = AUTH.user.riders[0]
+      this.data = this.data.map((item, index) => {
+        if(parseInt(rider.checkout_id) === parseInt(item.id)){
+          console.log(rider)
+          return {
+            ...item,
+            assigned_rider: rider.assigned_rider
+          }
+        }
+        return item
+      })
+      this.$refs.confirmedRiderModal.hideModal()
+      setTimeout(() => {
+        AUTH.user.riders.splice(0, 1)
+      }, 100)
+    },
     broadcastRiders(item){
       // broadcasting here
       let parameter = {
-        merchant_id: this.user.subAccount.merchant.id,
+        merchant: this.user.subAccount.merchant.code,
         checkout_id: item.id
       }
       this.waitingBroadcast.push(item.id)

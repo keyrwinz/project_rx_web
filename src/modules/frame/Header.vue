@@ -987,19 +987,15 @@ export default {
         console.log('hello' + e)
       })
       .listen(COMMON.pusher.rider, data => {
-        console.log(data)
-        AUTH.manageRider(data)
+        AUTH.manageRider(data.data)
       })
       .listen(COMMON.pusher.orders, order => {
-        console.log({ order })
         AUTH.addOrder(order)
       })
       .listen(COMMON.pusher.notifications, e => {
-        console.log(e)
         AUTH.addNotification(e.data)
       })
       .listen(COMMON.pusher.messages, e => {
-        console.log(e)
         AUTH.addMessage(e.data)
       })
       .listen(COMMON.pusher.messageGroup, e => {

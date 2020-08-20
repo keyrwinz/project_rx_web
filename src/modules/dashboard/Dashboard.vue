@@ -313,15 +313,15 @@ export default{
         }else{
           this.dailySummary = [{
             status: 'completed',
-            amount: 0,
+            total: 0,
             currency: 'PHP'
           }, {
             status: 'cancelled',
-            amount: 0,
+            total: 0,
             currency: 'PHP'
           }, {
             status: 'pending',
-            amount: 0,
+            total: 0,
             currency: 'PHP'
           }]
         }
