@@ -250,7 +250,7 @@ export default {
   },
   addOrder(order){
     if (order.data) {
-      if (parseInt(this.user.userID) === parseInt(order.data.merchant_account_id)) {
+      if (parseInt(this.user.subAccount.merchant.code) === parseInt(order.data.merchant)) {
         this.user.orders.unshift(order.data)
         let audio = require('src/assets/audio/notification.mp3')
         let sound = new Howl({
