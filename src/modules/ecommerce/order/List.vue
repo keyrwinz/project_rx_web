@@ -199,8 +199,7 @@ export default {
           clause: '='
         }],
         sort: {
-          column: 'status',
-          value: 'desc'
+          status: 'desc'
         },
         limit: this.limit,
         offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
