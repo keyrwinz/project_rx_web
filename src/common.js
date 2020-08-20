@@ -32,10 +32,6 @@ export default {
     title: 'Summary of Orders',
     icon: 'fa fa-shopping-bag',
     route: '/orders'
-  }, {
-    title: 'Deliveries',
-    icon: 'fa fa-motorcycle',
-    route: '/deliveries'
   }],
   APP_NAME: 'RunwayExpress',
   APP_NAME_HTML: 'Runway Express',

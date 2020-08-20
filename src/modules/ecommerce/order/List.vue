@@ -1,11 +1,17 @@
 <template>
   <div class="order-holder">
-    <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      v-if="data !== null"
-    />
+    <div class="form-group">
+      <input type="date" class="form-control form-control-custom" v-model="date">
+      <button class="btn btn-primary" style="margin-left: 5px;" @click="exportFile()">Export</button>
+      <button class="btn btn-warning" @click="searchByDate()">Search</button>
+      <Pager
+        :pages="numPages"
+        :active="activePage"
+        :limit="limit"
+        v-if="data !== null"
+      />
+    </div>
+
     <div class="form-group text-center" v-if="auth.user.orders.length > 0">
       <button class="btn btn-primary" @click="refresh()">
         New {{auth.user.orders.length > 1 ? 'orders' : 'order'}}
@@ -27,15 +33,20 @@
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'order_number')" v-if="sort.order_number === 'asc'"></i>
           <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'order_number')" v-if="sort.order_number === 'desc'"></i>
         </th>
-        <th>
+<!--         <th>
           Name
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'name')" v-if="sort.name === 'asc'"></i>
           <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'name')" v-if="sort.name === 'desc'"></i>
-        </th>
+        </th> -->
         <th>
           Location
           <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'location')" v-if="sort.location === 'asc'"></i>
           <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'location')" v-if="sort.location === 'desc'"></i>
+        </th>
+        <th>
+          Delivered by
+          <i class="fas fa-chevron-up pull-right action-link" @click="sortData('desc', 'delivered')" v-if="sort.delivered === 'asc'"></i>
+          <i class="fas fa-chevron-down  pull-right action-link" @click="sortData('asc', 'delivered')" v-if="sort.delivered === 'desc'"></i>
         </th>
         <th>
           Status
@@ -59,11 +70,16 @@
           <td>
             {{item.order_number}}
           </td>
-          <td>
+<!--           <td>
             {{item.name}}
+          </td> -->
+          <td>
+            <label :title="item.location" :alt="item.location">
+              {{item.location !== null && item.location.length > 20 ? item.location.substring(0, 20) + '...' : item.location}}
+            </label>
           </td>
           <td>
-            {{item.location}}
+            <!-- {{item.delivered}} -->
           </td>
           <td>
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled'}">{{item.status}}</label>
@@ -117,6 +133,10 @@
   .fa-spin{
     animation-duration: 0.50s;
   }
+  .form-control-custom{
+    width: 200px !important;
+    float: left;
+  }
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -126,6 +146,7 @@ import CONFIG from 'src/config.js'
 import COMMON from 'src/common.js'
 import Pager from 'components/increment/generic/pager/Pager.vue'
 import Echo from 'laravel-echo'
+import DatePicker from 'vue2-datepicker'
 export default {
   mounted(){
     this.retrieve()
@@ -150,15 +171,26 @@ export default {
         status: 'asc',
         total: 'asc'
       },
-      waitingBroadcast: []
+      waitingBroadcast: [],
+      date: null
     }
   },
   components: {
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'viewProducts': require('components/increment/imarketvue/delivery/ViewProducts.vue'),
-    Pager
+    Pager,
+    DatePicker
   },
   methods: {
+    exportFile(){
+      //
+    },
+    searchByDate(){
+      //
+    },
+    disabledDates(date) {
+      return date > new Date()
+    },
     broadcastRiders(item){
       // broadcasting here
       let parameter = {
