@@ -305,7 +305,7 @@ export default{
     getDailySummary(date){
       let parameter = {
         merchant_id: this.user.subAccount.merchant.id,
-        date: '2020-08-19'
+        date: date
       }
       this.APIRequest('checkouts/summary_of_daily_orders', parameter).then(response => {
         if(response.data.length > 0){
