@@ -78,8 +78,8 @@
               {{item.location !== null && item.location.length > 20 ? item.location.substring(0, 20) + '...' : item.location}}
             </label>
           </td>
-          <td>
-            <!-- {{item.delivered}} -->
+          <td class="text-uppercase">
+            {{item.assigned_rider}}
           </td>
           <td>
             <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled'}">{{item.status}}</label>
