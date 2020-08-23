@@ -330,9 +330,10 @@ export default{
     getSummary(){
       let parameter = {
         merchant_id: this.user.subAccount.merchant.id,
-        date: this.searchDate
+        date: 2020
       }
       this.APIRequest('checkouts/summary_of_orders', parameter).then(response => {
+        console.log('this is the result line 336 dashboard ', response.data)
         if(response.data !== null){
           this.series = response.data.series
           this.optios.xaxis.categories = response.data.categories
