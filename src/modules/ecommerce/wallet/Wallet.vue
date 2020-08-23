@@ -126,6 +126,10 @@ export default {
           this.balance = null
         }
 
+        if(this.balance === null) {
+          this.balance = this.balanceOld
+        }
+
         if(this.balance !== null) {
           this.balance.map((bal, ind) => {
             if(bal.balance >= this.largest.balance) {

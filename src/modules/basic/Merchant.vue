@@ -221,14 +221,18 @@ export default {
         }
       })
     },
-    update(url){
+    update(url = null){
       if(this.data.email !== null && AUTH.validateEmail(this.data.email) === false){
         this.errorMessage = 'Invalid email address.'
         return
       }
       if(this.createFlag === false){
-        this.data.logo = url
-        this.newProfile.url = url
+        if(url) {
+          this.data.logo = url
+          this.newProfile.url = url
+        } else {
+          this.newProfile.url = this.data.logo
+        }
         let path
         if(this.user.profile === null) {
           path = 'create'

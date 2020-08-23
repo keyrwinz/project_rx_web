@@ -26,7 +26,7 @@
         </ul>
       </div>
       <div class="right-menu-icons d-flex ml-auto justify-content-end align-items-center pr-0 h-100">
-        <span v-if="user.subAccount.merchant" class="pr-3 text-white">Logged in as: <b class="pl-2">{{user.subAccount.merchant.name}}</b></span>
+        <span v-if="user.subAccount.merchant" class="pr-3 text-white text-right"><span class="d-none d-md-inline">Logged in as:</span> <b>{{user.subAccount.merchant.name}}</b></span>
         <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')"> 
             <span>
               <i class="fa fa-bell text-white"></i>
