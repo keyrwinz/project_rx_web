@@ -255,14 +255,14 @@ export default {
           value: this.user.subAccount.merchant.id,
           column: 'merchant_id',
           clause: '='
-        }, {
-          value: selectedDate,
-          column: 'created_at',
-          clause: '>='
-        }, {
-          value: selectedDate,
-          column: 'created_at',
-          clause: '<'
+        // }, {
+        //   value: selectedDate,
+        //   column: 'created_at',
+        //   clause: '>='
+        // }, {
+        //   value: selectedDate,
+        //   column: 'created_at',
+        //   clause: '<'
         }],
         sort: {
           status: 'desc'

@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 200px;">
-    <div class="container w-90 mx-auto mt-4 row">
+    <div class="container col-md-11 col-sm-12 mx-auto mt-4 row">
       <div class="col-12">
         <h4 class="text-uppercase col-12">Hello, 
           <span class="text-primary" v-if="user.subAccount.merchant === null">{{user.username}}</span>
@@ -8,7 +8,7 @@
         </h4>
         <small v-if="user.subAccount.merchant === null" class="ml-3 text-danger">Looks like you haven't setup your business information! <b @click="redirect('/profile/merchant')" class="link text-danger">Click here</b> to start!</small>
       </div>
-      <div class="col-4">
+      <div class="col-md-4 col-sm-12">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
           <div class="col-8">
             <span v-on:click="redirect('/wallet')" class="font-weight-bold text-primary link">E-Wallet Balance</span>
@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <div class="col-12 mt-4 border bg-light shadow-sm px-3 py-4 row m-0 rounded-lg">
+        <div class="col-12 mt-4 border bg-light shadow-sm px-2 py-4 row m-0 rounded-lg">
           <div class="col-12 link text-primary row m-0 align-items-center" @click="redirect('/ledger')">
             <h5 class="col m-0 p-0 font-weight-bold">Recent Activity</h5>
             <h5 class="fa fa-arrow-right"></h5>
@@ -47,12 +47,11 @@
           <div class="col-12 row m-0" v-if="ledger !== null">
             <div v-for="(item, index) in ledger" :key="index" class="card ledger col-12 py-2 px-0">
               <div class="card-header row m-0 align-items-center px-0">
-                <div class="col-2 p-0 text-center">
-                  <h5 class="text-muted text-uppercase font-weight-bold">{{item.cash_methods_created ? getMonth(item.cash_methods_created) : ''}}</h5>
-                  <h5 class="text-muted font-weight-light" style="opacity: .7">{{item.cash_methods_created ? getDay(item.cash_methods_created) : ''}}</h5>
+                <div class="col-md-2 col-sm-12 p-0 text-center">
+                  <h5 class="text-muted text-uppercase font-weight-bold">{{item.cash_methods_created ? getMonth(item.cash_methods_created) : ''}} <span style="opacity: .7">{{item.cash_methods_created ? getDay(item.cash_methods_created) : ''}}</span></h5>
                 </div>
-                <div class="col-5 font-weight-bold p-0">{{item.name ? item.name : ''}}</div>
-                <div class="col-5 text-right font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
+                <div class="col-md-5 col-sm-auto text-center mt-2 font-weight-bold p-0">{{item.name ? item.name : ''}}</div>
+                <div class="col-md-5 col-sm-12 text-right mt-3 font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
                   {{item.amount > 0 ? '+ ' : '- '}}{{item.amount > 0 ? currency.displayWithCurrency(item.amount, item.currency) : currency.displayWithCurrency(item.amount * -1, item.currency)}}
                 </div>
               </div>
@@ -61,14 +60,14 @@
           <empty-dynamic v-else :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-md-8 col-sm-12">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
           <label class="col m-0 p-0 font-weight-bold">Summary today</label>
           <button class="pull-right btn btn-primary" @click="redirect('/orders')">Go to orders</button>
         </div>
 
         <div class="col-12 mt-4 row">
-          <div class="card border-success mb-3 col-4" style="max-width: 18rem;" v-for="(item, index) in dailySummary" :key="index">
+          <div class="card border-success mb-3 col-md-4 col-sm-12 text-center" style="max-width: 18rem;" v-for="(item, index) in dailySummary" :key="index">
             <div class="card-header bg-transparent border-success text-uppercase">{{item.status}}</div>
             <div class="card-body" :class="{'text-success': item.status === 'completed', 'text-warning': item.status === 'pending', 'text-danger': item.status === 'cancelled'}">
               <h5 class="card-title">{{currency.displayWithCurrency(item.total, 'PHP')}}</h5>
@@ -225,11 +224,11 @@ export default{
       ],
       ledger: null,
       ledgerOld: [
-        {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', created_at: '2020-07-24 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Discord Inc'}},
-        {amount: -331.25, description: 'Phoenix Wright: The Ace Attorney', payment_payload: 'COD', currency: 'PHP', created_at: '2020-07-18 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
-        {amount: -75, description: 'Spotify Premium', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-25 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'Spotify Finance Limited'}},
-        {amount: 127.47, description: 'Refund for games', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-25 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}},
-        {amount: -534.50, description: 'Rise of the Tomb Raider', payment_payload: 'COD', currency: 'PHP', created_at: '2020-06-05 06:18:31', merchant: {logo: require('assets/img/favicon-alt.png'), name: 'www.steampowered.com'}}
+        {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', cash_methods_created: '2020-07-24 06:18:31', name: 'Discord Inc'},
+        {amount: -331.25, description: 'Phoenix Wright: The Ace Attorney', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-07-18 06:18:31', name: 'www.steampowered.com'},
+        {amount: -75, description: 'Spotify Premium', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-06-25 06:18:31', name: 'Spotify Finance Limited'},
+        {amount: 127.47, description: 'Refund for games', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-06-25 06:18:31', name: 'www.steampowered.com'},
+        {amount: -534.50, description: 'Rise of the Tomb Raider', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-06-05 06:18:31', name: 'www.steampowered.com'}
       ],
       options: {
         colors: ['#28a745', '#FF0000'],

@@ -19,15 +19,14 @@
               <small class="ml-5">Typically in 1-4 business days <b>(Fees may apply)</b></small>
               <div class="row mb-3 mt-3 mx-3 flex-column">
                 <div class="col-12 py-2 form-group row mx-0 align-items-center bank" v-for="(item, index) in banks" :key="index">
-                  <input type="radio" name="bank" :id="'bank-'+index" :value="item.id" v-model="selectedBank">
+                  <input type="radio" name="bank" :id="'bank-'+index" :value="item" v-model="selectedBank">
                   <label :for="'bank-'+index" class="ml-2 mb-0 row align-items-center">
                     <div class="icon text-center mr-2">
-                      <h3 v-if="item.type === 'card'" class="fa fa-credit-card"></h3>
-                      <h3 v-else class="fa fa-university"></h3>
+                      <h3 class="fa fa-university"></h3>
                     </div>
                     <div>
                       <b>{{item.name}}</b><br>
-                      <small class="text-muted">&bull;&bull;&bull;&bull; {{item.number.slice(-4)}}</small>
+                      <small class="text-muted">{{item.number}}</small>
                     </div>
                   </label>
                 </div>
@@ -38,7 +37,7 @@
               <b class="ml-5">Pick your currency</b>
               <div class="row mb-0 mt-3 mx-3 flex-column">
                 <div class="col-12 py-2 form-group row mx-0 align-items-center bank" v-for="(item, index) in balance.filter(bal => bal.balance > 0)" :key="index">
-                  <input type="radio" name="currency" :id="'currency-'+index" :value="index" v-model="selectedCurrency">
+                  <input type="radio" name="currency" :id="'currency-'+index" :value="item" v-model="selectedCurrency">
                   <label :for="'currency-'+index" class="ml-2 mb-0">
                       <b>{{item.currency}}</b>
                   </label>
@@ -54,13 +53,14 @@
           <div class="modal-body px-5 row m-0" v-if="next">
             <div class="conainer-fluid col-12 row m-0">
               <input type="number" name="amount" id="amount" v-model="amount" autocomplete="off">
-              <label for="amount" id="hide" class="mx-auto pr-2" :currency="balance[selectedCurrency].currency">{{currency.displayWithCurrency(amount, balance[selectedCurrency].currency)}}</label>
+              <label for="amount" id="hide" class="mx-auto pr-2" :currency="selectedCurrency.currency">{{currency.displayWithCurrency(amount, selectedCurrency.currency)}}</label>
               <div class="col-12 mt-3 text-center" style="font-size: 1.2rem">
                 <b>Available Balance</b> 
                 <br>
-                {{currency.displayWithCurrency(balance[selectedCurrency].balance, balance[selectedCurrency].currency)}}
+                {{currency.displayWithCurrency(selectedCurrency.balance, selectedCurrency.currency)}}
               </div>
-              <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-primary" id="next" @click="transfer()">Transfer</button>
+              <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-primary" v-if="!transferred" id="next" @click="transfer()">Request Withdrawal</button>
+              <button class="btn btn-block mt-4 mb-4 mx-auto w-75 rounded-pill py-3 btn-outline-success" v-else id="next" @click="hide()"><i class="fas fa-check mr-1"></i>Request Sent</button>
             </div>
           </div>
         </div>
@@ -174,13 +174,14 @@ export default {
       config: CONFIG,
       currency: CURRENCY,
       amount: 0,
+      transferred: false,
       next: false,
       selectedBank: null,
       selectedCurrency: null,
       banks: [
-        {id: 12, name: 'Visa Card', type: 'card', number: '1234123487'},
-        {id: 24, name: 'Bank (Landbank)', type: 'bank', number: '1237928427'},
-        {id: 32, name: 'Bank (BDO)', type: 'bank', number: '1293128348'}
+        {id: 12, name: 'GCash Main', type: 'gcash', number: '09668816743'},
+        {id: 24, name: 'Bank (Landbank)', type: 'bank', number: '4153-2842-12'},
+        {id: 32, name: 'Bank (BDO)', type: 'bank', number: '1482-1928-23'}
       ]
     }
   },
@@ -202,14 +203,15 @@ export default {
       this.selectedBank = null
       this.selectedCurrency = null
       this.next = false
+      this.transferred = false
       $('#transferFunds').modal('hide')
     },
     setAmount() {
       $('#transferFunds .error').remove()
-      if(!this.selectedBank && !this.selectedCurrency) {
+      if(!this.selectedCurrency) {
         $('<div>', {
           class: 'text-danger col-8 pl-3 ml-3 mb-3 error',
-          html: 'Please choose a bank and currency for transfer.'
+          html: 'Please choose a currency for transfer.'
         }).insertBefore('#transferFunds #next')
       } else {
         this.next = true
@@ -222,7 +224,7 @@ export default {
           class: 'text-danger col-12 pl-3 mb-3 error text-center',
           html: 'Please enter an amount.'
         }).insertBefore('#transferFunds #next')
-      } else if(this.amount > this.balance[this.selectedCurrency].balance) {
+      } else if(this.amount > this.selectedCurrency.balance) {
         $('<div>', {
           class: 'text-danger col-12 pl-3 mb-3 error text-center',
           html: 'Your balance is not enough.'
@@ -234,10 +236,36 @@ export default {
     successOTP(){
       this.$refs.otp.hideModal()
       $('#transferFunds .error').remove()
-      $('<div>', {
-        class: 'text-success col-12 pl-3 text-center mb-3 error',
-        html: 'Money transfer handling not yet made.'
-      }).insertBefore('#transferFunds #next')
+      // $('<div>', {
+      //   class: 'text-success col-12 pl-3 text-center mb-3 error',
+      //   html: 'Money transfer handling not yet made.'
+      // }).insertBefore('#transferFunds #next')
+      $('#loading').css({display: 'block'})
+      let par = {
+        amount: this.amount,
+        account_id: this.user.userID,
+        account_code: this.user.code,
+        currency: this.selectedCurrency.currency,
+        payment_payload: this.selectedBank.type,
+        payment_payload_value: this.selectedBank.number,
+        notes: 'test',
+        stage: 1,
+        charge: 0
+      }
+      this.APIRequest('withdrawals/create', par).then(response => {
+        $('#loading').css({display: 'none'})
+        if(this.response.data === true) {
+          this.transferred = true
+          $('#next').removeClass('btn-primary')
+          $('#next').addClass('btn-outline-success')
+          $('#next').html('Request Sent!')
+        } else {
+          $('<div>', {
+            class: 'text-danger col-12 pl-3 text-center mb-3 error',
+            html: 'There was an error sending in your request. Please try again.'
+          }).insertBefore('#transferFunds #next')
+        }
+      })
     }
   }
 }
