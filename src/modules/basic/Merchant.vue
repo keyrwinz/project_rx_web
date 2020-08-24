@@ -226,6 +226,10 @@ export default {
         this.errorMessage = 'Invalid email address.'
         return
       }
+      if(this.data.name === '' || this.data.name === null){
+        this.errorMessage = 'Invalid business name.'
+        return
+      }
       if(this.createFlag === false){
         if(url) {
           this.data.logo = url
@@ -249,7 +253,7 @@ export default {
                 this.retrieve()
                 this.successMessage = 'Successfully Updated!'
                 this.errorMessage = null
-                AUTH.checkAuthentication()
+                // AUTH.checkAuthentication(null, true)
               } else {
                 this.successMessage = null
                 this.errorMessage = 'Unable to Update! Please contact the administrator.'
@@ -276,7 +280,7 @@ export default {
           this.retrieve()
           this.successMessage = 'Successfully Updated!'
           this.errorMessage = null
-          AUTH.checkAuthentication(null, true)
+          // AUTH.checkAuthentication(null, true)
         }else{
           this.successMessage = null
           this.errorMessage = 'Unable to Update! Please contact the administrator.'
