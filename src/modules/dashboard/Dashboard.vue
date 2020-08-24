@@ -22,9 +22,9 @@
               <div class="dropdown-item" @click="redirect('/wallet')">
                 Go to E-Wallet Balance
               </div>
-              <div class="dropdown-item">
+              <!-- <div class="dropdown-item">
                 Get Help
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="col-12">
@@ -34,7 +34,7 @@
             <br>
             <span class="font-weight-bold text-muted" style="opacity: .7">{{balance === null ? '' : balance.length > 1 ? 'More Currency Available' : 'Available'}}</span>
           </div>
-          <div class="col-12 mt-3" v-if="balance !== null">
+          <div class="col-12 mt-3" v-if="balance !== null && largest.balance > 0">
             <button type="button" class="btn btn-outline-primary rounded-pill" @click="$refs.funds.show()">Transfer Funds</button>
           </div>
         </div>
