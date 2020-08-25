@@ -36,7 +36,8 @@ export default {
         title: 'This is a test',
         qty: 1,
         notes: null,
-        status: 'pending'
+        status: 'pending',
+        id: 1
       }],
       checkout: {
         id: 1
