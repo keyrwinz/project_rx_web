@@ -332,6 +332,7 @@ export default{
         date: this.searchDate
       }
       this.APIRequest('checkouts/summary_of_orders', parameter).then(response => {
+        console.log('this is the result line 336 dashboard ', response.data)
         if(response.data !== null){
           this.series = response.data.series
           this.optios.xaxis.categories = response.data.categories

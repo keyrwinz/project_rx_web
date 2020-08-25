@@ -2,10 +2,9 @@
   <div class="order-holder">
     <div class="form-group">
       <input type="date" class="form-control form-control-custom" v-model="date">
-      <button class="btn btn-primary" style="margin-left: 5px;" @click="exportFile()">Export</button>
+      <button class="btn btn-primary" style="margin-left: 5px;" @click="exportFile()" >Export as</button>
       <button class="btn btn-warning" @click="searchByDate()">Search</button>
     </div>
-
     <div class="form-group text-center" v-if="auth.user.orders.length > 0">
       <button class="btn btn-primary" @click="refresh()">
         New {{auth.user.orders.length > 1 ? 'orders' : 'order'}}
@@ -14,7 +13,6 @@
         </label>
       </button>
     </div>
-    
     <table v-if="data !== null" class="table table-bordered table-responsive">
       <thead>
         <th>
@@ -64,7 +62,7 @@
           <td>
             {{item.order_number}}
           </td>
-<!--           <td>
+            <!--<td>
             {{item.name}}
           </td> -->
           <td>
@@ -108,14 +106,15 @@
       :checkout="selectedItem"
       v-if="selectedItem !== null"
       ref="viewProducts"></viewProducts>
-
-
     <DeliveryConfirmation
       v-if="auth.user.riders.length > 0"
       @updateRow="manageUpdateRow"
       ref="confirmedRiderModal"
     ></DeliveryConfirmation>
-
+    <SalesSummaryExporter
+      :date="date"
+      ref="SalesSummaryExporter"
+    ></SalesSummaryExporter>
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
   </div>
 </template>
@@ -157,6 +156,7 @@ import Pager from 'components/increment/generic/pager/Pager.vue'
 import Echo from 'laravel-echo'
 import DatePicker from 'vue2-datepicker'
 import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
+import SalesSummaryExporter from './SalesSummaryExporter.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
@@ -194,11 +194,14 @@ export default {
     'viewProducts': require('components/increment/imarketvue/delivery/ViewProducts.vue'),
     Pager,
     DatePicker,
-    DeliveryConfirmation
+    DeliveryConfirmation,
+    SalesSummaryExporter
   },
   methods: {
     exportFile(){
-      //
+      if(this.date != null){
+        this.$refs.SalesSummaryExporter.showModal()
+      }
     },
     searchByDate(){
       //
