@@ -90,7 +90,7 @@
             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
             </button>
-            <button class="btn btn-default" @click="broadcastRiders(item)">
+            <button class="btn btn-default" @click="generatePdf(item)">
               <i class="fa fa-print"></i>
             </button>
           </td>
@@ -146,6 +146,8 @@
   }
 </style>
 <script>
+import pdfFonts from 'pdfmake/build/vfs_fonts'
+import PDFTemplate from 'pdfmake'
 import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import CURRENCY from 'src/services/currency.js'
@@ -155,12 +157,16 @@ import Pager from 'components/increment/generic/pager/Pager.vue'
 import Echo from 'laravel-echo'
 import DatePicker from 'vue2-datepicker'
 import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
+import TemplatePdf from './Template.js'
 export default {
   mounted(){
     this.retrieve()
+    const {vfs} = pdfFonts.pdfMake
+    PDFTemplate.vfs = vfs
   },
   data(){
     return {
+      PdfTemplate: TemplatePdf,
       user: AUTH.user,
       config: CONFIG,
       numPages: null,
@@ -292,6 +298,25 @@ export default {
         }else{
           this.selectedProducts = null
           this.selectedItem = null
+        }
+      })
+    },
+    generatePdf(item) {
+      var merchant = this.user.subAccount.merchant
+      this.selectedItem = item
+      let parameter = {
+        condition: [{
+          value: item.id,
+          column: 'checkout_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('checkout_items/retrieve_on_orders', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.PdfTemplate.getData(response.data)
+          this.PdfTemplate.getItem(item, merchant)
+          this.PdfTemplate.template()
         }
       })
     }
