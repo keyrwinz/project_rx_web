@@ -13,30 +13,31 @@
       <span class="left-menu-icons">
         <!-- <label class="account-type  hide-on-mobile bg-warning" v-if="!common.header.indexOf('status') && user !== null">{{user.type}}</label> -->
         <ul class="navbar-nav">
-          <li class="item" @click="redirect('/dashboard')" v-if="user.type !== 'USER'">
-            <span class="nav-link" style="padding-left: 10px;">Dashboard</span>
+          <li class="item" @click="redirect('/dashboard')">
+            <span class="nav-link"  style="padding: 0 10px 0 10px;">Dashboard</span>
           </li>
+
           <li class="item" @click="redirect('/marketplace')">
-            <span class="nav-link" style="padding-left: 10px;">Marketplace</span>
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Marketplace</span>
           </li>
 
           <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
-            <span class="nav-link" style="padding-left: 10px;">Management</span>
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Management</span>
           </li>
         </ul>
       </span>
       <div class="navbar-collapse collapse" id="navPages">
         <ul class="navbar-nav" v-if="user.type !== 'USER'">
           <li class="item" @click="redirect('/dashboard')">
-            <span class="nav-link"  style="padding-left: 10px;">Dashboard</span>
+            <span class="nav-link"  style="padding: 0 10px 0 10px;">Dashboard</span>
           </li>
 
           <li class="item" @click="redirect('/marketplace')">
-            <span class="nav-link" style="padding-left: 10px;">Marketplace</span>
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Marketplace</span>
           </li>
 
           <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
-            <span class="nav-link" style="padding-left: 10px;">Management</span>
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Management</span>
           </li>
         </ul>
       </div>
@@ -117,10 +118,10 @@
               </div>
               <i v-else class="far fa-user-circle text-white" style="font-size: 30px;"></i>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="settings">
-                <div class="dropdown-item dropdown-item-menu-title" v-if="user.type === 'MERCHANT'">
+                <div class="dropdown-item dropdown-item-menu-title" v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
                   <label>Personal</label>
                 </div>
-                <div class="dropdown-item" v-on:click="redirect(item.route)" v-for="(item, index) in common.profileMenu" :key="index"  v-if="user.type === 'MERCHANT'">
+                <div class="dropdown-item" v-on:click="redirect(item.route)" v-for="(item, index) in common.profileMenu" :key="index"  v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
                   <i v-bind:class="item.icon"></i>
                   <label>{{item.title}}</label>
                 </div>
