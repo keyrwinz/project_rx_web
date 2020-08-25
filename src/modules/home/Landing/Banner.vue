@@ -17,8 +17,14 @@
             {{item.description}}
           </h4>
         </span>
-          <a class="" :href="downloads.android.link" v-if="downloads.android !== null">
-          <img class="button img-fluid float-left mt-3" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/></a>
+        <span class="text-center">
+          <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
+           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
+          </a>
+          <a class="" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null">
+           <img class="button img-fluid float-left" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
+          </a>
+        </span>
       </div>
       <div class="image" v-if="item.template === 'right'">
         <img :src="item.image" style="margin-bottom: 5px;" width="100%">
@@ -85,6 +91,7 @@
 import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import SETTINGS from 'src/modules/home/settings.js'
+import COMMON from 'src/common.js'
 export default {
   mounted(){
     this.getData()
@@ -92,10 +99,7 @@ export default {
   data(){
     return {
       settings: SETTINGS,
-      downloads: {
-        android: null,
-        ios: null
-      }
+      common: COMMON
     }
   },
   methods: {

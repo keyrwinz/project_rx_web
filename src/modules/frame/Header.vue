@@ -13,21 +13,29 @@
       <span class="left-menu-icons">
         <!-- <label class="account-type  hide-on-mobile bg-warning" v-if="!common.header.indexOf('status') && user !== null">{{user.type}}</label> -->
         <ul class="navbar-nav">
-          <li class="item" @click="redirect('/dashboard')">
+          <li class="item" @click="redirect('/dashboard')" v-if="user.type !== 'USER'">
             <span class="nav-link" style="padding-left: 10px;">Dashboard</span>
+          </li>
+          <li class="item" @click="redirect('/marketplace')">
+            <span class="nav-link" style="padding-left: 10px;">Marketplace</span>
           </li>
         </ul>
       </span>
       <div class="navbar-collapse collapse" id="navPages">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" v-if="user.type !== 'USER'">
           <li class="item" @click="redirect('/dashboard')">
             <span class="nav-link"  style="padding-left: 10px;">Dashboard</span>
+          </li>
+
+          <li class="item" @click="redirect('/marketplace')">
+            <span class="nav-link" style="padding-left: 10px;">Marketplace</span>
           </li>
         </ul>
       </div>
       <div class="right-menu-icons d-flex ml-auto justify-content-end align-items-center pr-0 h-100">
         <span v-if="user.subAccount.merchant" class="pr-3 text-white text-right"><b>{{user.subAccount.merchant.name !== null && user.subAccount.merchant.name.length > 10 ? user.subAccount.merchant.name.substr(0, 10) + '..' : user.subAccount.merchant.name}}</b></span>
-        <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')"> 
+       
+        <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')" v-if="common.headerFlag.notification === true"> 
             <span>
               <i class="fa fa-bell text-white"></i>
               <label class="notifications badge-danger" v-if="parseInt(user.notifications.current) > 0">{{user.notifications.current}}</label>
@@ -47,7 +55,7 @@
             </span>
         </div>
 
-        <div class="h-100"> 
+        <div class="h-100" v-if="common.headerFlag.messenger === true"> 
             <div class="dropdown row col-auto h-100 align-items-center" data-toggle="dropdown" id="messages" aria-haspopup="true" aria-expanded="false">
               <div>
                 <i class="fas fa-envelope text-white"></i>
@@ -71,7 +79,7 @@
             </div>
         </div>
 
-        <checkout-cart></checkout-cart>
+        <checkout-cart v-if="common.headerFlag.cart === true"></checkout-cart>
 
         <!-- market options here -->
         <div class="h-100" v-if="user.type === 'MERCHANT'">
@@ -112,10 +120,10 @@
                   <label>Documents</label>
                 </span>
                 <!--GUIDE-->
-                <span class="dropdown-item" @click="openModal('#guideModal')">
+<!--                 <span class="dropdown-item" @click="openModal('#guideModal')">
                   <i class="far fa-question-circle"></i>
                   <label>Guide</label>
-                </span>
+                </span> -->
                 <!--PRIVACY POLICY-->
                 <span class="dropdown-item" @click="openModal('#privacyModal')">
                   <i class="fas fa-shield-alt"></i>

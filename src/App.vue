@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div v-bind:style="(globalVariables.showModal) ? 'overflow-y:hidden; height:'+deviceHeight+'px!important': ''">
-      <div v-if="tokenData.token !== null && parseInt(user.userID) > 0 && tokenData.loading === false && user.type !== 'USER'">
+      <div v-if="tokenData.token !== null && parseInt(user.userID) > 0 && tokenData.loading === false">
        <system-header v-bind:sidebarFlag="menu" ref="header"></system-header>
        <!-- <system-sidebar v-bind:menuFlag="menu" @toggleSidebar="toggleSidebar"></system-sidebar> -->
        <div class="content-holder mx-auto container-fluid" :class="[{'login': tokenData.token !== null && parseInt(user.userID) > 0}]">

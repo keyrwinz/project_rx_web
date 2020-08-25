@@ -162,6 +162,9 @@ import COMMON from 'src/common.js'
 import CURRENCY from 'src/services/currency.js'
 export default {
   mounted(){
+    if(!this.user || this.user.type === 'USER') {
+      ROUTER.push('/marketplace')
+    }
     this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
     console.log(this.user)
     if(this.$route.params.type){

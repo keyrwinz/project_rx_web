@@ -1,7 +1,7 @@
 <template>
   <div>
     <cards  :header="'Hungry?'"
-            :subheader="'Grab a snickers :D'"
+            :subheader="'Download our app today!'"
             :listType="'published'"
     ></cards>
   </div>
@@ -107,11 +107,11 @@ import COMMON from 'src/common.js'
 import axios from 'axios'
 export default {
   mounted(){
-    if(this.user.type === 'USER') {
-      ROUTER.push('/welcome')
-    }
-    this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
-    this.test()
+    // if(this.user.type === 'USER') {
+    //   ROUTER.push('/welcome')
+    // }
+    // this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
+    // this.test()
   },
   data(){
     return {

@@ -160,6 +160,10 @@ import SalesSummaryExporter from './SalesSummaryExporter.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
+    if(!this.user || this.user.type === 'USER') {
+      // ROUTER.push('/featured')
+      ROUTER.push('/marketplace')
+    }
     this.retrieve()
     const {vfs} = pdfFonts.pdfMake
     PDFTemplate.vfs = vfs
