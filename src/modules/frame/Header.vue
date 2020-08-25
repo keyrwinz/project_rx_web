@@ -2,9 +2,9 @@
   <div>
     <nav class="header-navbar">
       <div class="system-header navbar navbar-expand-md">
-        <a class="navbar-brand" v-on:click="redirect('dashboard')">
+        <a class="navbar-brand text-right" v-on:click="redirect('dashboard')">
           <img :src="require('src/assets/img/favicon-alt.png')" class="logo-brand">
-          <label class="navbar-brand hide-on-mobile text-white" v-html="common.APP_NAME_HTML"></label>
+          <!-- <label class="navbar-brand hide-on-mobile text-white" v-html="common.APP_NAME_HTML"></label> -->
         </a>
       </div>
       <span class="navbar-menu-toggler-md" v-bind:class="{'active-menu': menuFlag === true}" data-toggle="collapse" data-target="#navPages" aria-controls="navPages" aria-expanded="false" aria-label="Toggle navigation" v-on:click="makeActive('menu')">
@@ -101,10 +101,10 @@
               </div>
               <i v-else class="far fa-user-circle text-white" style="font-size: 30px;"></i>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="settings">
-                <div class="dropdown-item dropdown-item-menu-title">
+                <div class="dropdown-item dropdown-item-menu-title" v-if="user.type === 'MERCHANT'">
                   <label>Personal</label>
                 </div>
-                <div class="dropdown-item" v-on:click="redirect(item.route)" v-for="(item, index) in common.profileMenu" :key="index">
+                <div class="dropdown-item" v-on:click="redirect(item.route)" v-for="(item, index) in common.profileMenu" :key="index"  v-if="user.type === 'MERCHANT'">
                   <i v-bind:class="item.icon"></i>
                   <label>{{item.title}}</label>
                 </div>
@@ -234,7 +234,7 @@ body{
     float: left;
     height: 50px;
     font-size: 24px;
-    width: 18%;
+    width: 10%;
     text-align: center;
     position: fixed;
   }
@@ -330,18 +330,17 @@ body{
   }
 
   .navbar-nav {
-    flex-direction: row;
-    align-items: center;
-    vertical-align: center;
+    display: table;
+    height: 50px;
   }
 
   .navbar-nav .item {
     position: relative;
     text-align: center;
     height: fit-content;
-    margin: 0 .5rem;
-    padding: .5rem;
     cursor: pointer;
+    display: table-cell;
+    vertical-align: middle;
   }
 
   .navbar-nav .item::after {
@@ -386,7 +385,8 @@ body{
 .left-menu-icons, right-menu-icons{
   height: 50px;
   float: left;
-  width: 50%;
+  width: 53%;
+  margin-left: 5%;
   position: fixed;
   // z-index: 100;
 }
@@ -715,7 +715,7 @@ body{
 
  @media (min-width: 1200px){
     .system-header{
-      width: 18%;
+      width: 10%;
     }
     .header-navbar{
       width: 100%;
@@ -727,8 +727,8 @@ body{
       display: none;
     }
     .left-menu-icons{
-      width: 40% !important;
-      margin-left: 18%;
+      width: 61% !important;
+      margin-left: 5%;
     }
     .right-menu-icons{
       width: 60% !important;
@@ -737,7 +737,7 @@ body{
 
  @media (max-width: 1199px){
     .system-header{
-      width: 18%;
+      width: 10%;
     }
     .header-navbar{
       width: 100%;
@@ -749,8 +749,8 @@ body{
       display: none;
     }
     .left-menu-icons{
-      width: 60% !important;
-      margin-left: 25%;
+      width: 78% !important;
+      margin-left: 5%;
     }
     .right-menu-icons{
       width: 40%;
@@ -762,7 +762,7 @@ body{
 
 @media (max-width: 991px){
    .system-header{
-      width: 26%;
+      width: 10%;
     }
 
     .header-navbar{
@@ -783,7 +783,7 @@ body{
       display: block;
     }
     .left-menu-icons{
-      width: 30% !important;
+      width: 40% !important;
     }
     .right-menu-icons{
       width: 65% !important;
@@ -800,7 +800,7 @@ body{
     }
     
     .system-header{
-      width: 15%;
+      width: 10%;
     }
 
     .navbar-menu-toggler-md {
@@ -825,7 +825,7 @@ body{
     }
 
     .left-menu-icons{
-      width: 20% !important;
+      width: 28% !important;
     }
 
     .right-menu-icons{

@@ -6,7 +6,7 @@
           <span class="text-primary" v-if="user.subAccount.merchant === null">{{user.username}}</span>
           <span class="text-primary" v-else>{{user.subAccount.merchant.name}}</span>
         </h4>
-        <small v-if="user.subAccount.merchant === null" class="ml-3 text-danger">Looks like you haven't setup your business information! <b @click="redirect('/profile/merchant')" class="link text-danger">Click here</b> to start!</small>
+        <small v-if="user.type === 'MERCHANT' && user.subAccount.merchant === null" class="ml-3 text-danger">Looks like you haven't setup your business information! <b @click="redirect('/profile/merchant')" class="link text-danger">Click here</b> to start!</small>
       </div>
       <div class="col-md-4 col-sm-12">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
@@ -60,7 +60,7 @@
           <empty-dynamic v-else :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
         </div>
       </div>
-      <div class="col-md-8 col-sm-12">
+      <div class="col-md-8 col-sm-12" v-if="user.type === 'MERCHANT'">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
           <label class="col m-0 p-0 font-weight-bold">Summary today</label>
           <button class="pull-right btn btn-primary" @click="redirect('/orders')">Go to orders</button>
@@ -88,6 +88,12 @@
               :series="series"
             >
             </topAffectedPlaces>
+        </div>
+      </div>
+
+      <div class="col-md-8 col-sm-12" v-if="user.type === 'RIDER'">
+        <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg text-center">
+          <label class="col m-0 p-0 font-weight-bold">Coming soon!</label>
         </div>
       </div>
     </div>
