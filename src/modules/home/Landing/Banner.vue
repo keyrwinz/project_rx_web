@@ -94,7 +94,6 @@ import SETTINGS from 'src/modules/home/settings.js'
 import COMMON from 'src/common.js'
 export default {
   mounted(){
-    this.getData()
   },
   data(){
     return {
@@ -105,19 +104,6 @@ export default {
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    getData() {
-      $.get('https://spreadsheets.google.com/feeds/cells/1di9gJrHSrzCJ61XitNlNV5zga8v2LHas0VdNVNfNO3I/4/public/values?alt=json', response => {
-        let entries = response.feed.entry
-        for (var i = 0; i < entries.length; i += 3) {
-          if(i > 2){
-            this.downloads[entries[i].content.$t] = {
-              version: entries[i + 1].content.$t,
-              link: entries[i + 2].content.$t
-            }
-          }
-        }
-      })
     }
   }
 }

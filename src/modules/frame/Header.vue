@@ -19,6 +19,10 @@
           <li class="item" @click="redirect('/marketplace')">
             <span class="nav-link" style="padding-left: 10px;">Marketplace</span>
           </li>
+
+          <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
+            <span class="nav-link" style="padding-left: 10px;">Management</span>
+          </li>
         </ul>
       </span>
       <div class="navbar-collapse collapse" id="navPages">
@@ -29,6 +33,10 @@
 
           <li class="item" @click="redirect('/marketplace')">
             <span class="nav-link" style="padding-left: 10px;">Marketplace</span>
+          </li>
+
+          <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
+            <span class="nav-link" style="padding-left: 10px;">Management</span>
           </li>
         </ul>
       </div>

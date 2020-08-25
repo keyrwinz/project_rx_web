@@ -60,7 +60,7 @@
           <empty-dynamic v-else :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
         </div>
       </div>
-      <div class="col-md-8 col-sm-12" v-if="user.type === 'MERCHANT'">
+      <div class="col-md-8 col-sm-12" v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
         <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
           <label class="col m-0 p-0 font-weight-bold">Summary today</label>
           <button class="pull-right btn btn-primary" @click="redirect('/orders')">Go to orders</button>
