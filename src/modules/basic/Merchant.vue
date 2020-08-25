@@ -221,14 +221,22 @@ export default {
         }
       })
     },
-    update(url){
+    update(url = null){
       if(this.data.email !== null && AUTH.validateEmail(this.data.email) === false){
         this.errorMessage = 'Invalid email address.'
         return
       }
+      if(this.data.name === '' || this.data.name === null){
+        this.errorMessage = 'Invalid business name.'
+        return
+      }
       if(this.createFlag === false){
-        this.data.logo = url
-        this.newProfile.url = url
+        if(url) {
+          this.data.logo = url
+          this.newProfile.url = url
+        } else {
+          this.newProfile.url = this.data.logo
+        }
         let path
         if(this.user.profile === null) {
           path = 'create'
@@ -245,7 +253,7 @@ export default {
                 this.retrieve()
                 this.successMessage = 'Successfully Updated!'
                 this.errorMessage = null
-                AUTH.checkAuthentication()
+                // AUTH.checkAuthentication(null, true)
               } else {
                 this.successMessage = null
                 this.errorMessage = 'Unable to Update! Please contact the administrator.'
@@ -272,7 +280,7 @@ export default {
           this.retrieve()
           this.successMessage = 'Successfully Updated!'
           this.errorMessage = null
-          AUTH.checkAuthentication(null, true)
+          // AUTH.checkAuthentication(null, true)
         }else{
           this.successMessage = null
           this.errorMessage = 'Unable to Update! Please contact the administrator.'
