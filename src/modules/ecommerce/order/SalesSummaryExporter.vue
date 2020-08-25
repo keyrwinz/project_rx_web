@@ -1,91 +1,70 @@
 <template>
   <div class="modal fade" id="SalesSummaryExporterModal" tabindex="-1" role="dialog" aria-labelledby="SalesSummaryExporterModal" aria-hidden="true">
     <div class="modal-dialog  modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="ModalTitle">Sales Summary</h5>
+      <div class="modal-content" >
+        <div class="modal-header bg-primary text-white" >
+          <h5 class="modal-title w-100 text-center" id="ModalTitle">Summary of Orders</h5>
           <button type="button" class="close" @click="hideModal()" aria-label="Close">
             <span aria-hidden="true" class="text-white">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div id="report">
-            <table class="table table-bordered table-responsive">
-              <tr>
-                <th><p>Expected Total Sales:</p></th><td>PHP {{salesReport.expectedTotalSales.toFixed(2)}}</td>
-              </tr>
-              <tr>
-                <th><p>Total Sales:</p></th><td>PHP {{salesReport.totalSales.toFixed(2)}}</td>
-              </tr>
-              <tr>
-                <th><p>Total num of Transactions:</p></th><td>{{salesReport.totalTransac}}</td>
-              </tr>
-              <tr>
-                <th><p>Completed Transactions:</p></th><td>{{salesReport.completedTransac}}</td>
-              </tr>
-              <tr>
-                <th><p>Pending Transactions:</p></th><td>{{salesReport.pendingTransac}}</td>
-              </tr>
-              <tr>
-                <th><p>Cancelled Transactions:</p></th><td>{{salesReport.cancelledTransac}}</td>
-              </tr>
-            </table>
-        </div>  
+          <div style="text-align:center;margin-bottom:20px">
+            <h5>{{user.subAccount.merchant.name}}</h5>
+            <p>{{user.subAccount.merchant.address}}<br>{{this.queryDate}}</p>
+          </div>
            <table v-if="data !== null" class="table table-bordered table-responsive">
             <thead>
-              <th>
-                Date
-              </th>
-              <th>
-                Order #
-              </th>
-              <th>
-                Location
-              </th>
-              <th>
-                Delivered by
-              </th>
-              <th>
-                Status
-              </th>
-              <th>
-                Total Amount
-              </th>
+              <th v-for="(data, index) in data.headers" :key="index">{{data.label}}</th>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in data" :key="index">
+              <tr v-for="(item, index) in data.body" :key="index">
                 <td>
                   {{item.date}}
                 </td>
                 <td>
                   {{item.order_number}}
                 </td>
-                  <!--<td>
-                  {{item.name}}
-                </td> -->
                 <td>
-                  <label :title="item.location" :alt="item.location">
-                    {{item.location !== null && item.location.length > 20 ? item.location.substring(0, 20) + '...' : item.location}}
-                  </label>
+                  {{item.name}}
                 </td>
                 <td class="text-uppercase">
                   {{item.assigned_rider}}
                 </td>
                 <td>
-                 <label >{{item.status}}</label>                
-                  <label >- {{item.type}}</label>
+                  <label >{{currency.displayWithCurrency(item.sub_total, item.currency ? item.currency : 'PHP')}}</label>                
                 </td>
-
+                <td>
+                  <label >{{currency.displayWithCurrency(item.shipping_fee, item.currency ? item.currency : 'PHP')}}</label>                
+                </td>
+                <td>
+                  <label >{{currency.displayWithCurrency(item.tax, item.currency ? item.currency : 'PHP')}}</label>                
+                </td>
                 <td>
                   {{currency.displayWithCurrency(item.total, item.currency ? item.currency : 'PHP')}}
                 </td>
               </tr>
+              <tr>
+                <td><p style="font-weight:500">Total</p></td>
+                <td></td><td></td><td></td>
+                <td>PHP {{ data.total[0].value.toFixed(2)}} </td>
+                <td>PHP {{ data.total[1].value.toFixed(2) }} </td>
+                <td>PHP {{ data.total[2].value.toFixed(2) }} </td>
+                <td>PHP {{ data.total[3].value.toFixed(2) }}</td>
+              </tr>
             </tbody>
-          </table>
+          </table>        
+          <span style="float:left;"><p style="display:inline;font-weight:500">Date published </p><span>{{ currentDate }}</span></span>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="download('pdf')">Download as PDF</button>
-          <button type="button" class="btn btn-primary" @click="download('csv')">Download as CSV</button>
+        <div class="modal-footer">    
+          <span style="margin-right:5%;color:#c5c5c5;font-weight:bold" v-if="data.body === null">cannot export an empty record. :( </span>  
+          <button type="button" class="btn btn-primary" :disabled="data.body === null" @click="download('pdf')">Export as PDF</button>
+          <vue-json-to-csv
+          :json-data="jsonData"
+          :csv-title="excelTitle"
+          >
+          <button type="button" class="btn btn-primary" :disabled="data.body === null" @click="download('csv')">Download as CSV</button>
+          </vue-json-to-csv>
           <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
         </div>
       </div>
@@ -97,21 +76,11 @@
   .bg-primary{
     background: $primary !important;
   }
-  #report{
-    width: 60%;
-  }
-  #report p{
-    font-weight: bold
-  }
-  #report th{
-    width: 50%;
-  }
-  /* Important part */
   .modal-dialog{
     overflow-y: initial !important
   }
   .modal-body{
-     height: 430px;
+    height: 70vh;
     overflow-y: auto;
   }
 </style>
@@ -121,21 +90,39 @@ import CONFIG from 'src/config.js'
 import COMMON from 'src/common.js'
 import CURRENCY from 'src/services/currency.js'
 import lodash from 'lodash'
-import SummaryExporter from './SummaryExporter.js'
+import PDF from './handlers/pdf'
+import CSV from './handlers/csv'
+import VueJsonToCsv from 'vue-json-to-csv'
+import DateManipulation from './handlers/dateManipulation.js'
 export default {
   name: 'SummarySalesExporter',
-  mounted(){},
+  components: {VueJsonToCsv},
   data(){
     return {
-      data: {},
-      salesReport: {
-        expectedTotalSales: 0,
-        totalSales: 0,
-        totalTransac: 0,
-        completedTransac: 0,
-        pendingTransac: 0,
-        cancelledTransac: 0
+      data: {
+        headers: [
+          {name: 'date', label: 'Date', type: 'date'},
+          {name: 'order_number', label: 'Order #', type: 'int'},
+          {name: 'name', label: 'Customer', type: 'string'},
+          {name: 'assigned_rider', label: 'Delivered by', type: 'string'},
+          {name: 'sub_total', label: 'Subtotal', type: 'money'},
+          {name: 'shipping_fee', label: 'Shipping Fee', type: 'money'},
+          {name: 'tax', label: 'Tax', type: 'money'},
+          {name: 'total', label: 'Total', type: 'money'}
+        ],
+        body: {
+        },
+        total: [
+          {name: 'sub_total', value: 0},
+          {name: 'shipping_fee', value: 0},
+          {name: 'tax', value: 0},
+          {name: 'total', value: 0}
+        ]
       },
+      jsonData: [],
+      currentDate: '',
+      queryDate: '',
+      excelTitle: 'Summary of Orders',
       user: AUTH.user,
       config: CONFIG,
       currency: CURRENCY
@@ -152,18 +139,13 @@ export default {
     },
     download(type){
       if(type === 'pdf'){
-        console.log('data', this.data)
-        SummaryExporter.toPDF(this.data, this.salesReport)
-      }else if(type === 'csv'){
-
+        PDF.toPDF('Summary of Orders', this.data, this.user, this.queryDate)
+      }
+      if(type === 'csv'){
+        this.jsonData = CSV.toCSV(this.data, this.user, this.date)
       }
     },
     retrieve(){
-      var tempDate = new Date(this.date)
-      var nextDate = [tempDate.getFullYear(),
-        tempDate.getMonth() + 1 < 10 ? '0' + (tempDate.getMonth() + 1) : tempDate.getMonth() + 1,
-        tempDate.getDate() + 1
-      ].join('-')
       let parameter = {
         condition: [{
           value: this.user.subAccount.merchant.id,
@@ -176,7 +158,7 @@ export default {
           clause: '>='
         },
         {
-          value: nextDate,
+          value: DateManipulation.getNextDay(this.date),
           column: 'created_at',
           clause: '<'
         }],
@@ -188,47 +170,22 @@ export default {
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
-          this.data = response.data
+          this.data.body = response.data
         }else{
-          this.data = null
+          this.data.body = null
         }
-        this.salesReport.expectedTotalSales = this.getSales()
-        this.salesReport.totalSales = this.getSales('completed')
-        this.salesReport.totalTransac = this.getTransactionCount()
-        this.salesReport.completedTransac = this.getTransactionCount('completed')
-        this.salesReport.pendingTransac = this.getTransactionCount('pending')
-        this.salesReport.cancelledTransac = this.getTransactionCount('cancelled')
+        this.currentDate = DateManipulation.currentDate()
+        this.queryDate = DateManipulation.dateFormat(new Date(this.date))
+        this.data.total[0].value = this.getTotal('sub_total')
+        this.data.total[1].value = this.getTotal('shipping_fee')
+        this.data.total[2].value = this.getTotal('tax')
+        this.data.total[3].value = this.getTotal('total')
       })
     },
-    getSales(status = null){
-      if(status === 'completed'){
-        return lodash.sumBy(this.data, (val) => {
-          if(val.status === 'completed'){
-            return val.total
-          }else{
-            return 0
-          }
-        })
-      }
-      return lodash.sumBy(this.data, (val) => {
-        return val.total
+    getTotal(type){
+      return lodash.sumBy(this.data.body, (val) => {
+        return val[type]
       })
-    },
-    getTransactionCount(type = null){
-      let data = lodash.countBy(this.data, (val) => {
-        return val.status
-      })
-      if(type === null){
-        let count = 0
-        for (const [key, value] of Object.entries(data)) {
-          count += value
-        }
-        return count
-      }
-      if(type in data){
-        return data[type]
-      }
-      return 0
     }
   }
 }
