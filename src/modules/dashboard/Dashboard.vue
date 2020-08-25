@@ -330,7 +330,7 @@ export default{
     getSummary(){
       let parameter = {
         merchant_id: this.user.subAccount.merchant.id,
-        date: 2020
+        date: this.searchDate
       }
       this.APIRequest('checkouts/summary_of_orders', parameter).then(response => {
         console.log('this is the result line 336 dashboard ', response.data)
