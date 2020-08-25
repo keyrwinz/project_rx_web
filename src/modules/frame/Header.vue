@@ -13,20 +13,20 @@
       <span class="left-menu-icons">
         <!-- <label class="account-type  hide-on-mobile bg-warning" v-if="!common.header.indexOf('status') && user !== null">{{user.type}}</label> -->
         <ul class="navbar-nav">
-          <li class="item" v-for="(item, index) in menu" :class="[{'selected': item.flag || $route.path === '/' + item.path}]" :key="index" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && (item.accountStatus === 'ALL' || (user.subAccount === null || (user.subAccount !== null && user.subAccount.status === item.accountStatus)))" @click="setActive(index)">
-            <span class="nav-link">{{item.description}}</span>
+          <li class="item" @click="redirect('/dashboard')">
+            <span class="nav-link" style="padding-left: 10px;">Dashboard</span>
           </li>
         </ul>
       </span>
       <div class="navbar-collapse collapse" id="navPages">
         <ul class="navbar-nav">
-          <li class="item" v-for="(item, index) in menu" :class="[{'selected': item.flag || $route.path === '/' + item.path}]" :key="index" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && (item.accountStatus === 'ALL' || (user.subAccount === null || (user.subAccount !== null && user.subAccount.status === item.accountStatus)))" @click="setActive(index)">
-            <span class="nav-link">{{item.description}}</span>
+          <li class="item" @click="redirect('/dashboard')">
+            <span class="nav-link"  style="padding-left: 10px;">Dashboard</span>
           </li>
         </ul>
       </div>
       <div class="right-menu-icons d-flex ml-auto justify-content-end align-items-center pr-0 h-100">
-        <span v-if="user.subAccount.merchant" class="pr-3 text-white text-right"><span class="d-none d-md-inline">Logged in as:</span> <b>{{user.subAccount.merchant.name}}</b></span>
+        <span v-if="user.subAccount.merchant" class="pr-3 text-white text-right"><b>{{user.subAccount.merchant.name !== null && user.subAccount.merchant.name.length > 10 ? user.subAccount.merchant.name.substr(0, 10) + '..' : user.subAccount.merchant.name}}</b></span>
         <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')"> 
             <span>
               <i class="fa fa-bell text-white"></i>
