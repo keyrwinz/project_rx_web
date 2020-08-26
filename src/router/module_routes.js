@@ -12,7 +12,7 @@ let beforeEnter = (to, from, next) => {
       next()
     }
   }else if(to.meta.tokenRequired === true){
-    next({path: '/'})
+    next({path: AUTH.getRedirectPerUserType()})
   }else{
     next()
   }
