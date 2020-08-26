@@ -137,15 +137,17 @@ export default {
             'column': 'id'
           }]
         }
-        vue.APIRequest('accounts/retrieve', parameter).then(response => {
-          if(response.data.length > 0){
-            this.otpDataHolder.userInfo = userInfo
-            this.otpDataHolder.data = response.data
-            this.checkOtp(response.data[0].notification_settings)
-          }
-        })
-        this.retrieveNotifications(userInfo.id)
-        // this.retrieveMessages(userInfo.id, userInfo.account_type)
+        this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, null, null, null, userInfo.code, null, true)
+        setTimeout(() => {
+          vue.APIRequest('accounts/retrieve', parameter).then(response => {
+            if(response.data.length > 0){
+              this.otpDataHolder.userInfo = userInfo
+              this.otpDataHolder.data = response.data
+              this.checkOtp(response.data[0].notification_settings)
+            }
+          })
+          this.retrieveNotifications(userInfo.id)
+        }, 100)
         if(callback){
           callback(userInfo)
         }
