@@ -2,7 +2,7 @@
   <div class="locations">
     <div class="header row justify-content-between align-items-center">
       <span class="ml-2 title">Locations</span>
-      <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#newLocation"> <span class="fa fa-plus mr-2"></span> Add Location</button>
+      <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#newLocation" v-if="data === null"> <span class="fa fa-plus mr-2"></span> Add Location</button>
     </div>
     <span class="content">
       <empty-dynamic v-if="data === null" :title="'No Locations'" :action="'Add the location of your branches'" :icon="'fa fa-building'" :iconColor="'text-danger'"></empty-dynamic>
@@ -78,7 +78,7 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-danger" data-dismiss="modal" @click="selectedBranch = null">Cancel</button>
-            <button class="btn btn-success" @click="selectedItem ? update() : addNew()">Submit</button>
+            <button class="btn btn-primary" @click="selectedItem ? update() : addNew()">Submit</button>
           </div>
         </div>
       </div>
@@ -125,8 +125,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-dark" @click="hide()">Cancel</button>
-            <button class="btn btn-success" @click="editBranch()">Rename</button>
+            <button class="btn btn-danger" @click="hide()">Cancel</button>
+            <button class="btn btn-primary" @click="editBranch()">Rename</button>
           </div>
         </div>
       </div>
@@ -285,18 +285,28 @@ export default {
         error = true
       }
 
+      if(this.user.subAccount.merchant === null) {
+        $('<div>', {
+          class: 'form-group text-danger error-msg',
+          html: 'Merchant settings is empty.'
+        }).prependTo('#newLocation .modal-body')
+
+        error = true
+      }
+
       if(!error) {
         this.location.route = branchName
         let par = this.location
         par.autogenerate = true
         par.account_id = this.user.userID
+        par.merchant_id = this.user.subAccount.merchant.id
 
         $('#loading').css({display: 'block'})
         this.APIRequest('locations/create', par).then(response => {
           this.location = null
           $('#branch').val('')
           this.retrieve()
-          this.hideModal()
+          this.hide()
         })
       }
     },
