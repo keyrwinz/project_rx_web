@@ -1,29 +1,33 @@
 <template>
-<div class="empty">
-	<div class="jumbotron mb-0" id="jumboID">
-		<div class="position-absolute w-100">
-			<!-- <img class="img-fluid" src="https://www.arborday.org/images/hero/medium/hero-aerial-forest-evergreen-trees.jpg"> -->
-		</div>
-		<h1 class="display-4 text-white">{{header}}</h1>
-		<p class="lead text-white">{{subheader}}</p>
-		<hr class="my-4">
-			<div class="container row m-0 justify-content-around w-100">
-						<!-- card starts -->
-						<div class="card mb-5" style="width: 18rem;" v-for="(item, index) in this.data" :key="index" >
-							<!-- <img src="..." class="card-img-top" alt="..."> -->
-							<div class="card-body row m-0 flex-column justify-content-end">
-								<h5 class="card-title">
-                  <img class="card-img-top" :src="config.BACKEND_URL + item.featured[0].url">
-                  {{item.title}}
-                </h5>
-								<p class="card-text align-bottom">{{item.price[0].currency === 'PHP' ? '₱' : ''}} {{item.price[0].price}}</p>
-								<button @click="redirect('/marketplace/product/'+item.code+'/preview')" class="btn btn-primary">View product page</button>
-					</div>
-				</div>
-			</div>
-			<!-- <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
-		</div>
-	</div>
+  <div class="empty">
+  	<div class="jumbotron mb-0" id="jumboID">
+  		<div class="position-absolute w-100">
+  			<!-- <img class="img-fluid" src="https://www.arborday.org/images/hero/medium/hero-aerial-forest-evergreen-trees.jpg"> -->
+  		</div>
+  		<h1 class="display-4 text-white">{{header}}</h1>
+  		<p class="lead text-white">{{subheader}}</p>
+        <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
+         <img alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
+        </a>
+        <a class="" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null">
+         <img alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
+        </a>
+  	<!-- 	<hr class="my-4">
+  			<div class="container row m-0 justify-content-around w-100">
+  				<div class="card mb-5" style="width: 18rem;" v-for="(item, index) in this.data" :key="index" >
+  					<div class="card-body row m-0 flex-column justify-content-end">
+  						<h5 class="card-title">
+                <img class="card-img-top" :src="config.BACKEND_URL + item.featured[0].url">
+                {{item.title}}
+              </h5>
+  						<p class="card-text align-bottom">{{item.price[0].currency === 'PHP' ? '₱' : ''}} {{item.price[0].price}}</p>
+  						<button @click="redirect('/marketplace/product/'+item.code+'/preview')" class="btn btn-primary">View product page</button>
+  					</div>
+  				</div>
+  			</div>
+  		</hr> -->
+  	</div>
+  </div>
 </template>
 <style scoped>
   #banner{
@@ -60,6 +64,11 @@
     }   .empty .description{
       font-size: 24px;
     }
+
+    img{
+      height: 80px;
+      width: auto;
+    }
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -70,14 +79,15 @@ import axios from 'axios'
 import {featuredProducts} from 'src/data-test.js'
 export default {
   mounted(){
-    this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
+    // this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
   },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG,
       featured: featuredProducts,
-      data: null
+      data: null,
+      common: COMMON
     }
   },
   props: {

@@ -163,9 +163,23 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/accounts',
+    path: '/admin/accounts',
     name: 'accounts',
     component: resolve => require(['modules/admin/Accounts.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/admin/charges',
+    name: 'charges',
+    component: resolve => require(['modules/admin/Charges.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/admin/promos',
+    name: 'promos',
+    component: resolve => require(['modules/admin/Promos.vue'], resolve),
     meta: {
       tokenRequired: true
     }

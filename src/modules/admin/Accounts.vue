@@ -1,5 +1,8 @@
 <template>
   <div class="ledger-summary-container">
+    
+    <management-options />
+
     <basic-filter 
       v-bind:category="category" 
       :activeCategoryIndex="0"
@@ -13,6 +16,7 @@
       :active="activePage"
       :limit="limit"
       />
+
     <table class="table table-bordered table-responsive" v-if="data !== null">
       <thead class="bg-primary">
         <tr>
@@ -21,6 +25,7 @@
           <td>Email</td>
           <td>Type</td>
           <td>Status</td>
+          <td>Actions</td>
         </tr>
       </thead>
       <tbody>
@@ -45,6 +50,11 @@
             </span>
           </td>
           <td>{{item.status}}</td>
+          <td>
+            <button class="btn btn-primary" @click="showAddressModal(item)">
+              <i class="fa fa-cog"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -185,9 +195,9 @@ import Pager from 'src/components/increment/generic/pager/Pager.vue'
 export default{
   mounted(){
     if(this.user.type !== 'ADMIN'){
-      ROUTER.push('/dashboard')
+      ROUTER.push('/marketplace')
     }
-    $('#loading').css({display: 'block'})
+    // $('#loading').css({display: 'block'})
     this.retrieve({created_at: 'desc'}, {column: 'created_at', value: ''})
   },
   data(){
@@ -239,17 +249,46 @@ export default{
       editTypeIndex: null,
       newAccountType: null,
       selectedAccount: null,
-      limit: 10,
+      limit: 5,
       activePage: 1,
       numPages: null,
-      selectedItem: null
+      selectedItem: null,
+      location: null,
+      brgyCode: null,
+      googleProperty: {
+        style: {
+          height: '45px !important'
+        },
+        GOOGLE_API_KEY: CONFIG.GOOGLE_API_KEY,
+        results: {
+          style: {
+          }
+        },
+        placeholder: 'Type Location'
+      },
+      customLocation: {
+        route: null,
+        latitude: null,
+        longitude: null,
+        locality: null,
+        region: null,
+        country: null
+      },
+      locationFlag: 'autocomplete'
     }
   },
   components: {
     'empty': require('components/increment/generic/empty/Empty.vue'),
-    'basic-filter': require('components/increment/generic/filter/Basic.vue')
+    'basic-filter': require('components/increment/generic/filter/Basic.vue'),
+    'google-autocomplete-location': require('src/components/increment/generic/location/GooglePlacesAutoComplete.vue'),
+    'management-options': require('modules/admin/Menu.vue'),
+    Pager
   },
   methods: {
+    showAddressModal(item){
+      this.selectedItem = item
+      $('#addAddressAccount').modal('show')
+    },
     setEditTypeIndex(index, item){
       if(index === this.editTypeIndex){
         this.editTypeIndex = null
@@ -269,7 +308,7 @@ export default{
         id: item.id,
         account_type: this.newAccountType
       }
-      $('#loading').css({display: 'block'})
+      // $('#loading').css({display: 'block'})
       this.APIRequest('accounts/update_account_type', parameter).then(response => {
         $('#loading').css({display: 'none'})
         this.setEditTypeIndex(index, item)
@@ -321,7 +360,7 @@ export default{
           id: item.id,
           status: 'GRANTED'
         }
-        $('#loading').css({display: 'block'})
+        // $('#loading').css({display: 'block'})
         this.APIRequest('accounts/update_verification', parameter).then(response => {
           $('#loading').css({display: 'none'})
           this.retrieve(null, null)

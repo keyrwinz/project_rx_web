@@ -126,5 +126,14 @@ export default {
   },
   broadcastingFlag: true,
   passwordLimit: 8,
-  alertFlag: false
+  alertFlag: false,
+  appUrl: {
+    android: 'https://playtore.test',
+    ios: 'https://appstore.test'
+  },
+  headerFlag: {
+    messenger: false,
+    notification: false,
+    cart: false
+  }
 }

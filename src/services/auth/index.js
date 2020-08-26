@@ -92,12 +92,18 @@ export default {
       localStorage.setItem('account_id', this.user.userID)
       localStorage.setItem('account/' + code, JSON.stringify(this.user))
       if(flag){
-        ROUTER.push(type === 'USER' ? '/welcome' : '/dashboard')
+        ROUTER.push(this.getRedirectPerUserType())
       }
     }
     setTimeout(() => {
       this.tokenData.loading = false
     }, 1000)
+  },
+  getRedirectPerUserType(){
+    if(this.user.type === null){
+      return '/marketplace'
+    }
+    return this.user.type === 'USER' ? '/marketplace' : '/dashboard'
   },
   setToken(token){
     this.tokenData.token = token
@@ -375,6 +381,7 @@ export default {
     let subAccount = data[0].sub_account
     let location = data[0].location
     this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, true)
+    this.getRedirectPerUserType()
   },
   setGoogleCode(code, scope){
     localStorage.setItem('google_code', code)

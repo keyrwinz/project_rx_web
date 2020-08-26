@@ -2,11 +2,6 @@
 	<div class="body">
 		<landing-banner></landing-banner>
     <test-banner :data="data" :checkout="checkout"></test-banner>
-    <div>
-      <button class="btn btn-primary" @click="showModal()" style="margin-top: 100px;">
-        Show products
-      </button>
-    </div>
 	</div>
 </template>
 <script>

@@ -78,7 +78,7 @@ export default {
   mounted(){
     if(!this.user || this.user.type === 'USER') {
       // ROUTER.push('/featured')
-      ROUTER.push('/welcome')
+      ROUTER.push('/marketplace')
     }
 
     this.retrieve()

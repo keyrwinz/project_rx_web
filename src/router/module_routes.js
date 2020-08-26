@@ -7,7 +7,7 @@ let beforeEnter = (to, from, next) => {
   let token = localStorage.getItem('usertoken')
   if(token !== null && userID > 0){
     if(to.path === '/' || to.meta.tokenRequired === false){
-      next({path: '/dashboard'})
+      next({path: AUTH.getRedirectPerUserType()})
     }else{
       next()
     }

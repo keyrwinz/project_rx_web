@@ -2,9 +2,9 @@
   <div>
     <nav class="header-navbar">
       <div class="system-header navbar navbar-expand-md">
-        <a class="navbar-brand" v-on:click="redirect('dashboard')">
+        <a class="navbar-brand text-right" v-on:click="redirect('dashboard')">
           <img :src="require('src/assets/img/favicon-alt.png')" class="logo-brand">
-          <label class="navbar-brand hide-on-mobile text-white" v-html="common.APP_NAME_HTML"></label>
+          <!-- <label class="navbar-brand hide-on-mobile text-white" v-html="common.APP_NAME_HTML"></label> -->
         </a>
       </div>
       <span class="navbar-menu-toggler-md" v-bind:class="{'active-menu': menuFlag === true}" data-toggle="collapse" data-target="#navPages" aria-controls="navPages" aria-expanded="false" aria-label="Toggle navigation" v-on:click="makeActive('menu')">
@@ -14,20 +14,37 @@
         <!-- <label class="account-type  hide-on-mobile bg-warning" v-if="!common.header.indexOf('status') && user !== null">{{user.type}}</label> -->
         <ul class="navbar-nav">
           <li class="item" @click="redirect('/dashboard')">
-            <span class="nav-link" style="padding-left: 10px;">Dashboard</span>
+            <span class="nav-link"  style="padding: 0 10px 0 10px;">Dashboard</span>
+          </li>
+
+          <li class="item" @click="redirect('/marketplace')">
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Marketplace</span>
+          </li>
+
+          <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Management</span>
           </li>
         </ul>
       </span>
       <div class="navbar-collapse collapse" id="navPages">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" v-if="user.type !== 'USER'">
           <li class="item" @click="redirect('/dashboard')">
-            <span class="nav-link"  style="padding-left: 10px;">Dashboard</span>
+            <span class="nav-link"  style="padding: 0 10px 0 10px;">Dashboard</span>
+          </li>
+
+          <li class="item" @click="redirect('/marketplace')">
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Marketplace</span>
+          </li>
+
+          <li class="item" @click="redirect('/admin/accounts')" v-if="user.type === 'ADMIN'">
+            <span class="nav-link" style="padding: 0 10px 0 10px;">Management</span>
           </li>
         </ul>
       </div>
       <div class="right-menu-icons d-flex ml-auto justify-content-end align-items-center pr-0 h-100">
         <span v-if="user.subAccount.merchant" class="pr-3 text-white text-right"><b>{{user.subAccount.merchant.name !== null && user.subAccount.merchant.name.length > 10 ? user.subAccount.merchant.name.substr(0, 10) + '..' : user.subAccount.merchant.name}}</b></span>
-        <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')"> 
+       
+        <div class="dropdown row col-auto h-100 align-items-center" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif')" v-bind:onkeypress="makeActive('')" v-if="common.headerFlag.notification === true"> 
             <span>
               <i class="fa fa-bell text-white"></i>
               <label class="notifications badge-danger" v-if="parseInt(user.notifications.current) > 0">{{user.notifications.current}}</label>
@@ -47,7 +64,7 @@
             </span>
         </div>
 
-        <div class="h-100"> 
+        <div class="h-100" v-if="common.headerFlag.messenger === true"> 
             <div class="dropdown row col-auto h-100 align-items-center" data-toggle="dropdown" id="messages" aria-haspopup="true" aria-expanded="false">
               <div>
                 <i class="fas fa-envelope text-white"></i>
@@ -71,7 +88,7 @@
             </div>
         </div>
 
-        <checkout-cart></checkout-cart>
+        <checkout-cart v-if="common.headerFlag.cart === true"></checkout-cart>
 
         <!-- market options here -->
         <div class="h-100" v-if="user.type === 'MERCHANT'">
@@ -101,10 +118,10 @@
               </div>
               <i v-else class="far fa-user-circle text-white" style="font-size: 30px;"></i>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="settings">
-                <div class="dropdown-item dropdown-item-menu-title">
+                <div class="dropdown-item dropdown-item-menu-title" v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
                   <label>Personal</label>
                 </div>
-                <div class="dropdown-item" v-on:click="redirect(item.route)" v-for="(item, index) in common.profileMenu" :key="index">
+                <div class="dropdown-item" v-on:click="redirect(item.route)" v-for="(item, index) in common.profileMenu" :key="index"  v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
                   <i v-bind:class="item.icon"></i>
                   <label>{{item.title}}</label>
                 </div>
@@ -112,10 +129,10 @@
                   <label>Documents</label>
                 </span>
                 <!--GUIDE-->
-                <span class="dropdown-item" @click="openModal('#guideModal')">
+<!--                 <span class="dropdown-item" @click="openModal('#guideModal')">
                   <i class="far fa-question-circle"></i>
                   <label>Guide</label>
-                </span>
+                </span> -->
                 <!--PRIVACY POLICY-->
                 <span class="dropdown-item" @click="openModal('#privacyModal')">
                   <i class="fas fa-shield-alt"></i>
@@ -234,7 +251,7 @@ body{
     float: left;
     height: 50px;
     font-size: 24px;
-    width: 18%;
+    width: 10%;
     text-align: center;
     position: fixed;
   }
@@ -330,18 +347,17 @@ body{
   }
 
   .navbar-nav {
-    flex-direction: row;
-    align-items: center;
-    vertical-align: center;
+    display: table;
+    height: 50px;
   }
 
   .navbar-nav .item {
     position: relative;
     text-align: center;
     height: fit-content;
-    margin: 0 .5rem;
-    padding: .5rem;
     cursor: pointer;
+    display: table-cell;
+    vertical-align: middle;
   }
 
   .navbar-nav .item::after {
@@ -386,7 +402,8 @@ body{
 .left-menu-icons, right-menu-icons{
   height: 50px;
   float: left;
-  width: 50%;
+  width: 53%;
+  margin-left: 5%;
   position: fixed;
   // z-index: 100;
 }
@@ -715,7 +732,7 @@ body{
 
  @media (min-width: 1200px){
     .system-header{
-      width: 18%;
+      width: 10%;
     }
     .header-navbar{
       width: 100%;
@@ -727,8 +744,8 @@ body{
       display: none;
     }
     .left-menu-icons{
-      width: 40% !important;
-      margin-left: 18%;
+      width: 61% !important;
+      margin-left: 5%;
     }
     .right-menu-icons{
       width: 60% !important;
@@ -737,7 +754,7 @@ body{
 
  @media (max-width: 1199px){
     .system-header{
-      width: 18%;
+      width: 10%;
     }
     .header-navbar{
       width: 100%;
@@ -749,8 +766,8 @@ body{
       display: none;
     }
     .left-menu-icons{
-      width: 60% !important;
-      margin-left: 25%;
+      width: 78% !important;
+      margin-left: 5%;
     }
     .right-menu-icons{
       width: 40%;
@@ -762,7 +779,7 @@ body{
 
 @media (max-width: 991px){
    .system-header{
-      width: 26%;
+      width: 10%;
     }
 
     .header-navbar{
@@ -783,7 +800,7 @@ body{
       display: block;
     }
     .left-menu-icons{
-      width: 30% !important;
+      width: 40% !important;
     }
     .right-menu-icons{
       width: 65% !important;
@@ -800,7 +817,7 @@ body{
     }
     
     .system-header{
-      width: 15%;
+      width: 10%;
     }
 
     .navbar-menu-toggler-md {
@@ -825,7 +842,7 @@ body{
     }
 
     .left-menu-icons{
-      width: 20% !important;
+      width: 28% !important;
     }
 
     .right-menu-icons{
