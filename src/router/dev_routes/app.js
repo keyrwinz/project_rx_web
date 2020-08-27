@@ -15,6 +15,13 @@ export default{
       tokenRequired: false
     }
   }, {
+    path: '/refer_register/:email/:code',
+    name: 'referRegister',
+    component: resolve => require(['components/increment/basic/Referral.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
+  }, {
     path: '/signup_partner',
     name: 'signupPartner',
     component: resolve => require(['components/increment/basic/SignupPartner.vue'], resolve),
