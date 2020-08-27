@@ -170,9 +170,16 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/admin/charges',
-    name: 'charges',
-    component: resolve => require(['modules/admin/Charges.vue'], resolve),
+    path: '/admin/deliveryfees',
+    name: 'deliveryfees',
+    component: resolve => require(['modules/admin/DeliveryFees.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/admin/fundtransferfees',
+    name: 'fundtransferfees',
+    component: resolve => require(['modules/admin/FundTransferFees.vue'], resolve),
     meta: {
       tokenRequired: true
     }
