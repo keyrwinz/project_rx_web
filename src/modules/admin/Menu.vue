@@ -52,7 +52,7 @@ export default {
         title: 'Accounts',
         route: '/admin/accounts'
       }, {
-        title: 'Charges',
+        title: 'Fund Transfer Charges',
         route: '/admin/charges'
       }, {
         title: 'Promos',
