@@ -16,6 +16,7 @@ ul{
   padding: 0px;
   float: left;
   margin-bottom: 25px;
+  width: 100%;
 }
 li{
   width: 200px;
@@ -52,8 +53,11 @@ export default {
         title: 'Accounts',
         route: '/admin/accounts'
       }, {
-        title: 'Fund Transfer Charges',
-        route: '/admin/charges'
+        title: 'Fund Transfer Fee',
+        route: '/admin/fundtransferfees'
+      }, {
+        title: 'Delivery Fee',
+        route: '/admin/deliveryfees'
       }, {
         title: 'Promos',
         route: '/admin/promos'
