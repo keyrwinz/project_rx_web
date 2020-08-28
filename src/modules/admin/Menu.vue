@@ -61,6 +61,9 @@ export default {
       }, {
         title: 'Promos',
         route: '/admin/promos'
+      }, {
+        title: 'Withdrawal Request',
+        route: '/admin/withdrawalRequest'
       }]
     }
   },
