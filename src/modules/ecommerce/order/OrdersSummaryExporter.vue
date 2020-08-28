@@ -1,6 +1,6 @@
 <template>
-  <div class="modal fade" id="SalesSummaryExporterModal" tabindex="-1" role="dialog" aria-labelledby="SalesSummaryExporterModal" aria-hidden="true">
-    <div class="modal-dialog  modal-md" role="document">
+  <div class="modal fade" id="OrdersSummaryExporterModal" tabindex="-1" role="dialog" aria-labelledby="SummaryExporterModal" aria-hidden="true">
+     <div class="modal-dialog  modal-md" role="document">
       <div class="modal-content" >
         <div class="modal-header bg-primary text-white" >
           <h5 class="modal-title w-100 text-center" id="ModalTitle">Summary of Orders</h5>
@@ -13,57 +13,22 @@
             <h5>{{user.subAccount.merchant.name}}</h5>
             <p>{{user.subAccount.merchant.address}}<br>{{this.queryDate}}</p>
           </div>
-           <table v-if="data !== null" class="table table-bordered table-responsive">
-            <thead>
-              <th v-for="(data, index) in data.headers" :key="index">{{data.label}}</th>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in data.body" :key="index">
-                <td>
-                  {{item.date}}
-                </td>
-                <td>
-                  {{item.order_number}}
-                </td>
-                <td>
-                  {{item.name}}
-                </td>
-                <td class="text-uppercase">
-                  {{item.assigned_rider}}
-                </td>
-                <td>
-                  <label >{{currency.displayWithCurrency(item.sub_total, item.currency ? item.currency : 'PHP')}}</label>                
-                </td>
-                <td>
-                  <label >{{currency.displayWithCurrency(item.shipping_fee, item.currency ? item.currency : 'PHP')}}</label>                
-                </td>
-                <td>
-                  <label >{{currency.displayWithCurrency(item.tax, item.currency ? item.currency : 'PHP')}}</label>                
-                </td>
-                <td>
-                  {{currency.displayWithCurrency(item.total, item.currency ? item.currency : 'PHP')}}
-                </td>
-              </tr>
-              <tr>
-                <td><p style="font-weight:500">Total</p></td>
-                <td></td><td></td><td></td>
-                <td>PHP {{ data.total[0].value.toFixed(2)}} </td>
-                <td>PHP {{ data.total[1].value.toFixed(2) }} </td>
-                <td>PHP {{ data.total[2].value.toFixed(2) }} </td>
-                <td>PHP {{ data.total[3].value.toFixed(2) }}</td>
-              </tr>
-            </tbody>
-          </table>        
-          <span style="float:left;"><p style="display:inline;font-weight:500">Date published </p><span>{{ currentDate }}</span></span>
+          <TemplateSummaryExport
+            :propsData="data"
+            :totalArr ="totals"
+          >
+          </TemplateSummaryExport>
+          <span style="float:left;" v-if="data.body !== null"><p style="display:inline;font-weight:500">Date published </p><span>{{ currentDate }}</span></span>
         </div>
         <div class="modal-footer">    
           <span style="margin-right:5%;color:#c5c5c5;font-weight:bold" v-if="data.body === null">cannot export an empty record. :( </span>  
-          <button type="button" class="btn btn-primary" :disabled="data.body === null" @click="download('pdf')">Export as PDF</button>
+          <button type="button" class="btn btn-primary" v-if="data.body !== null" @click="download('pdf')">Export as PDF</button>
           <vue-json-to-csv
           :json-data="jsonData"
           :csv-title="excelTitle"
+          v-if="data.body !== null"
           >
-          <button type="button" class="btn btn-primary" :disabled="data.body === null" @click="download('csv')">Download as CSV</button>
+          <button type="button" class="btn btn-primary" v-if="data.body !== null" @click="download('csv')">Download as CSV</button>
           </vue-json-to-csv>
           <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
         </div>
@@ -94,9 +59,10 @@ import PDF from './handlers/pdf'
 import CSV from './handlers/csv'
 import VueJsonToCsv from 'vue-json-to-csv'
 import DateManipulation from './handlers/dateManipulation.js'
+import TemplateSummaryExport from './TemplateSummaryExporter'
 export default {
-  name: 'SummarySalesExporter',
-  components: {VueJsonToCsv},
+  name: 'OrdersSummaryExporter',
+  components: {TemplateSummaryExport, VueJsonToCsv},
   data(){
     return {
       data: {
@@ -110,8 +76,7 @@ export default {
           {name: 'tax', label: 'Tax', type: 'money'},
           {name: 'total', label: 'Total', type: 'money'}
         ],
-        body: {
-        },
+        body: null,
         total: [
           {name: 'sub_total', value: 0},
           {name: 'shipping_fee', value: 0},
@@ -125,24 +90,59 @@ export default {
       excelTitle: 'Summary of Orders',
       user: AUTH.user,
       config: CONFIG,
-      currency: CURRENCY
+      currency: CURRENCY,
+      totals: {}
     }
   },
   props: ['date'],
   methods: {
     hideModal(){
-      $('#SalesSummaryExporterModal').modal('hide')
+      $('#OrdersSummaryExporterModal').modal('hide')
     },
     showModal(){
       this.retrieve()
-      $('#SalesSummaryExporterModal').modal('show')
     },
     download(type){
       if(type === 'pdf'){
-        PDF.toPDF('Summary of Orders', this.data, this.user, this.queryDate)
+        var headerPDF = {
+          columns: [
+            {
+              table: {
+                widths: ['*'],
+                heights: 50,
+                body: [[{ text: 'Summary of Orders', margin: [0, 15], style: 'filledHeader' }]]
+              },
+              layout: 'noBorders'
+            }
+          ]
+        }
+        var footerPDF = function(currentPage, pageCount){
+          return {
+            columns: [
+              {text: 'Date Published ' + DateManipulation.currentDate(), margin: [10, 0, 0, 0]},
+              {text: currentPage.toString() + ' of ' + pageCount, margin: [0, 0, 10, 0], style: 'footer'}
+            ]
+          }
+        }
+        var contentPDF = [
+          {text: this.user.subAccount.merchant.name, margin: [0, 20, 0, 0], style: 'title'},
+          {text: this.user.subAccount.merchant.address, style: 'header'},
+          {text: this.queryDate, margin: [0, 0, 0, 30], style: 'header'},
+          {
+            table: {
+              headerRows: 1,
+              margin: [20, 20],
+              widths: [70, 50, 60, 40, 70, 60, 60, '*'],
+              body: PDF.tableBodyGenerator(this.data)
+            },
+            layout: PDF.layout(),
+            pageBreak: 'after'
+          }
+        ]
+        PDF.toPDF(headerPDF, footerPDF, contentPDF)
       }
       if(type === 'csv'){
-        this.jsonData = CSV.toCSV(this.data, this.user, this.date)
+        this.jsonData = CSV.toCSV(this.data, this.user, this.date, 'orders')
       }
     },
     retrieve(){
@@ -180,6 +180,10 @@ export default {
         this.data.total[1].value = this.getTotal('shipping_fee')
         this.data.total[2].value = this.getTotal('tax')
         this.data.total[3].value = this.getTotal('total')
+        this.data.total.forEach(element => {
+          this.totals[element.name] = element.value
+        })
+        $('#OrdersSummaryExporterModal').modal('show')
       })
     },
     getTotal(type){
