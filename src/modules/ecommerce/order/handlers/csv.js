@@ -1,6 +1,6 @@
 import DateManipulation from './dateManipulation.js'
 export default{
-  toCSV(data, userData, dateCreated){
+  toCSV(data, userData, dateCreated, type){
     var tempvar = []
     tempvar.push(this.createObj(data, []))
     data.body.forEach(item => {
@@ -28,13 +28,16 @@ export default{
     }
     tempvar.push(this.createObj(data, tempArr))
     tempvar.push(this.createObj(data, []))
-    tempvar.push(this.createObj(data, ['Merchant Name', userData.subAccount.merchant.name]))
-    tempvar.push(this.createObj(data, ['Merchant Address', userData.subAccount.merchant.address]))
-    tempvar.push(this.createObj(data, ['Query Date', dateCreated]))
-    tempvar.push(this.createObj(data, ['Date Published', DateManipulation.currentDate()]))
+    if(type === 'orders'){
+      tempvar.push(this.createObj(data, ['Merchant Name', userData.subAccount.merchant.name]))
+      tempvar.push(this.createObj(data, ['Merchant Address', userData.subAccount.merchant.address]))
+      tempvar.push(this.createObj(data, ['Query Date', dateCreated]))
+      tempvar.push(this.createObj(data, ['Date Published', DateManipulation.currentDate()]))
+    }
     return tempvar
   },
   createObj(data, array){
+    console.log(data.headers)
     var tempObj = {}
     for(let count = 0; count < data.headers.length; count++){
       var value = ''

@@ -2,7 +2,13 @@
   <div class="order-holder">
     <div class="form-group">
       <input type="date" class="form-control form-control-custom" v-model="date">
-      <button class="btn btn-primary" style="margin-left: 5px;" @click="exportFile()" >Export as</button>
+      <div class="dropdown" style="display:inline">
+        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="margin-left: 5px;">Export<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <button class="btn btn-light" style="width:100%" @click="exportFile('orders_summary')" >Summary of Orders</button>
+          <button class="btn btn-light" @click="exportFile('inventory_summary')" >Summary of Inventory</button>
+        </ul>
+      </div>
       <button class="btn btn-warning" @click="searchByDate()">Search</button>
     </div>
     <div class="form-group text-center" v-if="auth.user.orders.length > 0">
@@ -111,10 +117,14 @@
       @updateRow="manageUpdateRow"
       ref="confirmedRiderModal"
     ></DeliveryConfirmation>
-    <SalesSummaryExporter
+     <OrdersSummaryExporter
       :date="date"
-      ref="SalesSummaryExporter"
-    ></SalesSummaryExporter>
+      ref="OrdersSummaryExporter"
+    ></OrdersSummaryExporter>
+    <InventorySummaryExporter
+      :date="date"
+      ref="InventorySummaryExporter"
+    ></InventorySummaryExporter>
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
   </div>
 </template>
@@ -156,7 +166,9 @@ import Pager from 'components/increment/generic/pager/Pager.vue'
 import Echo from 'laravel-echo'
 import DatePicker from 'vue2-datepicker'
 import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
-import SalesSummaryExporter from './SalesSummaryExporter.vue'
+import DateManipulation from './handlers/dateManipulation.js'
+import OrdersSummaryExporter from './OrdersSummaryExporter.vue'
+import InventorySummaryExporter from './InventorySummaryExporter.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
@@ -199,16 +211,51 @@ export default {
     Pager,
     DatePicker,
     DeliveryConfirmation,
-    SalesSummaryExporter
+    OrdersSummaryExporter,
+    InventorySummaryExporter
   },
   methods: {
-    exportFile(){
+    exportFile(name){
       if(this.date != null){
-        this.$refs.SalesSummaryExporter.showModal()
+        if(name === 'orders_summary'){
+          this.$refs.OrdersSummaryExporter.showModal()
+        }
+        if(name === 'inventory_summary'){
+          this.$refs.InventorySummaryExporter.showModal()
+        }
+
       }
     },
     searchByDate(){
-      //
+      let parameter = {
+        condition: [{
+          value: this.user.subAccount.merchant.id,
+          column: 'merchant_id',
+          clause: '='
+        },
+        {
+          value: this.date,
+          column: 'created_at',
+          clause: '>='
+        },
+        {
+          value: DateManipulation.getNextDay(this.date),
+          column: 'created_at',
+          clause: '<'
+        }],
+        sort: {
+          status: 'desc'
+        }
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+        }else{
+          this.data = null
+        }
+      })
     },
     disabledDates(date) {
       return date > new Date()
@@ -268,14 +315,6 @@ export default {
           value: this.user.subAccount.merchant.id,
           column: 'merchant_id',
           clause: '='
-        // }, {
-        //   value: selectedDate,
-        //   column: 'created_at',
-        //   clause: '>='
-        // }, {
-        //   value: selectedDate,
-        //   column: 'created_at',
-        //   clause: '<'
         }],
         sort: {
           status: 'desc'
@@ -307,6 +346,7 @@ export default {
       $('#loading').css({display: 'block'})
       this.APIRequest('checkout_items/retrieve_on_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
+        console.log('list item ', response)
         if(response.data.length > 0){
           this.selectedProducts = response.data
           this.$refs.viewProducts.showModal()

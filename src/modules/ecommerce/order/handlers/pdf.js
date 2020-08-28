@@ -19,48 +19,16 @@ export default{
       }
     }
   },
-  toPDF(title, data, userData, dateCreated){
-    pdfMake.createPdf(this.createDoc(title, data, userData, dateCreated)).open()
+  toPDF(headerPDF, footerPDF, contentPDF){
+    pdfMake.createPdf(this.createDoc(headerPDF, footerPDF, contentPDF)).open()
   },
-  createDoc(title, data, userData, dateCreated){
+  createDoc(headerPDF, footerPDF, contentPDF){
     return {
       pageSize: 'A4',
       pageMargins: [10, 60, 10, 30],
-      header: {
-        columns: [
-          {
-            table: {
-              widths: ['*'],
-              heights: 50,
-              body: [[{ text: title, margin: [0, 15], style: 'filledHeader' }]]
-            },
-            layout: 'noBorders'
-          }
-        ]
-      },
-      footer: function(currentPage, pageCount){
-        return {
-          columns: [
-            {text: 'Date Published ' + DateManipulation.currentDate(), margin: [10, 0, 0, 0]},
-            {text: currentPage.toString() + ' of ' + pageCount, margin: [0, 0, 10, 0], style: 'footer'}
-          ]
-        }
-      },
-      content: [
-        {text: userData.subAccount.merchant.name, margin: [0, 20, 0, 0], style: 'title'},
-        {text: userData.subAccount.merchant.address, style: 'header'},
-        {text: dateCreated, margin: [0, 0, 0, 30], style: 'header'},
-        {
-          table: {
-            headerRows: 1,
-            margin: [20, 20],
-            widths: [70, 50, 60, 40, 70, 60, 60, '*'],
-            body: this.tableBodyGenerator(data)
-          },
-          layout: this.layout(),
-          pageBreak: 'after'
-        }
-      ],
+      header: headerPDF,
+      footer: footerPDF,
+      content: contentPDF,
       styles: {
         boldHeader: {
           bold: true
