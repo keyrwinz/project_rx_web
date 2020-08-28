@@ -4,6 +4,7 @@
     <table class="table table-bordered table-responsive" v-if="data !== null">
       <thead>
         <tr>
+          <td>Date</td>
           <td>Requested by</td>
           <td>Amount</td>
           <td>Via</td>
@@ -14,7 +15,8 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
-          <td>{{item.account_id}}</td>
+          <td>{{item.date_human}}</td>
+          <td>{{item.name}}</td>
           <td>{{currency.displayWithCurrency(item.amount, item.currency)}}</td>
           <td>
             {{item.payment_payload + '/' + item.payment_payload_value}}
@@ -92,7 +94,7 @@ export default{
         limit: this.limit,
         offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
-      this.APIRequest('withdrawals/retrieve', parameter).then(response => {
+      this.APIRequest('withdrawals/retrieve_requests', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
