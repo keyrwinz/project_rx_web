@@ -2,27 +2,25 @@
   <div class="ledger-summary-container">
     
     <management-options />
-    <div class="form-group">
-      <button class="btn btn-primary pull-right" @click="showModal('create', null)">Add</button>
-    </div>
+    <button class="btn btn-primary pull-right mb-1" @click="showModal('create', null)">Add</button>
     <table class="table table-bordered table-responsive" v-if="data !== null">
-      <thead class="bg-primary">
+      <thead>
         <tr>
           <td>Location</td>
           <td>Minimum Charge</td>
-          <td>Minimum Distance(km)</td>
-          <td>Addtional Charge per km</td>
+          <td>Minimum Distance(Km)</td>
+          <td>Addtional Charge per Km</td>
           <td>Actions</td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
           <td>{{item.scope}}</td>
-          <td>{{item.minimum_charge}}</td>
-          <td>{{item.minimum_distance}}</td>
-          <td>{{item.addition_charge_per_distance}}</td>
+          <td>{{currency.displayWithCurrency(item.minimum_charge, item.currency)}}</td>
+          <td>{{item.minimum_distance}} Km</td>
+          <td>{{currency.displayWithCurrency(item.addition_charge_per_distance, item.currency)}}</td>
           <td>
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" @click="showModal('update', item)">
               <i class="fa fa-edit"></i>
             </button>
           </td>
@@ -47,11 +45,15 @@
   background-color: $primary !important; 
   color: white !important;
 }
+.fa{
+  padding-right: 0px !important;
+}
 </style>
 <script>
 import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
+import CURRENCY from 'src/services/currency.js'
 import COMMON from 'src/common.js'
 import Pager from 'src/components/increment/generic/pager/Pager.vue'
 import propertyModal from './DeliveryFeeModal.js'
@@ -70,7 +72,8 @@ export default{
       limit: 5,
       activePage: 1,
       numPages: null,
-      modalProperty: propertyModal
+      modalProperty: propertyModal,
+      currency: CURRENCY
     }
   },
   components: {
@@ -123,7 +126,7 @@ export default{
           if(input.variable === 'currency'){
             input.value = item.currency
           }
-          this.propertyModal = {...modalData}
+          this.modalProperty = {...modalData}
         })
       }
       $('#deliveryFeeModal').modal('show')

@@ -5,8 +5,8 @@
        <system-header v-bind:sidebarFlag="menu" ref="header"></system-header>
        <!-- <system-sidebar v-bind:menuFlag="menu" @toggleSidebar="toggleSidebar"></system-sidebar> -->
        <div class="content-holder mx-auto container-fluid" :class="[{'login': tokenData.token !== null && parseInt(user.userID) > 0}]">
-         <system-notification></system-notification>
-          <transition >
+         <!-- <system-notification></system-notification> -->
+          <transition v-if="this.$route.path !== '/'">
             <router-view ></router-view>
           </transition>
        </div>

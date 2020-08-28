@@ -13,7 +13,7 @@
           </div>
 
           <div class="modal-body">
-            Items here yeet
+            Items here!
           </div>
 
           <button type="button" class="btn btn-primary btn-lg btn-block checkout text-center">Check Out</button>

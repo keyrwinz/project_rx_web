@@ -94,11 +94,16 @@ export default {
       if(flag){
         console.log('redirect here')
         ROUTER.push(this.getRedirectPerUserType())
+        setTimeout(() => {
+          this.tokenData.loading = false
+        }, 1000)
       }
     }
-    setTimeout(() => {
-      this.tokenData.loading = false
-    }, 1000)
+    if(flag === false){
+      setTimeout(() => {
+        this.tokenData.loading = false
+      }, 1000)
+    }
   },
   getRedirectPerUserType(){
     if(this.user.type === null){
