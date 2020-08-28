@@ -69,6 +69,7 @@ export default{
     if(this.user.type !== 'ADMIN'){
       ROUTER.push('/marketplace')
     }
+    this.retrieve()
   },
   data(){
     return {
