@@ -92,12 +92,18 @@ export default {
       localStorage.setItem('account_id', this.user.userID)
       localStorage.setItem('account/' + code, JSON.stringify(this.user))
       if(flag){
+        console.log('redirect here')
         ROUTER.push(this.getRedirectPerUserType())
+        setTimeout(() => {
+          this.tokenData.loading = false
+        }, 1000)
       }
     }
-    setTimeout(() => {
-      this.tokenData.loading = false
-    }, 1000)
+    if(flag === false){
+      setTimeout(() => {
+        this.tokenData.loading = false
+      }, 1000)
+    }
   },
   getRedirectPerUserType(){
     if(this.user.type === null){
@@ -137,15 +143,17 @@ export default {
             'column': 'id'
           }]
         }
-        vue.APIRequest('accounts/retrieve', parameter).then(response => {
-          if(response.data.length > 0){
-            this.otpDataHolder.userInfo = userInfo
-            this.otpDataHolder.data = response.data
-            this.checkOtp(response.data[0].notification_settings)
-          }
-        })
-        this.retrieveNotifications(userInfo.id)
-        // this.retrieveMessages(userInfo.id, userInfo.account_type)
+        this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, null, null, null, userInfo.code, null, true)
+        setTimeout(() => {
+          vue.APIRequest('accounts/retrieve', parameter).then(response => {
+            if(response.data.length > 0){
+              this.otpDataHolder.userInfo = userInfo
+              this.otpDataHolder.data = response.data
+              this.checkOtp(response.data[0].notification_settings)
+            }
+          })
+          this.retrieveNotifications(userInfo.id)
+        }, 100)
         if(callback){
           callback(userInfo)
         }
@@ -173,21 +181,23 @@ export default {
             'column': 'id'
           }]
         }
-        vue.APIRequest('accounts/retrieve', parameter).then(response => {
-          let profile = response.data[0].account_profile
-          let notifSetting = response.data[0].notification_settings
-          let subAccount = response.data[0].sub_account
-          let location = response.data[0].location
-          this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, true)
-        }).done(response => {
-          this.tokenData.verifyingToken = false
-          let location = window.location.href
-          if(this.currentPath){
-            // ROUTER.push(this.currentPath)
-          }else{
-            window.location.href = location
-          }
-        })
+        this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, null, null, null, userInfo.code, null, false)
+        setTimeout(() => {
+          vue.APIRequest('accounts/retrieve', parameter).then(response => {
+            let profile = response.data[0].account_profile
+            let notifSetting = response.data[0].notification_settings
+            let subAccount = response.data[0].sub_account
+            let location = response.data[0].location
+            this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, false)
+          }).done(response => {
+            this.tokenData.verifyingToken = false
+            let location = window.location.href
+            if(this.currentPath){
+            }else{
+              window.location.href = location
+            }
+          })
+        }, 100)
         this.retrieveNotifications(userInfo.id)
         // this.retrieveMessages(userInfo.id, userInfo.account_type)
         this.getGoogleCode()
@@ -381,7 +391,7 @@ export default {
     let subAccount = data[0].sub_account
     let location = data[0].location
     this.setUser(userInfo.id, userInfo.username, userInfo.email, userInfo.account_type, userInfo.status, profile, notifSetting, subAccount, userInfo.code, location, true)
-    this.getRedirectPerUserType()
+    // this.getRedirectPerUserType()
   },
   setGoogleCode(code, scope){
     localStorage.setItem('google_code', code)

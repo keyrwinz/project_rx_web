@@ -15,15 +15,15 @@
         </TemplateSummaryExport>
         <div class="modal-footer">    
           <span style="margin-right:5%;color:#c5c5c5;font-weight:bold" v-if="data.body === null">cannot export an empty record. :( </span>  
-          <button type="button" class="btn btn-primary" :disabled="data.body === null" @click="download('pdf')">Export as PDF</button>
+          <button type="button" class="btn btn-primary"  v-if="data.body !== null"     20020200000000   @click="download('pdf')">Export as PDF</button>
           <vue-json-to-csv
           :json-data="[{name: 's'}, {name: 'sd'}]"
           :csv-title="excelTitle"
           v-if="data.body !== null"
           >
-          <button type="button" class="btn btn-primary" :disabled="data.body === null" @click="download('csv')">Download as CSV</button>
+          <button type="button" class="btn btn-primary" @click="download('csv')">Download as CSV</button>
           </vue-json-to-csv>
-          <button type="button" class="btn btn-danger"  v-if="data.body !== null" @click="hideModal()">Close</button>
+          <button type="button" class="btn btn-danger"  @click="hideModal()">Close</button>
         </div>
       </div>
     </div>

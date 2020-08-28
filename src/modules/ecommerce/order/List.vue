@@ -140,12 +140,10 @@
   i{
     padding-right: 0px !important;
   }
-
   .bg-primary{
     background-color: $primary !important;
     color: white
   }
-
   .fa-spin{
     animation-duration: 0.50s;
   }
@@ -223,7 +221,6 @@ export default {
         if(name === 'inventory_summary'){
           this.$refs.InventorySummaryExporter.showModal()
         }
-
       }
     },
     searchByDate(){

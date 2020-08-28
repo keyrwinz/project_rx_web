@@ -22,7 +22,7 @@
       <locations v-if="activeType === 'merchant_locations'"></locations>
       <billing-information v-if="activeType === 'billing_information'"></billing-information>
       <merchant v-if="activeType === 'merchant'" :title="title" :allowed="businessAllowed"></merchant>
-      <notification v-if="activeType === 'notification'"></notification>
+      <notification></notification>
     </div>
   </div>
 

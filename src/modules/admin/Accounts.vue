@@ -11,12 +11,6 @@
       @changeStyle="manageGrid($event)"
       :grid="['list', 'th-large']"></basic-filter>
     
-    <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      />
-
     <table class="table table-bordered table-responsive" v-if="data !== null">
       <thead class="bg-primary">
         <tr>
@@ -51,36 +45,45 @@
           </td>
           <td>{{item.status}}</td>
           <td>
-            <button class="btn btn-primary" @click="showAddressModal(item)">
-              <i class="fa fa-cog"></i>
-            </button>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" v-if="item.account_type !== 'USER'" @click="showAddressModal(item)"><i class="fa fa-map-marker-alt"></i> Scope location</a>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
 
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+      />
+
+
     <div class="modal fade" id="addAddressAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Assign Address</h5>
-            <button type="button" class="close" @click="hideModal()" aria-label="Close">
+            <h5 class="modal-title" id="exampleModalLabel">Assign Location</h5>
+            <button type="button" class="close" @click="hideModal('#addAddressAccount')" aria-label="Close">
               <span aria-hidden="true" class="text-primary">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-group" v-if="errorMessage !== null">
-              <label class="text-danger"><b>Oops!</b> {{errorMessage}}</label>
+            <div class="form-group" v-if="locationMessage !== null">
+              <label>{{locationMessage}}</label>
             </div>
             <div class="form-group">
-              <label>Brgy Code</label>
-              <input type="text" class="form-control form-control-custom" v-model="brgyCode" placeholder="Type brgy code">
+              <label>Scope Code</label>
+              <input type="text" class="form-control form-control-custom" v-model="scopeLocation" placeholder="Type code">
             </div>
-            <div class="form-group">
-              <button class="btn btn-primary" v-if="locationFlag === 'autocomplete'" @click="locationFlag = 'custom'">Use custom</button>
-              <button class="btn btn-primary" v-if="locationFlag === 'custom'" @click="locationFlag = 'autocomplete'">Use autocomplete</button>
-            </div>
-            <div v-if="locationFlag === 'autocomplete'">
+            <div v-if="selectedLocation === null">
               <label>Search location</label>
               <google-autocomplete-location
                 :property="googleProperty"
@@ -88,33 +91,14 @@
                 @onFinish="manageLocation($event)">
                 </google-autocomplete-location>
             </div>
-            <div class="form-group" v-if="locationFlag === 'custom'">
-              <label>Latitude</label>
-              <input type="text" class="form-control form-control-custom" v-model="customLocation.latitude" placeholder="Type latitude">
-            </div>
-            <div class="form-group" v-if="locationFlag === 'custom'">
-              <label>Longitude</label>
-              <input type="text" class="form-control form-control-custom" v-model="customLocation.longitude" placeholder="Type longitude">
-            </div>
-            <div class="form-group" v-if="locationFlag === 'custom'">
-              <label>Route</label>
-              <input type="text" class="form-control form-control-custom" v-model="customLocation.route" placeholder="Type route">
-            </div>
-            <div class="form-group" v-if="locationFlag === 'custom'">
-              <label>Locality</label>
-              <input type="text" class="form-control form-control-custom" v-model="customLocation.locality" placeholder="Type locality">
-            </div>
-            <div class="form-group" v-if="locationFlag === 'custom'">
-              <label>Region</label>
-              <input type="text" class="form-control form-control-custom" v-model="customLocation.region" placeholder="Type region">
-            </div>
-            <div class="form-group" v-if="locationFlag === 'custom'">
-              <label>Country</label>
-              <input type="text" class="form-control form-control-custom" v-model="customLocation.country" placeholder="Type country">
+            <div v-if="selectedLocation !== null">
+              <label>
+                {{selectedLocation.route + ', ' + selectedLocation.locality + ', ' + selectedLocation.country}}
+              </label>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" @click="hideModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" @click="hideModal('#addAddressAccount')">Cancel</button>
             <button type="button" class="btn btn-primary" @click="submitLocation()">Submit</button>
           </div>
         </div>
@@ -254,7 +238,7 @@ export default{
       numPages: null,
       selectedItem: null,
       location: null,
-      brgyCode: null,
+      scopeLocation: null,
       googleProperty: {
         style: {
           height: '45px !important'
@@ -266,15 +250,9 @@ export default{
         },
         placeholder: 'Type Location'
       },
-      customLocation: {
-        route: null,
-        latitude: null,
-        longitude: null,
-        locality: null,
-        region: null,
-        country: null
-      },
-      locationFlag: 'autocomplete'
+      locationFlag: 'autocomplete',
+      selectedLocation: null,
+      locationMessage: null
     }
   },
   components: {
@@ -285,9 +263,97 @@ export default{
     Pager
   },
   methods: {
+    hideModal(id){
+      this.selectedItem = null
+      this.selectedLocation = null
+      $(id).modal('hide')
+    },
     showAddressModal(item){
       this.selectedItem = item
-      $('#addAddressAccount').modal('show')
+      this.location = null
+      this.locationMessage = null
+      this.retrieveLocation(item)
+    },
+    manageLocation(location){
+      this.location = location
+    },
+    submitLocation(){
+      let parameter = null
+      let route = null
+      if(this.selectedItem === null){
+        return
+      }
+      if(this.selectedItem.account_type === 'RIDER'){
+        if(this.selectedLocation === null){
+          parameter = {
+            ...this.location,
+            account_id: this.selectedItem.id,
+            code: this.scopeLocation
+          }
+          route = 'locations/create'
+        }else{
+          parameter = {
+            id: this.selectedLocation.id,
+            code: this.scopeLocation
+          }
+          route = 'locations/update'
+        }
+      }else{
+        if(this.selectedLocation === null){
+          parameter = {
+            ...this.location,
+            account_id: this.selectedItem.id,
+            merchant_id: this.selectedItem.merchant.id,
+            code: this.scopeLocation
+          }
+          route = 'locations/create'
+        }else{
+          parameter = {
+            id: this.selectedLocation.id,
+            code: this.scopeLocation
+          }
+          route = 'locations/update'
+        }
+      }
+      this.APIRequest(route, parameter).then(response => {
+        if(response.data){
+          this.locationMessage = 'Successfully updated!'
+        }else{
+          this.locationMessage = 'Error update!'
+        }
+      })
+    },
+    retrieveLocation(item){
+      let parameter = null
+      if(item.account_type === 'RIDER'){
+        parameter = {
+          condition: [{
+            value: item.id,
+            column: 'account_id',
+            clause: '='
+          }]
+        }
+      }else{
+        // merchant id here
+        parameter = {
+          condition: [{
+            value: item.id,
+            column: 'account_id',
+            clause: '='
+          }]
+        }
+      }
+      // $('#loading').css({display: 'block'})
+      this.APIRequest('locations/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.selectedLocation = response.data[0]
+          this.scopeLocation = response.data[0].code
+        }else{
+          this.scopeLocation = null
+          this.selectedLocation = null
+        }
+        $('#addAddressAccount').modal('show')
+      })
     },
     setEditTypeIndex(index, item){
       if(index === this.editTypeIndex){

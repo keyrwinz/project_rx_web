@@ -15,6 +15,13 @@ export default{
       tokenRequired: false
     }
   }, {
+    path: '/refer_register/:email/:code',
+    name: 'referRegister',
+    component: resolve => require(['components/increment/basic/Referral.vue'], resolve),
+    meta: {
+      tokenRequired: false
+    }
+  }, {
     path: '/signup_partner',
     name: 'signupPartner',
     component: resolve => require(['components/increment/basic/SignupPartner.vue'], resolve),
@@ -170,9 +177,16 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/admin/charges',
-    name: 'charges',
-    component: resolve => require(['modules/admin/Charges.vue'], resolve),
+    path: '/admin/deliveryfees',
+    name: 'deliveryfees',
+    component: resolve => require(['modules/admin/DeliveryFees.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/admin/fundtransferfees',
+    name: 'fundtransferfees',
+    component: resolve => require(['modules/admin/FundTransferFees.vue'], resolve),
     meta: {
       tokenRequired: true
     }
