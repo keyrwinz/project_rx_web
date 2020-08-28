@@ -137,7 +137,26 @@ export default{
           this.modalProperty = {...modalData}
         })
       }
-      $('#deliveryFeeModal').modal('show')
+      $('#fundtransferFeeModal').modal('show')
+    },
+    retrieve(){
+      let parameter = {
+        sort: {
+          created_at: 'desc'
+        },
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
+      }
+      this.APIRequest('fund_transfer_charges/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+        }else{
+          this.data = null
+          this.numPages = null
+        }
+      })
     }
   }
 }
