@@ -109,6 +109,7 @@
     />
     <viewProducts
       :data="selectedProducts"
+      :dataAdded="dataAdded"
       :checkout="selectedItem"
       v-if="selectedItem !== null"
       ref="viewProducts"></viewProducts>
@@ -180,6 +181,7 @@ export default {
   },
   data(){
     return {
+      dataAdded: null,
       PdfTemplate: TemplatePdf,
       user: AUTH.user,
       config: CONFIG,
@@ -189,7 +191,7 @@ export default {
       auth: AUTH,
       currency: CURRENCY,
       selectedItem: null,
-      selectedProducts: null,
+      selectedProducts: [],
       data: null,
       sort: {
         date: 'asc',
@@ -332,6 +334,7 @@ export default {
       })
     },
     retrieveItems(item){
+      this.retrieve()
       this.selectedItem = item
       let parameter = {
         condition: [{
@@ -346,6 +349,7 @@ export default {
         console.log('list item ', response)
         if(response.data.length > 0){
           this.selectedProducts = response.data
+          this.dataAdded = item
           this.$refs.viewProducts.showModal()
         }else{
           this.selectedProducts = null
