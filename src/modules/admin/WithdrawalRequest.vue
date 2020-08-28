@@ -10,6 +10,7 @@
           <td>Via</td>
           <td>Charge</td>
           <td>Total</td>
+          <td>Status</td>
           <td>Actions</td>
         </tr>
       </thead>
@@ -23,6 +24,9 @@
           </td>
           <td>{{currency.displayWithCurrency(0, item.currency)}}</td>
           <td>{{currency.displayWithCurrency(item.amount, item.currency)}}</td>
+          <td>
+            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed'}">{{item.status}}</label>
+          </td>
           <td>
             <button class="btn btn-primary">
               <i class="fa fa-cog"></i>
