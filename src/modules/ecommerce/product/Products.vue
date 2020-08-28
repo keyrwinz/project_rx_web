@@ -28,6 +28,12 @@
       </div>
     </div>
     <table-view :data="data" v-if="listStyle === 'list' && data !== null" :type="'products'"></table-view>
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    />
     <empty v-if="data === null" :title="empty.title" :action="empty.guide"></empty>
 	</div>
 </template>
@@ -160,6 +166,7 @@ import CONFIG from 'src/config.js'
 import axios from 'axios'
 import COMMON from 'src/common.js'
 import CURRENCY from 'src/services/currency.js'
+import Pager from 'components/increment/generic/pager/Pager.vue'
 export default {
   mounted(){
     if(!this.user || this.user.type === 'USER') {
@@ -179,6 +186,8 @@ export default {
   },
   data(){
     return {
+      limit: 5,
+      activePage: 1,
       user: AUTH.user,
       config: CONFIG,
       errorMessage: null,
@@ -215,7 +224,8 @@ export default {
     'create': require('components/increment/imarketvue/product/Create.vue'),
     'table-view': require('components/increment/imarketvue/product/TableView.vue'),
     'empty': require('components/increment/generic/empty/Empty.vue'),
-    'filter-product': require('components/increment/imarketvue/filter/Product.vue')
+    'filter-product': require('components/increment/imarketvue/filter/Product.vue'),
+    Pager
   },
   methods: {
     getFileType(url){
@@ -251,17 +261,22 @@ export default {
         }],
         sort: this.currentSort,
         account_id: this.user.userID,
-        inventory_type: this.common.ecommerce.inventoryType
+        inventory_type: this.common.ecommerce.inventoryType,
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('products/retrieve_basic', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
+          console.log(response.size)
           if(this.selectedItem !== null){
             this.selectedItem = this.data[this.selectedIndex]
           }
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
         }else{
+          this.numPages = null
           this.data = null
           this.selectedIndex = null
           this.selectedItem = null
@@ -270,8 +285,6 @@ export default {
             guide: 'Click the New Product Button to get started.'
           }
         }
-        console.log('sup hi')
-        console.log(this.data)
       })
     },
     editModal(item, index){
