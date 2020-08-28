@@ -3,11 +3,11 @@
     
     <management-options />
     <div class="form-group">
-      <button class="btn btn-primary pull-right" @click="showModal('create', null)">Add</button>
+      <button class="btn btn-primary pull-right mb-1" @click="showModal('create', null)">Add</button>
     </div>
 
-    <table class="table table-bordered table-responsive">
-      <thead class="bg-primary">
+    <table class="table table-bordered table-responsive" v-if="data !== null">
+      <thead>
         <tr>
           <td>Location</td>
           <td>Destination</td>
@@ -22,7 +22,7 @@
           <td>{{item.scope}}</td>
           <td>{{item.destination}}</td>
           <td>{{currency.displayWithCurrency(item.minimum_amount, item.currency)}}</td>
-          <td>{{currency.displayWithCurrency(item.maximun_amount, item.currency)}}</td>
+          <td>{{currency.displayWithCurrency(item.maximum_amount, item.currency)}}</td>
           <td>{{currency.displayWithCurrency(item.charge, item.currency)}}</td>
           <td>
             <button class="btn btn-primary" @click="showModal('update', item)">
@@ -37,6 +37,7 @@
       :pages="numPages"
       :active="activePage"
       :limit="limit"
+      v-if="data !== null"
       />
 
     <empty v-if="data === null" :title="'No fund transfer fee available!'" :action="'Click add button to start.'"></empty>
@@ -103,7 +104,7 @@ export default{
         console.log(item)
         let modalData = {...this.modalProperty}
         let parameter = {
-          title: 'Update',
+          title: 'Update Fund Transfer',
           route: 'fund_transfer_charges/update',
           button: {
             left: 'Cancel',
