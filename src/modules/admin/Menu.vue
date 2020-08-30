@@ -53,14 +53,17 @@ export default {
         title: 'Accounts',
         route: '/admin/accounts'
       }, {
-        title: 'Fund Transfer Fee',
-        route: '/admin/fundtransferfees'
-      }, {
         title: 'Delivery Fee',
         route: '/admin/deliveryfees'
       }, {
+        title: 'Fund Transfer Fee',
+        route: '/admin/fundtransferfees'
+      }, {
         title: 'Promos',
         route: '/admin/promos'
+      }, {
+        title: 'Locations',
+        route: '/admin/locations'
       }, {
         title: 'Withdrawal Request',
         route: '/admin/withdrawalRequest'
