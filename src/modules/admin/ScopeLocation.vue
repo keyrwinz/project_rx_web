@@ -7,18 +7,28 @@
     </div>
 
     <table class="table table-bordered table-responsive" v-if="data !== null">
-      <thead class="bg-primary">
+      <thead>
         <tr>
-          <td>Date</td>
-          <td>Username</td>
-          <td>Email</td>
-          <td>Type</td>
-          <td>Status</td>
+          <td>Code</td>
+          <td>Location</td>
           <td>Actions</td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
+          <td>
+            {{item.code}}
+          </td>
+          <td>
+            {{
+              item.route + ', ' + item.city + ', ' + item.region + ', ' + item.country
+            }}
+          </td>
+          <td>
+            <button class="btn btn-primary" @click="showModal('update', item)">
+              <i class="fas fa-edit"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -36,6 +46,9 @@
 </template>
 <style lang="scss" scoped> 
 @import "~assets/style/colors.scss";
+.fa-edit{
+  padding-right: 0px !important;
+}
 </style>
 <script>
 import ROUTER from 'src/router'
@@ -123,7 +136,7 @@ export default{
         limit: this.limit,
         offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
-      this.APIRequest('scope_locations/retrieve', parameter).then(response => {
+      this.APIRequest('location_scopes/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data

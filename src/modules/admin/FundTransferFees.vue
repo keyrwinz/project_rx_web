@@ -93,7 +93,6 @@ export default{
   methods: {
     showModal(action, item = null){
       if(action === 'create') {
-        console.log(action)
         this.modalProperty = {...propertyModal}
         let inputs = this.modalProperty.inputs
         inputs.map(input => {
@@ -102,7 +101,6 @@ export default{
         let params = this.modalProperty.params
       }
       if(item !== null) {
-        console.log(item)
         let modalData = {...this.modalProperty}
         let parameter = {
           title: 'Update Fund Transfer',
