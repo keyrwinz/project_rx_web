@@ -47,11 +47,11 @@
           <div class="col-12 row m-0" v-if="ledger !== null">
             <div v-for="(item, index) in ledger" :key="index" class="card ledger col-12 py-2 px-0">
               <div class="card-header row m-0 align-items-center px-0">
-                <div class="col-md-2 col-sm-12 p-0 text-center">
-                  <h5 class="text-muted text-uppercase font-weight-bold">{{item.cash_methods_created ? getMonth(item.cash_methods_created) : ''}} <span style="opacity: .7">{{item.cash_methods_created ? getDay(item.cash_methods_created) : ''}}</span></h5>
+                <div class="col-md-12 col-sm-12 p-0">
+                  {{item.created_at_human}}
                 </div>
-                <div class="col-md-5 col-sm-auto text-center mt-2 font-weight-bold p-0">{{item.name ? item.name : ''}}</div>
-                <div class="col-md-5 col-sm-12 text-right mt-3 font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
+                <div class="col-md-6 col-sm-auto font-weight-bold p-0">{{item.description ? item.description : ''}}</div>
+                <div class="col-md-6 col-sm-12 text-right font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
                   {{item.amount > 0 ? '+ ' : '- '}}{{item.amount > 0 ? currency.displayWithCurrency(item.amount, item.currency) : currency.displayWithCurrency(item.amount * -1, item.currency)}}
                 </div>
               </div>
@@ -268,15 +268,16 @@ export default{
     },
     retrieve() {
       let par = {
-        code: this.user.code,
+        account_id: this.user.userID,
+        account_code: this.user.code,
         offset: 0,
-        limit: 5
+        limit: 3
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('ledger/retrieve_merchant', par).then(response => {
+      this.APIRequest('ledger/history', par).then(response => {
         $('#loading').css({display: 'none'})
-        if(response.length > 0) {
-          this.ledger = response
+        if(response.data.length > 0) {
+          this.ledger = response.data
         } else {
           this.ledger = null
         }
