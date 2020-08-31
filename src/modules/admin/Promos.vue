@@ -38,12 +38,7 @@ import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
 import COMMON from 'src/common.js'
 import Pager from 'src/components/increment/generic/pager/Pager.vue'
-export default{
-  mounted(){
-    if(this.user.type !== 'ADMIN'){
-      ROUTER.push('/marketplace')
-    }
-  },
+export default {
   data(){
     return {
       user: AUTH.user,
@@ -60,7 +55,25 @@ export default{
     'management-options': require('modules/admin/Menu.vue'),
     Pager
   },
+  mounted(){
+    if(this.user.type !== 'ADMIN'){
+      ROUTER.push('/marketplace')
+    }
+    this.retrieveCoupon()
+  },
   methods: {
+    retrieveCoupon(){
+      $('#loading').css({display: 'block'})
+      this.APIRequest('coupons/retrieve').then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data = response.data
+        }else{
+          this.data = null
+        }
+        console.log(response)
+      })
+    }
   }
 }
 </script>
