@@ -205,6 +205,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/admin/locations',
+    name: 'locations',
+    component: resolve => require(['modules/admin/ScopeLocation.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/welcome',
     name: 'welcome',
     component: resolve => require(['modules/basic/Denied.vue'], resolve),

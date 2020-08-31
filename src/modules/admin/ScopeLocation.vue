@@ -9,61 +9,54 @@
     <table class="table table-bordered table-responsive" v-if="data !== null">
       <thead>
         <tr>
+          <td>Code</td>
           <td>Location</td>
-          <td>Destination</td>
-          <td>Minimum Amount</td>
-          <td>Maximum Amount</td>
-          <td>Charge</td>
           <td>Actions</td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
-          <td>{{item.scope}}</td>
-          <td>{{item.destination}}</td>
-          <td>{{currency.displayWithCurrency(item.minimum_amount, item.currency)}}</td>
-          <td>{{currency.displayWithCurrency(item.maximum_amount, item.currency)}}</td>
-          <td>{{currency.displayWithCurrency(item.charge, item.currency)}}</td>
+          <td>
+            {{item.code}}
+          </td>
+          <td>
+            {{
+              item.route + ', ' + item.city + ', ' + item.region + ', ' + item.country
+            }}
+          </td>
           <td>
             <button class="btn btn-primary" @click="showModal('update', item)">
-              <i class="fa fa-edit"></i>
+              <i class="fas fa-edit"></i>
             </button>
           </td>
         </tr>
       </tbody>
     </table>
 
-     <Pager
+    <Pager
       :pages="numPages"
       :active="activePage"
       :limit="limit"
       v-if="data !== null"
       />
 
-    <empty v-if="data === null" :title="'No fund transfer fee available!'" :action="'Click add button to start.'"></empty>
+    <empty v-if="data === null" :title="'No accounts available!'" :action="'Keep growing.'"></empty>
     <increment-modal :property="modalProperty"></increment-modal>
   </div>
 </template>
 <style lang="scss" scoped> 
 @import "~assets/style/colors.scss";
-.bg-primary{
-  background-color: $primary !important; 
-  color: white !important;
-}
-.fa{
+.fa-edit{
   padding-right: 0px !important;
 }
 </style>
-
 <script>
 import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
-import CURRENCY from 'src/services/currency.js'
 import COMMON from 'src/common.js'
 import Pager from 'src/components/increment/generic/pager/Pager.vue'
-import propertyModal from './FundTransferFeesModal.js'
-
+import propertyModal from './ScopeLocation.js'
 export default{
   mounted(){
     if(this.user.type !== 'ADMIN'){
@@ -79,8 +72,7 @@ export default{
       limit: 5,
       activePage: 1,
       numPages: null,
-      modalProperty: propertyModal,
-      currency: CURRENCY
+      modalProperty: propertyModal
     }
   },
   components: {
@@ -103,8 +95,8 @@ export default{
       if(item !== null) {
         let modalData = {...this.modalProperty}
         let parameter = {
-          title: 'Update Fund Transfer',
-          route: 'fund_transfer_charges/update',
+          title: 'Update Location',
+          route: 'scope_locations/update',
           button: {
             left: 'Cancel',
             right: 'Update'
@@ -116,28 +108,25 @@ export default{
         }
         modalData = {...modalData, ...parameter}
         modalData.inputs.map(input => {
-          if(input.variable === 'charge') {
-            input.value = item.charge
+          if(input.variable === 'code') {
+            input.value = item.code
           }
-          if(input.variable === 'maximum_amount') {
-            input.value = item.maximum_amount
+          if(input.variable === 'route') {
+            input.value = item.route
           }
-          if(input.variable === 'minimum_amount'){
-            input.value = item.minimum_amount
+          if(input.variable === 'city'){
+            input.value = item.city
           }
-          if(input.variable === 'destination'){
-            input.value = item.destination
+          if(input.variable === 'region'){
+            input.value = item.region
           }
-          if(input.variable === 'scope'){
-            input.value = item.scope
-          }
-          if(input.variable === 'currency'){
-            input.value = item.currency
+          if(input.variable === 'country'){
+            input.value = item.country
           }
           this.modalProperty = {...modalData}
         })
       }
-      $('#fundtransferFeeModal').modal('show')
+      $('#scopeLocatioModal').modal('show')
     },
     retrieve(){
       let parameter = {
@@ -147,7 +136,7 @@ export default{
         limit: this.limit,
         offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
-      this.APIRequest('fund_transfer_charges/retrieve', parameter).then(response => {
+      this.APIRequest('location_scopes/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
