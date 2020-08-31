@@ -171,7 +171,7 @@ import InventorySummaryExporter from './InventorySummaryExporter.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
-    if(!this.user || this.user.type === 'USER') {
+    if(this.user.type === 'USER' || this.user.type === 'RIDER') {
       // ROUTER.push('/featured')
       ROUTER.push('/marketplace')
     }
