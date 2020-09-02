@@ -9,6 +9,7 @@
     <table class="table table-bordered table-responsive" v-if="data !== null">
       <thead>
         <tr>
+          <td>Date</td>
           <td>Location</td>
           <td>Destination</td>
           <td>Minimum Amount</td>
@@ -19,6 +20,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
+          <td>{{item.effective_date}}</td>
           <td>{{item.scope}}</td>
           <td>{{item.destination}}</td>
           <td>{{currency.displayWithCurrency(item.minimum_amount, item.currency)}}</td>
@@ -116,6 +118,9 @@ export default{
         }
         modalData = {...modalData, ...parameter}
         modalData.inputs.map(input => {
+          if(input.variable === 'effective_date') {
+            input.value = item.effective_date
+          }
           if(input.variable === 'charge') {
             input.value = item.charge
           }
