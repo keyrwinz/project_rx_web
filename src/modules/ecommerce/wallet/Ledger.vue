@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="accordion shadow-sm border rounded mt-3 col-6 px-5 mx-auto pb-5" id="ledger">
+    <div class="accordion shadow-sm border rounded mt-3 col-6 px-1 mx-auto pb-5" id="ledger">
       <h3 class="font-weight-bold text-center mt-5 mb-3">Payment History</h3>
       <div class="card" v-for="(item, index) in data" :key="index">
         <div class="card-header" :id="'heading-'+index">
@@ -39,7 +39,12 @@
 </style>
 <style lang="scss" scoped>
   @import "~assets/style/colors.scss";
-
+@media (max-width: 600px) {
+  .col-6{
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+}
   #ledger .logo{
     max-width: 40px !important;
   }

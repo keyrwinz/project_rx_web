@@ -6,6 +6,7 @@
     <table class="table table-bordered table-responsive" v-if="data !== null">
       <thead>
         <tr>
+          <!-- <td>Date</td> -->
           <td>Location</td>
           <td>Minimum Charge</td>
           <td>Minimum Distance(Km)</td>
@@ -15,6 +16,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
+          <!-- <td>{{item.effective_date}}</td> -->
           <td>{{item.scope}}</td>
           <td>{{currency.displayWithCurrency(item.minimum_charge, item.currency)}}</td>
           <td>{{item.minimum_distance}} Km</td>
