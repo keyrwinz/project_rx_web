@@ -25,6 +25,9 @@
             <button class="btn btn-primary" @click="showModal('update', item)">
               <i class="fa fa-edit"></i>
             </button>
+            <button class="btn btn-danger" @click="remove(item)">
+              <i class="fa fa-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -148,6 +151,14 @@ export default{
           this.data = null
           this.numPages = null
         }
+      })
+    },
+    remove(id){
+      let parameter = {
+        id: id
+      }
+      this.APIRequest('delivery_fees/delete', parameter).then(response => {
+        this.retrieve()
       })
     }
   }
