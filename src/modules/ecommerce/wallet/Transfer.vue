@@ -125,7 +125,7 @@
   }
 
   .btn.btn-primary {
-    height: unset !important;
+    height: 50px !important;
   }
 
   .modal-header {

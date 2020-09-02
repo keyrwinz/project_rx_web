@@ -169,7 +169,7 @@ import CURRENCY from 'src/services/currency.js'
 import Pager from 'components/increment/generic/pager/Pager.vue'
 export default {
   mounted(){
-    if(!this.user || this.user.type === 'USER') {
+    if(this.user.type !== 'MERCHANT') {
       ROUTER.push('/marketplace')
     }
     this.retrieve({'title': 'asc'}, {column: 'title', value: ''})

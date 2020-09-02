@@ -38,9 +38,73 @@
         <div class="form-group" style="margin-top: 25px;" v-if="allowed.indexOf('website') > -1">
           <label for="address">Website</label>
           <input type="text" class="form-control" placeholder="Company website url" v-model="data.website" :disabled="parseInt(data.account_id) !== parseInt(user.userID)">
-        </div>
-        
+        </div>        
         <button class="btn btn-primary" style="margin-bottom: 25px;" @click="update()" v-if="parseInt(data.account_id) === parseInt(user.userID)">Update</button>
+
+        <div class="form-group business-schedule">
+          <label for="address">Business Schedule</label>
+          <i :class="['fa fa-edit', {'text-warning': isEditingSchedule}]" @click="isEditingSchedule = !isEditingSchedule" style="font-size: 20px" />
+          <div v-if="errorSchedMessage !== null || successSchedMessage !== null">
+            <span class="error text-danger" v-if="errorSchedMessage !== null">
+              <b>Oops!</b> {{errorSchedMessage}}
+            </span>
+            <span class="error text-success" v-if="successSchedMessage !== null">
+              {{successSchedMessage}}
+            </span>
+          </div>
+          <div class="ml-1">
+            <button
+              v-for="(day, idx) in WEEKDAYS" :key="idx"
+              :class="['btn my-2 mr-1', { 'btn-success': daysSelected.includes(day) }, { 'btn-disabled': !isEditingSchedule }]"
+              @click="addDay(day)" 
+            >
+              {{ day }}
+            </button>
+          </div>
+          <div class="my-2">
+            <div>
+              <input v-model="scheduleTypeSelected" type="radio" id="time24" name="time-schedule" value="open" :disabled="!isEditingSchedule">
+              <label for="time24">Open 24 hours</label>
+            </div>
+            <div>
+              <input v-model="scheduleTypeSelected" type="radio" id="time" name="time-schedule" value="time-range" :disabled="!isEditingSchedule">
+              <label for="time">Time range</label>
+              <div class="ml-1">
+                <!-- start -->
+                <span class="mx-1" style="font-size: 0.8rem">
+                  Open time
+                </span>
+                <date-picker
+                  v-model="startTime"
+                  :minute-step="30"
+                  format="hh:mm a"
+                  value-type="format"
+                  type="time"
+                  placeholder="hh:mm a"
+                  :disabled="scheduleTypeSelected !== 'time-range' || !isEditingSchedule"
+                  :editable="false"
+                ></date-picker>
+                <!-- end -->
+                <span class="mx-1" style="font-size: 0.8rem">
+                  End time
+                </span>
+                <date-picker
+                  v-model="endTime"
+                  :minute-step="30"
+                  format="hh:mm a"
+                  value-type="format"
+                  type="time"
+                  placeholder="hh:mm a"
+                  :disabled="scheduleTypeSelected !== 'time-range' || !isEditingSchedule"
+                  :editable="false"
+                ></date-picker>
+              </div>
+            </div>
+          </div>
+          <button v-if="isEditingSchedule" class="btn btn-primary my-2" @click="updateSched()">
+            Update Schedule
+          </button>
+        </div>
       </span>
       <span class="sidebar" v-if="createFlag === false">
         <span class="sidebar-header" style="margin-top: 25px;">Business Logo</span>
@@ -153,12 +217,28 @@
     padding-right: 0px !important;
   }
 }
+.business-schedule {
+  margin-top: 25px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  padding-left: 20px;
+}
+.btn:hover, .fa {
+  cursor: pointer;
+}
+.btn-disabled:hover {
+  cursor: not-allowed;
+}
 </style>
 <script>
+import DatePicker from 'vue2-datepicker'
 import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import axios from 'axios'
 import CONFIG from 'src/config.js'
+import { WEEKDAYS } from 'src/helpers/date'
+import 'vue2-datepicker/index.css'
 export default {
   mounted(){
     $('#loading').css({display: 'block'})
@@ -172,6 +252,8 @@ export default {
       data: null,
       errorMessage: null,
       successMessage: null,
+      errorSchedMessage: null,
+      successSchedMessage: null,
       newData: {
         account_id: AUTH.user.userID,
         prefix: null,
@@ -189,12 +271,19 @@ export default {
       createFlag: false,
       photoObject: {
         url: null
-      }
+      },
+      WEEKDAYS,
+      isEditingSchedule: false,
+      scheduleTypeSelected: 'open',
+      daysSelected: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      startTime: null,
+      endTime: null
     }
   },
   props: ['title', 'allowed'],
   components: {
-    'browse-images-modal': require('components/increment/generic/image/BrowseModal.vue')
+    'browse-images-modal': require('components/increment/generic/image/BrowseModal.vue'),
+    DatePicker
   },
   methods: {
     retrieve(){
@@ -215,6 +304,13 @@ export default {
         if(response.data.length > 0){
           this.data = response.data[0]
           this.createFlag = false
+          if (response.data[0].schedule != null) {
+            const schedule = JSON.parse(response.data[0].schedule)
+            this.scheduleTypeSelected = schedule.type
+            this.daysSelected = schedule.days
+            this.startTime = schedule.startTime
+            this.endTime = schedule.endTime
+          }
         }else{
           this.createFlag = true
           this.data = this.newData
@@ -302,6 +398,53 @@ export default {
     },
     manageImageUrl(url){
       this.update(url)
+    },
+    addDay(day){
+      if (this.isEditingSchedule === false) return
+
+      const indexOfDay = this.daysSelected.indexOf(day)
+      if (indexOfDay > -1) {
+        this.daysSelected.splice(indexOfDay, 1)
+      } else {
+        this.daysSelected.push(day)
+      }
+    },
+    updateSched() {
+      this.errorSchedMessage = null
+      this.successSchedMessage = null
+
+      const scheduleTypeSelected = this.scheduleTypeSelected
+      const daysSelected = this.daysSelected
+      const startTime = this.startTime
+      const endTime = this.endTime
+
+      if (daysSelected.length === 0) {
+        this.errorSchedMessage = 'Schedule days are required'
+        return
+      }
+
+      if (scheduleTypeSelected === 'time-range' && (startTime === null || endTime === null)) {
+        this.errorSchedMessage = 'Time range is required'
+        return
+      }
+
+      const updatedSchedule = JSON.stringify({
+        type: scheduleTypeSelected,
+        days: daysSelected,
+        startTime,
+        endTime
+      })
+
+      this.APIRequest('merchants/update', {
+        id: this.data.id,
+        schedule: updatedSchedule
+      }).then(response => {
+        if (response.data) {
+          this.successSchedMessage = 'Updated business schedule successfully!'
+        }
+      }).catch(() => {
+        this.errorSchedMessage = 'Unable to Update! Please contact the administrator.'
+      })
     }
   }
 }
