@@ -1,12 +1,7 @@
 <template>
   <div>
-<<<<<<< HEAD
-    <div class="accordion shadow-sm border rounded mt-3 col-6 px-1 mx-auto pb-5" id="ledger">
-      <h3 class="font-weight-bold text-center mt-5 mb-3">Payment History</h3>
-=======
     <div class="accordion shadow-sm border rounded mt-3 col-6 px-5 mx-auto pb-5" id="ledger">
       <h3 class="font-weight-bold mt-5 mb-3 text-center">Payment History</h3>
->>>>>>> b7c0ead4d499076d58508979a43bde884714ac71
       <div class="card" v-for="(item, index) in data" :key="index">
         <div class="card-header" :id="'heading-'+index">
           <button class="btn p-0 bg-transparent btn-block d-flex align-items-center" @click="changeIcon" type="button" data-toggle='collapse' :data-target="'#collapse-'+index" aria-expanded="false" :aria-controls="'collapse-'+index">

@@ -12,6 +12,20 @@ export default {
   background: null,
   inputs: [{
     row: 'full',
+    label: 'Effective Date',
+    variable: 'effective_date',
+    placeholder: 'Effective Date',
+    value: null,
+    required: true,
+    id: 'effective_date',
+    type: 'PastDateLimit',
+    inputType: 'date',
+    validation: {
+      size: 1,
+      type: 'date'
+    }
+  }, {
+    row: 'full',
     label: 'Scope',
     variable: 'scope',
     placeholder: 'Scope',
