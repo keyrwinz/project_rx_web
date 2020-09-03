@@ -5,6 +5,19 @@ export default {
   background: null,
   inputs: [{
     row: 'full',
+    label: 'Scope',
+    variable: 'scope',
+    placeholder: 'enter location',
+    value: 'null',
+    required: true,
+    id: 'scope',
+    type: 'input',
+    validation: {
+      size: 1,
+      type: 'text'
+    }
+  }, {
+    row: 'full',
     label: 'Code',
     variable: 'code',
     placeholder: 'enter code',

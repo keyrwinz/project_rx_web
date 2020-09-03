@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
-          <td>{{item.scope}}</td>
+          <td>{{item.scope === '' ? '': item.scope}}</td>
           <td>{{item.code}}</td>
           <td>{{item.description}}</td>
           <td>{{item.type}}</td>
@@ -120,6 +120,11 @@ export default {
     },
     retrieve(){
       let parameter = {
+        sort: {
+          created_at: 'desc'
+        },
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('coupons/retrieve', parameter).then(response => {

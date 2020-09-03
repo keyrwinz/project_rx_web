@@ -1,53 +1,14 @@
 <template>
-  <div class="modal fade" id="OrdersSummaryExporterModal" tabindex="-1" role="dialog" aria-labelledby="SummaryExporterModal" aria-hidden="true">
-     <div class="modal-dialog  modal-md" role="document">
-      <div class="modal-content" >
-        <div class="modal-header bg-primary text-white" >
-          <h5 class="modal-title w-100 text-center" id="ModalTitle">Summary of Orders</h5>
-          <button type="button" class="close" @click="hideModal()" aria-label="Close">
-            <span aria-hidden="true" class="text-white">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div style="text-align:center;margin-bottom:20px">
-            <h5>{{user.subAccount.merchant.name}}</h5>
-            <p>{{user.subAccount.merchant.address}}<br>{{this.queryDate}}</p>
-          </div>
-          <TemplateSummaryExport
-            :propsData="data"
-            :totalArr ="totals"
-          >
-          </TemplateSummaryExport>
-          <span style="float:left;" v-if="data.body !== null"><p style="display:inline;font-weight:500">Date published </p><span>{{ currentDate }}</span></span>
-        </div>
-        <div class="modal-footer">    
-          <span style="margin-right:5%;color:#c5c5c5;font-weight:bold" v-if="data.body === null">cannot export an empty record. :( </span>  
-          <button type="button" class="btn btn-primary" v-if="data.body !== null" @click="download('pdf')">Export as PDF</button>
-          <vue-json-to-csv
-          :json-data="jsonData"
-          :csv-title="excelTitle"
-          v-if="data.body !== null"
-          >
-          <button type="button" class="btn btn-primary" v-if="data.body !== null" @click="download('csv')">Download as CSV</button>
-          </vue-json-to-csv>
-          <button type="button" class="btn btn-danger" @click="hideModal()">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <TemplateSummaryExport
+      :propsData="data"
+      :totalArr ="totals"
+      :propsModalInfo ="modalinformation"
+      :propsExcelTitle = "excelTitle"
+      :propsJsonData = "jsonData"
+    ></TemplateSummaryExport>
 </template>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
-  .bg-primary{
-    background: $primary !important;
-  }
-  .modal-dialog{
-    overflow-y: initial !important
-  }
-  .modal-body{
-    height: 70vh;
-    overflow-y: auto;
-  }
 </style>
 <script>
 import AUTH from 'src/services/auth'
@@ -57,12 +18,11 @@ import CURRENCY from 'src/services/currency.js'
 import lodash from 'lodash'
 import PDF from './handlers/pdf'
 import CSV from './handlers/csv'
-import VueJsonToCsv from 'vue-json-to-csv'
 import DateManipulation from './handlers/dateManipulation.js'
 import TemplateSummaryExport from './TemplateSummaryExporter'
 export default {
   name: 'OrdersSummaryExporter',
-  components: {TemplateSummaryExport, VueJsonToCsv},
+  components: {TemplateSummaryExport},
   data(){
     return {
       data: {
@@ -83,6 +43,12 @@ export default {
           {name: 'tax', value: 0},
           {name: 'total', value: 0}
         ]
+      },
+      modalinformation: {
+        id: 'OrdersSummaryExporterModal',
+        title: 'Summary of Orders',
+        type: 'summary',
+        date: DateManipulation.currentDate()
       },
       jsonData: [],
       currentDate: '',

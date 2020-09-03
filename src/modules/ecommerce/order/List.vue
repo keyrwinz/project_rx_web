@@ -5,8 +5,8 @@
       <div class="dropdown" style="display:inline">
         <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="margin-left: 5px;">Export<span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <button class="btn btn-light" style="width:100%" @click="exportFile('orders_summary')" >Summary of Orders</button>
-          <button class="btn btn-light" @click="exportFile('inventory_summary')" >Summary of Inventory</button>
+          <button class="btn btn-light" style="width:100%;text-align:left;" @click="exportFile('orders_summary')" >Summary of Orders</button>
+          <button class="btn btn-light" @click="exportFile('inventory_summary')" style="text-align:left">Summary of Inventory</button>
         </ul>
       </div>
       <button class="btn btn-warning" @click="searchByDate()">Search</button>
@@ -121,14 +121,14 @@
       @updateRow="manageUpdateRow"
       ref="confirmedRiderModal"
     ></DeliveryConfirmation>
-     <OrdersSummaryExporter
-      :date="date"
-      ref="OrdersSummaryExporter"
-    ></OrdersSummaryExporter>
     <InventorySummaryExporter
       :date="date"
       ref="InventorySummaryExporter"
     ></InventorySummaryExporter>
+     <OrdersSummaryExporter
+      :date="date"
+      ref="OrdersSummaryExporter"
+    ></OrdersSummaryExporter>
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
   </div>
 </template>
