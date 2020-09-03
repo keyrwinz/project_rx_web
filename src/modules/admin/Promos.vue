@@ -11,8 +11,8 @@
           <td>Description</td>
           <td>Type</td>
           <td>Value</td>
-          <td>From Date</td>
-          <td>To Date</td>
+          <td>Start Date</td>
+          <td>End Date</td>
           <td>Action</td>
         </tr>
       </thead>
@@ -112,7 +112,27 @@ export default {
         }
         modalData = {...modalData, ...parameter}
         modalData.inputs.map(input => {
-          input.value = item[input.variable]
+          if(input.variable === 'scope') {
+            input.value = item.scope
+          }
+          if(input.variable === 'code') {
+            input.value = item.code
+          }
+          if(input.variable === 'description') {
+            input.value = item.description
+          }
+          if(input.variable === 'type'){
+            input.value = item.type
+          }
+          if(input.variable === 'value'){
+            input.value = item.value
+          }
+          if(input.variable === 'start'){
+            input.value = item.start
+          }
+          if(input.variable === 'end'){
+            input.value = item.end
+          }
           this.modalProperty = {...modalData}
         })
       }
@@ -131,10 +151,11 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
         }else{
           this.data = null
+          this.numPages = null
         }
-        console.log(response.data)
       })
     }
   }

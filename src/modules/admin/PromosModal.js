@@ -78,31 +78,31 @@ export default {
     }
   }, {
     row: 'full',
-    label: 'From date',
+    label: 'Starting date',
     variable: 'start',
-    placeholder: 'enter the starting date',
+    placeholder: 'Starting date',
     value: null,
     required: true,
     id: 'start',
-    type: 'date',
-    inputType: 'string',
+    type: 'datetime',
+    inputType: 'date',
     validation: {
       size: 1,
-      type: 'text'
+      type: 'date'
     }
   }, {
     row: 'full',
     label: 'End date',
     variable: 'end',
-    placeholder: 'enter the end date',
+    placeholder: 'End date',
     value: null,
     required: true,
     id: 'end',
-    type: 'date',
-    inputType: 'string',
+    type: 'datetime',
+    inputType: 'date',
     validation: {
       size: 1,
-      type: 'text'
+      type: 'date'
     }
   },
   {
