@@ -38,7 +38,12 @@
 </style>
 <style lang="scss" scoped>
   @import "~assets/style/colors.scss";
-
+@media (max-width: 600px) {
+  .col-6{
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+}
   #ledger .logo{
     max-width: 40px !important;
   }

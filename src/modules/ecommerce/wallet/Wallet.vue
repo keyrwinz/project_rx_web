@@ -1,33 +1,33 @@
 <template>
   <div>
-    <div class="container w-50 mx-auto border rounded-lg mt-3 shadow-sm p-5 bg-light">
-        <div class="walletLogo mt-5 rounded-circle shadow mx-auto bg-primary">
-          <img :src="require('src/assets/img/favicon-alt.png')" alt="Runway Logo" class="img-fluid">
-        </div>
-        
-        <h5 class="text-center font-weight-bold title mt-4">E-Wallet Balance</h5>
-        <div class="mt-4 balance text-center">{{balance !== null ? currency.displayWithCurrency(largest.balance, largest.currency) : 'No Available Balance'}}</div>
-        <div class="mt-1 font-weight-bold text-muted text-center" v-if="balance !== null">Highest Balance</div>
-        
-        <div class="container row w-75 justify-content-center m-0 mt-3 mx-auto pb-4 border-bottom border-bottom-lg" v-if="balance !== null && largest.balance > 0">
-          <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" @click="$refs.funds.show()">Transfer Funds</button>
-        </div>
+    <div class="container mx-auto border rounded-lg mt-3 col-6 shadow-sm p-1 bg-light">
+      <div class="walletLogo mt-5 rounded-circle shadow mx-auto bg-primary">
+        <img :src="require('src/assets/img/favicon-alt.png')" alt="Runway Logo" class="img-fluid">
+      </div>
+      
+      <h5 class="text-center font-weight-bold title mt-4">E-Wallet Balance</h5>
+      <div class="mt-4 balance text-center">{{balance !== null ? currency.displayWithCurrency(largest.balance, largest.currency) : 'No Available Balance'}}</div>
+      <div class="mt-1 font-weight-bold text-muted text-center" v-if="balance !== null">Highest Balance</div>
+      
+      <div class="container row w-75 justify-content-center m-0 mt-3 mx-auto pb-4 border-bottom border-bottom-lg" v-if="balance !== null && largest.balance > 0">
+        <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-5 font-weight-bold" @click="$refs.funds.show()">Transfer Funds</button>
+      </div>
 
-        <div class="container row px-0 w-75 flow-column justify-content-center m-0 mt-3 mx-auto">
-          <div class="card col-12" v-for="(item, index) in balance" :key="index">
-            <div class="card-body row py-4 align-items-center">
-              <h5 class="col-auto font-weight-bold">{{item.currency}}</h5>
-              <div class="col-auto ml-auto">
-                {{currency.displayWithCurrency(item.balance, item.currency)}}
-              </div>
-            </div>
-          </div>
-          <div class="card col-12">
-            <div class="card-body text-center">
-              Use your balance to buy, or withdraw it. OTP is required to withdraw money.
+      <div class="container row px-0 w-75 flow-column justify-content-center m-0 mt-3 mx-auto">
+        <div class="card col-12" v-for="(item, index) in balance" :key="index">
+          <div class="card-body row py-4 align-items-center">
+            <h5 class="col-auto font-weight-bold">{{item.currency}}</h5>
+            <div class="col-auto ml-auto">
+              {{currency.displayWithCurrency(item.balance, item.currency)}}
             </div>
           </div>
         </div>
+        <div class="card col-12">
+          <div class="card-body text-center">
+            Use your balance to buy, or withdraw it. OTP is required to withdraw money.
+          </div>
+        </div>
+      </div>
     </div>
 
     <transfer ref="funds" :balance="balance"></transfer>
@@ -35,7 +35,12 @@
 </template>
 <style lang="scss" scoped>
   @import "~assets/style/colors.scss";
-
+  @media (max-width: 600px) {
+    .col-6 {
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+  }
   .card {
     background: transparent;
     border: none;

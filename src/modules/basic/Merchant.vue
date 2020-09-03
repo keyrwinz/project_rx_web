@@ -290,6 +290,13 @@ export default {
       if(AUTH.user.subAccount !== null && AUTH.user.subAccount.merchant !== null){
         $('#loading').css({display: 'none'})
         this.data = AUTH.user.subAccount.merchant
+        const schedule = JSON.parse(AUTH.user.subAccount.merchant.schedule)
+        if (schedule) {
+          this.scheduleTypeSelected = schedule.type
+          this.daysSelected = schedule.days
+          this.startTime = schedule.startTime
+          this.endTime = schedule.endTime
+        }
         return
       }
       let parameter = {
