@@ -192,15 +192,6 @@
           display: none;
         }
       }
-      // @media (max-width: 1199px) {
-      //   .collapsing {
-      //     display: block
-      //   }
-
-      //   .collapse.show {
-      //     display: block
-      //   }
-      // }
       </style>
       <style scoped lang="scss">
       @import "~assets/style/colors.scss";
