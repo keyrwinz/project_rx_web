@@ -96,7 +96,7 @@ export default{
         let modalData = {...this.modalProperty}
         let parameter = {
           title: 'Update Location',
-          route: 'scope_locations/update',
+          route: 'location_scopes/update',
           button: {
             left: 'Cancel',
             right: 'Update'
