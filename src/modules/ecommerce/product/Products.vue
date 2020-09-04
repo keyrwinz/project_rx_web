@@ -169,11 +169,10 @@ import CURRENCY from 'src/services/currency.js'
 import Pager from 'components/increment/generic/pager/Pager.vue'
 export default {
   mounted(){
-    if(this.user.type !== 'MERCHANT') {
+    if(this.user.type !== 'MERCHANT' && this.user.type !== 'ADMIN') {
       ROUTER.push('/marketplace')
     }
     this.retrieve({'title': 'asc'}, {column: 'title', value: ''})
-    console.log(this.user)
     if(this.$route.params.type){
       this.type = this.$route.params.type
     }else{
@@ -229,7 +228,6 @@ export default {
   },
   methods: {
     getFileType(url){
-      console.log('endme')
       return url.substring(url.lastIndexOf('.')) === '.webm' ? 'vid' : 'img'
     },
     redirect(parameter){
@@ -270,7 +268,6 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
-          console.log(response.size)
           if(this.selectedItem !== null){
             this.selectedItem = this.data[this.selectedIndex]
           }
