@@ -25,7 +25,7 @@
         </div>
       </div>
       <div v-if="data !== null" class="text-center">
-        <button class="btn btn-primary rounded" @click="retrieve(offset + 1)">Load more</button>
+        <button class="btn btn-primary rounded" @click="retrieve(limit + 5)">Load more</button>
       </div>
       <empty-dynamic v-if="data === null" :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
     </div>
@@ -84,8 +84,7 @@ export default {
       // ROUTER.push('/featured')
       ROUTER.push('/marketplace')
     }
-
-    this.retrieve(this.offset)
+    this.retrieve(this.limit)
   },
   data() {
     return {
@@ -103,31 +102,34 @@ export default {
     'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
   },
   methods: {
-    retrieve(offset) {
+    retrieve(limit) {
       let par = {
         account_id: this.user.userID,
         account_code: this.user.code,
-        offset: offset * this.limit,
-        limit: this.limit
+        offset: this.offset * limit,
+        limit: (limit > 5) ? limit : this.limit
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('ledger/history', par).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0) {
+          console.log('limit', this.limit)
+          console.log(response.data)
           let array = null
           if(this.data){
-            array = [...this.data, response.data]
+            array = response.data
           }else{
             array = response.data
           }
           this.data = array
-          this.offset = offset
+          // this.offset = this.offset
         } else {
-          if(offset === 0){
+          if(this.offset === 0){
             this.data = null
           }
         }
       })
+      this.limit = limit
     },
     changeIcon(e){
       let card = $(e.target).parents('.card')
