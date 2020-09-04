@@ -91,7 +91,7 @@
               <checkout-cart v-if="common.headerFlag.cart === true"></checkout-cart>
 
               <!-- market options here -->
-              <div class="h-100" v-if="user.type === 'MERCHANT'">
+              <div class="h-100" v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
                 <div class="dropdown row col-auto h-100 align-items-center" id="merchantStuff" data-toggle="dropdown">
                   <i class="fa fa-store text-white"></i>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="merchantStuff">
