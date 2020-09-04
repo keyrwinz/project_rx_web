@@ -25,7 +25,9 @@
         </div>
       </div>
       <div v-if="data !== null" class="text-center">
-        <button class="btn btn-primary rounded" @click="retrieve(offset + 1)">Load more</button>
+        <button class="btn btn-primary rounded" @click="retrieve(limit + 5)" v-if="!showButton">Show more</button>
+        <button class="btn btn-primary rounded" @click="retrieve(5)" v-if="showButton">Show less</button>
+      </div>
       </div>
       <empty-dynamic v-if="data === null" :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
     </div>
@@ -84,11 +86,11 @@ export default {
       // ROUTER.push('/featured')
       ROUTER.push('/marketplace')
     }
-
-    this.retrieve(this.offset)
+    this.retrieve(this.limit)
   },
   data() {
     return {
+      showButton: false,
       user: AUTH.user,
       common: COMMON,
       config: CONFIG,
@@ -96,34 +98,44 @@ export default {
       defaultLogo: require('assets/img/favicon-alt.png'),
       data: null,
       offset: 0,
-      limit: 5
+      limit: 5,
+      dataLength: 0
     }
   },
   components: {
     'empty-dynamic': require('components/increment/generic/empty/EmptyDynamicIcon.vue')
   },
   methods: {
-    retrieve(offset) {
+    retrieve(limit) {
       let par = {
         account_id: this.user.userID,
         account_code: this.user.code,
-        offset: offset * this.limit,
-        limit: this.limit
+        offset: this.offset * limit,
+        limit: limit
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('ledger/history', par).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0) {
+          console.log('limit', this.limit)
+          console.log(response.data)
           let array = null
           if(this.data){
-            array = [...this.data, response.data]
+            array = response.data
           }else{
             array = response.data
           }
           this.data = array
-          this.offset = offset
+          if(this.dataLength === response.data.length){
+            this.showButton = true
+          }else {
+            this.limit = limit
+            this.showButton = false
+            this.dataLength = response.data.length
+          }
+          // this.offset = this.offset
         } else {
-          if(offset === 0){
+          if(this.offset === 0){
             this.data = null
           }
         }
