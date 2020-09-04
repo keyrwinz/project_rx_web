@@ -25,7 +25,9 @@
         </div>
       </div>
       <div v-if="data !== null" class="text-center">
-        <button class="btn btn-primary rounded" @click="retrieve(limit + 5)">Load more</button>
+        <button class="btn btn-primary rounded" @click="retrieve(limit + 5)" v-if="!showButton">Show more</button>
+        <button class="btn btn-primary rounded" @click="retrieve(5)" v-if="showButton">Show less</button>
+      </div>
       </div>
       <empty-dynamic v-if="data === null" :title="'No current transactions'" :action="'Your ledger is currently empty'" :icon="'fa fa-coins'" :iconColor="'text-dark'"></empty-dynamic>
     </div>
@@ -88,6 +90,7 @@ export default {
   },
   data() {
     return {
+      showButton: false,
       user: AUTH.user,
       common: COMMON,
       config: CONFIG,
@@ -95,7 +98,8 @@ export default {
       defaultLogo: require('assets/img/favicon-alt.png'),
       data: null,
       offset: 0,
-      limit: 5
+      limit: 5,
+      dataLength: 0
     }
   },
   components: {
@@ -107,7 +111,7 @@ export default {
         account_id: this.user.userID,
         account_code: this.user.code,
         offset: this.offset * limit,
-        limit: (limit > 5) ? limit : this.limit
+        limit: limit
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('ledger/history', par).then(response => {
@@ -122,6 +126,13 @@ export default {
             array = response.data
           }
           this.data = array
+          if(this.dataLength === response.data.length){
+            this.showButton = true
+          }else {
+            this.limit = limit
+            this.showButton = false
+            this.dataLength = response.data.length
+          }
           // this.offset = this.offset
         } else {
           if(this.offset === 0){
@@ -129,7 +140,6 @@ export default {
           }
         }
       })
-      this.limit = limit
     },
     changeIcon(e){
       let card = $(e.target).parents('.card')
