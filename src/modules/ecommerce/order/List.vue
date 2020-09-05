@@ -97,7 +97,7 @@
             <button class="btn btn-warning" @click="generatePdf(item)">
               <i class="fa fa-print"></i>
             </button>
-            <button class="btn btn-primary" @click="showModal()">
+            <button class="btn btn-primary" @click="showModal(item)">
               <i class="fas fa-map-marker-alt"></i>
             </button>
           </td>
@@ -132,7 +132,7 @@
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
 
 
-    <GoogleMapModal ref="mapModal" :place_data="places" :propStyle="propStyle"></GoogleMapModal>
+    <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -210,19 +210,10 @@ export default {
       },
       waitingBroadcast: [],
       date: null,
-      places: [{
-        longitude: 123.913968,
-        latitude: 10.321886,
-        route: 'Mezzo Hotel',
-        locality: 'F. Cabahug, Pres. Quezon St, Cebu City, 6000 Cebu',
-        country: 'Philippines'
-      }, {
-        longitude: 123.22312,
-        latitude: 10.3213,
-        route: 'Mezzo Hotel',
-        locality: 'F. Cabahug, Pres. Quezon St, Cebu City, 6000 Cebu',
-        country: 'Philippines'
-      }]
+      locations: [],
+      propStyle: {
+        'margin-top': '10vh !important;'
+      }
     }
   },
   components: {
@@ -236,9 +227,6 @@ export default {
     GoogleMapModal
   },
   methods: {
-    viewMap(item){
-      //
-    },
     exportFile(name){
       if(this.date != null){
         if(name === 'orders_summary'){
@@ -249,8 +237,30 @@ export default {
         }
       }
     },
-    showModal(){
-      this.$refs.mapModal.showModal()
+    showModal(item){
+      let parameter = {
+        condition: [{
+          value: item.location_id,
+          column: 'id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('locations/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.locations = [{
+            longitude: parseFloat(response.data[0].longitude),
+            latitude: parseFloat(response.data[0].latitude),
+            route: response.data[0].route,
+            locality: response.data[0].locality,
+            country: response.data[0].country
+          }]
+          setTimeout(() => {
+            this.$refs.mapModal.showModal()
+          }, 100)
+        }
+      })
     },
     searchByDate(){
       let parameter = {
