@@ -137,20 +137,6 @@ export default {
           }
         }
       })
-    },
-    changeIcon(e){
-      let card = $(e.target).parents('.card')
-      let icon = $(card).find('.fa')
-      if($(icon).hasClass('fa-angle-up')) {
-        $(icon).removeClass('fa-angle-up')
-        $(icon).addClass('fa-angle-down')
-      } else {
-        $(icon).removeClass('fa-angle-down')
-        $(icon).addClass('fa-angle-up')
-      }
-    },
-    formatDate(dateString) {
-      return moment(dateString).format('DD MMM YYYY')
     }
   }
 }
