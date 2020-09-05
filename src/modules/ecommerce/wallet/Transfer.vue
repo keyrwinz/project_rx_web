@@ -234,7 +234,7 @@ export default {
           html: 'Your balance is not enough.'
         }).insertBefore('#transferFunds #next')
       } else {
-        this.$refs.otp.generateOTP()
+        // this.$refs.otp.generateOTP()
       }
     },
     successOTP(){

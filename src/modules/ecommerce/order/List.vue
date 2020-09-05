@@ -97,7 +97,7 @@
             <button class="btn btn-warning" @click="generatePdf(item)">
               <i class="fa fa-print"></i>
             </button>
-            <button class="btn btn-primary" @click="viewMap(item)">
+            <button class="btn btn-primary" @click="showModal()">
               <i class="fas fa-map-marker-alt"></i>
             </button>
           </td>
@@ -130,6 +130,9 @@
       ref="OrdersSummaryExporter"
     ></OrdersSummaryExporter>
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
+
+
+    <GoogleMapModal ref="mapModal" :place_data="places" :propStyle="propStyle"></GoogleMapModal>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -171,6 +174,7 @@ import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
 import DateManipulation from './handlers/dateManipulation.js'
 import OrdersSummaryExporter from './OrdersSummaryExporter.vue'
 import InventorySummaryExporter from './InventorySummaryExporter.vue'
+import GoogleMapModal from 'src/components/increment/generic/map/ModalGeneric.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
@@ -205,7 +209,20 @@ export default {
         total: 'asc'
       },
       waitingBroadcast: [],
-      date: null
+      date: null,
+      places: [{
+        longitude: 123.913968,
+        latitude: 10.321886,
+        route: 'Mezzo Hotel',
+        locality: 'F. Cabahug, Pres. Quezon St, Cebu City, 6000 Cebu',
+        country: 'Philippines'
+      }, {
+        longitude: 123.22312,
+        latitude: 10.3213,
+        route: 'Mezzo Hotel',
+        locality: 'F. Cabahug, Pres. Quezon St, Cebu City, 6000 Cebu',
+        country: 'Philippines'
+      }]
     }
   },
   components: {
@@ -215,9 +232,13 @@ export default {
     DatePicker,
     DeliveryConfirmation,
     OrdersSummaryExporter,
-    InventorySummaryExporter
+    InventorySummaryExporter,
+    GoogleMapModal
   },
   methods: {
+    viewMap(item){
+      //
+    },
     exportFile(name){
       if(this.date != null){
         if(name === 'orders_summary'){
@@ -227,6 +248,9 @@ export default {
           this.$refs.InventorySummaryExporter.showModal()
         }
       }
+    },
+    showModal(){
+      this.$refs.mapModal.showModal()
     },
     searchByDate(){
       let parameter = {
