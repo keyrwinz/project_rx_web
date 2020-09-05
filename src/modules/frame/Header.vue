@@ -140,7 +140,7 @@
                       </span>            
                       <!--TERMS AND CONDITIONS-->
                       <span class="dropdown-item" @click="openModal('#termsAndConditionsModal')">
-                        <i class="far fa-handshake"></i>
+                        <i class="fa fa-handshake"></i>
                         <label>Terms and Conditions</label>
                       </span>
                       <span class="dropdown-item bg-danger" v-on:click="logOut()">

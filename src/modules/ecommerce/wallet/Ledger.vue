@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="accordion shadow-sm border rounded ledger-holder" id="ledger">
+  <div class="ledger-holder">
+    <div class="accordion shadow-sm border rounded" id="ledger">
       <h3 class="font-weight-bold mt-5 mb-3 text-center">Payment History</h3>
       <div v-for="(item, index) in data" :key="index" class="card ledger">
         <div class="card-header row m-0 align-items-center px-0">
@@ -106,14 +106,14 @@ export default {
   },
   methods: {
     retrieve(limit) {
-      let par = {
+      let parameter = {
         account_id: this.user.userID,
         account_code: this.user.code,
         offset: this.offset * limit,
         limit: limit
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('ledger/history', par).then(response => {
+      this.APIRequest('ledger/history', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0) {
           let array = null
