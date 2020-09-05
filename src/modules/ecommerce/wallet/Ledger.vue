@@ -1,26 +1,15 @@
 <template>
   <div>
-    <div class="accordion shadow-sm border rounded mt-3 col-6 px-5 mx-auto pb-5" id="ledger">
+    <div class="accordion shadow-sm border rounded ledger-holder" id="ledger">
       <h3 class="font-weight-bold mt-5 mb-3 text-center">Payment History</h3>
-      <div class="card" v-for="(item, index) in data" :key="index">
-        <div class="card-header" :id="'heading-'+index">
-          <button class="btn p-0 bg-transparent btn-block d-flex align-items-center" @click="changeIcon" type="button" data-toggle='collapse' :data-target="'#collapse-'+index" aria-expanded="false" :aria-controls="'collapse-'+index">
-
-            <div class="col-6">
-              <span class="text-muted col-auto">{{item.created_at_human}}</span>
-            </div>
-
-            <div class="col-6 text-right">
-              <h5 class="d-inline" :class="item.amount > 0 ? 'text-success' : 'text-danger'">{{item.amount > 0 ? '+ ' : '- '}}{{item.amount > 0 ? currency.displayWithCurrency(item.amount, item.currency) : currency.displayWithCurrency(item.amount * -1, item.currency)}}</h5>
-              <i class="fa fa-angle-up ml-4 text-muted arrow"></i>
-            </div>
-          </button>
-        </div>
-
-        <div :id="'collapse-'+index" class="collapse" :aria-labelledby="'heading-'+index" data-parent="#ledger">
-          <div class="card-body border bg-light">
-            <p>{{item.description}}</p>
-            <p><b>Mode of Payment:</b> {{item.payment_payload}}</p>
+      <div v-for="(item, index) in data" :key="index" class="card ledger">
+        <div class="card-header row m-0 align-items-center px-0">
+          <div class="col-md-12 col-sm-12 p-0 text-gray">
+            {{item.created_at_human}}
+          </div>
+          <div class="w-50 font-weight-bold p-0">{{item.description ? item.description : ''}}</div>
+          <div class="w-50 text-right font-weight-bold" :class="item.amount > 0 ? 'text-success' : 'text-danger'">
+            {{item.amount > 0 ? '+ ' : '- '}}{{item.amount > 0 ? currency.displayWithCurrency(item.amount, item.currency) : currency.displayWithCurrency(item.amount * -1, item.currency)}}
           </div>
         </div>
       </div>
@@ -39,13 +28,12 @@
 }
 </style>
 <style lang="scss" scoped>
-  @import "~assets/style/colors.scss";
-@media (max-width: 600px) {
-  .col-6{
-    max-width: 100%;
-    flex: 0 0 100%;
+@import "~assets/style/colors.scss";
+  .ledger-holder{
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
   }
-}
   #ledger .logo{
     max-width: 40px !important;
   }
@@ -71,6 +59,17 @@
 
   .arrow {
     font-size: 16px;
+  }
+  @media (max-width: 992px) {
+    .col-6{
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+    .ledger-holder{
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 0%;
+    }
   }
 </style>
 <script>
@@ -117,8 +116,6 @@ export default {
       this.APIRequest('ledger/history', par).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0) {
-          console.log('limit', this.limit)
-          console.log(response.data)
           let array = null
           if(this.data){
             array = response.data
