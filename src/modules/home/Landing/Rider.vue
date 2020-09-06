@@ -1,30 +1,28 @@
 <template>
 
-	<div class="incre-row">
-    <div v-for="(item, index) in settings.page" :key="index" class="cw-banner" :style="{'background': item.background}">
+  <div class="incre-row" v-if="data !== null">
+    <div class="cw-banner" :style="{'background': data.background}">
+      <div class="image">
+        <img :src="data.image" style="margin-bottom: 5px;" width="100%">
+      </div>
       <div class="text">
         <span class="title">
-          <h2>{{item.title}}</h2>
+          <h2>{{data.title}}</h2>
         </span>
+<!--         <span class="subtitle">
+          <h2>{{item.subtitle}}</h2>
+        </span> -->
         <span class="description">
           <p>
-            <b>{{item.description}}</b>
+            <b>{{data.description}}</b>
           </p>
         </span>
         <span class="text-center">
-          <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
-          </a>
-          <a style="margin-left: 10px;" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-           <img class="button img-fluid float-left" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
-          </a>
+          <button class="btn btn-primary">Sign up today!</button>
         </span>
       </div>
-      <div class="image" v-if="item.template === 'right'">
-        <img :src="item.image" style="margin-bottom: 5px;" width="100%">
-      </div>
     </div>
-	</div>
+  </div>
 </template>
 <style scoped lang="scss">
 @import "~assets/style/colors.scss";
@@ -36,8 +34,9 @@
 .text{
   width: 35%;
   float: left;
-  margin-left: 7%;
-  margin-top: 150px;
+  margin-right: 7%;
+  margin-left: 1%;
+  margin-top: 50px;
   color: $black;
 }
 .text .title{
@@ -54,9 +53,8 @@
 }
 .image{
   width: 50%;
-  margin-right: 7%;
   float: left;
-  margin-left: 1%;
+  margin-left: 7%;
   display: block;
 }
 .button{
@@ -92,7 +90,7 @@ export default {
   },
   data(){
     return {
-      settings: SETTINGS,
+      data: SETTINGS.riders,
       common: COMMON
     }
   },

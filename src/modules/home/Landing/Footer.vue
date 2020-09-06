@@ -19,7 +19,7 @@
       <span class="footer-widget community">
         <span class="title"><b>Community</b></span>
         <span class="link">
-          <a target="_BLANK" class="text-gray" :href="'https://www.facebook.com/' + common.socialMedia.facebook" ><i class="fab fa-facebook"></i></a>
+          <a target="_BLANK" class="text-white" :href="'https://www.facebook.com/' + common.socialMedia.facebook" ><i class="fab fa-facebook"></i></a>
         </span>
       </span>
       
@@ -35,7 +35,7 @@ footer {
   min-height: 200px;
   float: left;
   overflow-y: hidden;
-  background: #e9e9e9;
+  background: #000;
 }
 .footer{
   width: 80%;
@@ -61,14 +61,14 @@ footer {
   padding: 5px 10px 5px 10px;
   float: left;
   width: 100%;
-  color: #6f6f6f !important;
+  color: #fff !important;
 }
 
 .footer-widget, .footer-widget li a{
-  color: #6f6f6f !important;
+  color: #fff !important;
 }
 .footer-widget .title{
-  color: #4c4c4c;
+  color: #fff;
 }
 
 .footer-widget li a:hover{
@@ -97,11 +97,11 @@ footer-widget .title:hover{
   width: 20%;
 }
 .community .link i:hover{
-  color: #1caceb;
+  color: #fff;
   cursor: pointer;
 }
 .text-gray{
-  color: #212529;
+  color: #fff;
 }
 
 .contact-us li i{
@@ -124,7 +124,7 @@ footer-widget .title:hover{
   font-size: 12px;
   text-align: center;
   margin-top: 45px;
-  color: #6f6f6f !important;
+  color: #fff !important;
 }
 @media screen and (max-width: 992px){
   .footer-widget{
