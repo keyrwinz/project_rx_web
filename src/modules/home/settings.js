@@ -1,11 +1,10 @@
 export default {
   page: [{
-    title: 'Runway Express',
-    subtitle: 'Delivering food to your home!',
-    description: 'This is a test here!',
-    image: null,
+    title: 'A Moments of Delivered on Time.',
+    subtitle: 'Sometimes the bests moments are the ones you did not plan at all. Download our app and order your food today!',
+    description: 'Sometimes the bests moments are the ones you did not plan at all. Download our app and order your food today!',
+    image: require('src/assets/img/banner.jpg'),
     template: 'right',
-    background: '#ff5B04',
-    textColor: 'text-white'
+    background: '#fff'
   }]
 }

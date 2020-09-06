@@ -33,8 +33,8 @@ export default {
     icon: 'fa fa-shopping-bag',
     route: '/orders'
   }],
-  APP_NAME: 'RunwayExpress',
-  APP_NAME_HTML: 'Runway Express',
+  APP_NAME: 'RUNWAY EXPRESS',
+  APP_NAME_HTML: '<b>RUNWAY EXPRESS</b>',
   APP_EMAIL: 'support@runwayexpress.com',
   COMPANY: 'RunwayExpress',
   COMPANY_URL: 'https://runwayexpress.com',

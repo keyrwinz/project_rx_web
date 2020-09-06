@@ -5,23 +5,23 @@
       <div class="image" v-if="item.template === 'left'">
         <img :src="item.image" style="margin-bottom: 5px;" width="100%">
       </div>
-      <div class="text" :class="item.textColor">
+      <div class="text">
         <span class="title">
-          <h1>{{item.title}}</h1>
+          <h2>{{item.title}}</h2>
         </span>
-        <span class="subtitle">
+<!--         <span class="subtitle">
           <h2>{{item.subtitle}}</h2>
-        </span>
+        </span> -->
         <span class="description">
-          <h4>
-            {{item.description}}
-          </h4>
+          <p>
+            <b>{{item.description}}</b>
+          </p>
         </span>
         <span class="text-center">
           <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
            <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
           </a>
-          <a class="" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null">
+          <a style="margin-left: 10px;" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
            <img class="button img-fluid float-left" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
           </a>
         </span>
@@ -40,10 +40,11 @@
   height: 600px;
 }
 .text{
-  width: 45%;
+  width: 35%;
   float: left;
-  margin-left: 5%;
+  margin-left: 7%;
   margin-top: 150px;
+  color: $black;
 }
 .text .title{
   width: 100%;
@@ -53,21 +54,21 @@
   font-size: 50px;
 }
 .text .description{
-  margin-top: 25px;
   width: 100%;
   float: left;
   text-align: justify;
 }
 .image{
-  width: 40%;
-  margin-right: 5%;
+  width: 50%;
+  margin-right: 7%;
   float: left;
-  margin-left: 5%;
+  margin-left: 1%;
   display: block;
 }
 .button{
   position:left;
-  width:194px;
+  height: 50px;
+  margin-right: 5px;
 }
 
 @media screen and (max-width: 992px){

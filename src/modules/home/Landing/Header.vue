@@ -2,7 +2,7 @@
 	<div class="header">
     <nav class="navbar navbar-expand-sm navbar-light"> 
       <a class="navbar-brand" v-on:click="redirect('/')">
-        <img src="../../../assets/img/logo_white.png" style="width:50px;">
+        <!-- <img src="../../../assets/img/logo_white.png" style="width:50px;"> -->
         <label v-html="common.APP_NAME_HTML"></label>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-2" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,8 +10,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbar-list-2">
           <ul class="navbar-nav ml-auto"> 
-            <li class="nav-item" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
-            <li class="nav-item" v-on:click="redirect('/signup')"><a class="nav-link">Register</a></li>
+            <li class="nav-item text-black" v-on:click="redirect('/login')">
+              <a class="nav-link">
+                <i class="fas fa-user pr-1"></i>Login
+              </a>
+            </li>
+            <li class="nav-item btn btn-primary" v-on:click="redirect('/signup')"><a class="nav-link text-white">Register</a></li>
           </ul>
       </div>
     </nav>
@@ -54,21 +58,25 @@
   width: 100%;
   float: left;
   min-height: 70px;
-  background: $primary;
+  background: $white;
   overflow-y: hidden;
   // min-height: 50px;
   overflow-y: hidden;
-  color: #fff;
+  color: $primary;
 }
 .nav-item .nav-link{
-  color: #fff;
   font-family: MuseoRounded700, sans-serif;
   font-size: 15px;
   padding: 8px;
   cursor: pointer;
+  color: $black;
 }
-.nav-item .nav-link:hover{  
-  color: #fff;
+
+.text-black{
+  color: $black;
+}
+
+.nav-item .nav-link:hover{
   font-family: MuseoRounded700, sans-serif;
   cursor: pointer;
   font-size: 15px;
