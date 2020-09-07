@@ -113,7 +113,7 @@
                 <div class="dropdown row col-auto h-100 align-items-center px-1" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')"> 
                   <!-- <div class="nav-item"> -->
                       <!-- <i class="fa fa-cog my-auto text-white"></i> -->
-                    <div v-if="user.profile && user.profile.url" style="width: 35px; height: 35px; overflow: hidden; border-width: 3px !important;" class="rounded-circle border border-white bg-white px-3">
+                    <div v-if="user.profile && user.profile.url" style="width: 35px; height: 35px; overflow: hidden; border-width: 3px !important;" class="rounded-circle border border-white bg-white px-0">
                       <img :src="config.BACKEND_URL + user.profile.url" class="img-fluid">
                     </div>
                     <i v-else class="far fa-user-circle text-white" style="font-size: 30px;"></i>
