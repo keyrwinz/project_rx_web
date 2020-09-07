@@ -51,6 +51,8 @@
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" v-if="item.account_type !== 'USER'" @click="showAddressModal(item)"><i class="fa fa-map-marker-alt"></i> Scope location</a>
+                <a class="dropdown-item" @click="validateAccount(item)"><i class="fa fa-map-marker-alt"></i> Validate Account</a>
+                <a class="dropdown-item" @click="validateMerchant(item)"><i class="fa fa-map-marker-alt"></i> Validate Merchant</a>
               </div>
             </div>
           </td>
@@ -271,6 +273,28 @@ export default{
     Pager
   },
   methods: {
+    validateAccount(item){
+      let parameter = {
+        id: item.id,
+        status: 'VERIFIED'
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('accounts/update_verification', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        this.retrieve({created_at: 'desc'}, {column: 'created_at', value: ''})
+      })
+    },
+    validateMerchant(item){
+      let parameter = {
+        account_id: item.id,
+        status: 'verified'
+      }
+      // $('#loading').css({display: 'block'})
+      this.APIRequest('merchants/update_by_verification', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        this.retrieve({created_at: 'desc'}, {column: 'created_at', value: ''})
+      })
+    },
     hideModal(id){
       this.selectedItem = null
       this.selectedLocation = null
