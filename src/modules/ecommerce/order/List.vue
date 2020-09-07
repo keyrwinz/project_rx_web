@@ -97,7 +97,7 @@
             <button class="btn btn-warning" @click="generatePdf(item)">
               <i class="fa fa-print"></i>
             </button>
-            <button class="btn btn-primary" @click="viewMap(item)">
+            <button class="btn btn-primary" @click="showModal(item)">
               <i class="fas fa-map-marker-alt"></i>
             </button>
           </td>
@@ -130,6 +130,9 @@
       ref="OrdersSummaryExporter"
     ></OrdersSummaryExporter>
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
+
+
+    <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -171,6 +174,7 @@ import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
 import DateManipulation from './handlers/dateManipulation.js'
 import OrdersSummaryExporter from './OrdersSummaryExporter.vue'
 import InventorySummaryExporter from './InventorySummaryExporter.vue'
+import GoogleMapModal from 'src/components/increment/generic/map/ModalGeneric.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
@@ -205,7 +209,11 @@ export default {
         total: 'asc'
       },
       waitingBroadcast: [],
-      date: null
+      date: null,
+      locations: [],
+      propStyle: {
+        'margin-top': '10vh !important;'
+      }
     }
   },
   components: {
@@ -215,7 +223,8 @@ export default {
     DatePicker,
     DeliveryConfirmation,
     OrdersSummaryExporter,
-    InventorySummaryExporter
+    InventorySummaryExporter,
+    GoogleMapModal
   },
   methods: {
     exportFile(name){
@@ -227,6 +236,31 @@ export default {
           this.$refs.InventorySummaryExporter.showModal()
         }
       }
+    },
+    showModal(item){
+      let parameter = {
+        condition: [{
+          value: item.location_id,
+          column: 'id',
+          clause: '='
+        }]
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('locations/retrieve', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.locations = [{
+            longitude: parseFloat(response.data[0].longitude),
+            latitude: parseFloat(response.data[0].latitude),
+            route: response.data[0].route,
+            locality: response.data[0].locality,
+            country: response.data[0].country
+          }]
+          setTimeout(() => {
+            this.$refs.mapModal.showModal()
+          }, 100)
+        }
+      })
     },
     searchByDate(){
       let parameter = {

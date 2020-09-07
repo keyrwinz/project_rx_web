@@ -223,19 +223,7 @@ export default{
       currency: CURRENCY,
       largest: {balance: 0},
       balance: null,
-      balanceOld: [
-        {id: 10, balance: 3000, currency: 'PHP'},
-        {id: 12, balance: 215, currency: 'USD'},
-        {id: 22, balance: 4120, currency: 'EUR'}
-      ],
       ledger: null,
-      ledgerOld: [
-        {amount: -4.99, description: 'Payment for Discord Nitro Classic', payment_payload: 'COP', currency: 'USD', cash_methods_created: '2020-07-24 06:18:31', name: 'Discord Inc'},
-        {amount: -331.25, description: 'Phoenix Wright: The Ace Attorney', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-07-18 06:18:31', name: 'www.steampowered.com'},
-        {amount: -75, description: 'Spotify Premium', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-06-25 06:18:31', name: 'Spotify Finance Limited'},
-        {amount: 127.47, description: 'Refund for games', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-06-25 06:18:31', name: 'www.steampowered.com'},
-        {amount: -534.50, description: 'Rise of the Tomb Raider', payment_payload: 'COD', currency: 'PHP', cash_methods_created: '2020-06-05 06:18:31', name: 'www.steampowered.com'}
-      ],
       options: {
         colors: ['#28a745', '#FF0000'],
         chart: {
@@ -309,6 +297,9 @@ export default{
       return moment(String(dateString)).format('DD')
     },
     getDailySummary(date){
+      if(this.user.subAccount.merchant === null){
+        return
+      }
       let parameter = {
         merchant_id: this.user.subAccount.merchant.id,
         date: date
@@ -334,12 +325,14 @@ export default{
       })
     },
     getSummary(){
+      if(this.user.subAccount.merchant === null){
+        return
+      }
       let parameter = {
         merchant_id: this.user.subAccount.merchant.id,
         date: this.searchDate
       }
       this.APIRequest('checkouts/summary_of_orders', parameter).then(response => {
-        console.log('this is the result line 336 dashboard ', response.data)
         if(response.data !== null){
           this.series = response.data.series
           this.optios.xaxis.categories = response.data.categories

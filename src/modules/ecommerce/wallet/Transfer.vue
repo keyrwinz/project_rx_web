@@ -33,9 +33,9 @@
               </div>
             </div>
 
-            <div class="container-fluid col-6">
+            <div class="container-fluid col-6" v-if="balance !== null">
               <b class="ml-5">Pick your currency</b>
-              <div class="row mb-0 mt-3 mx-3 flex-column">
+              <div class="row mb-0 mt-3 mx-3 flex-column" >
                 <div class="col-12 py-2 form-group row mx-0 align-items-center bank" v-for="(item, index) in balance.filter(bal => bal.balance > 0)" :key="index">
                   <input type="radio" name="currency" :id="'currency-'+index" :value="item" v-model="selectedCurrency">
                   <label :for="'currency-'+index" class="ml-2 mb-0">
@@ -234,7 +234,7 @@ export default {
           html: 'Your balance is not enough.'
         }).insertBefore('#transferFunds #next')
       } else {
-        this.$refs.otp.generateOTP()
+        // this.$refs.otp.generateOTP()
       }
     },
     successOTP(){

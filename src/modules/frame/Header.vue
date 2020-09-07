@@ -91,7 +91,7 @@
               <checkout-cart v-if="common.headerFlag.cart === true"></checkout-cart>
 
               <!-- market options here -->
-              <div class="h-100" v-if="user.type === 'MERCHANT'">
+              <div class="h-100" v-if="user.type === 'MERCHANT' || user.type === 'ADMIN'">
                 <div class="dropdown row col-auto h-100 align-items-center" id="merchantStuff" data-toggle="dropdown">
                   <i class="fa fa-store text-white"></i>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="merchantStuff">
@@ -140,7 +140,7 @@
                       </span>            
                       <!--TERMS AND CONDITIONS-->
                       <span class="dropdown-item" @click="openModal('#termsAndConditionsModal')">
-                        <i class="far fa-handshake"></i>
+                        <i class="fa fa-handshake"></i>
                         <label>Terms and Conditions</label>
                       </span>
                       <span class="dropdown-item bg-danger" v-on:click="logOut()">

@@ -1,7 +1,8 @@
 <template>
 	<div class="body">
 		<landing-banner></landing-banner>
-    <test-banner :data="data" :checkout="checkout"></test-banner>
+    <landing-categories></landing-categories>
+    <landing-rider></landing-rider>
 	</div>
 </template>
 <script>
@@ -11,7 +12,8 @@ import CONFIG from 'src/config.js'
 export default {
   components: {
     'landing-banner': require('modules/home/Landing/Banner.vue'),
-    'test-banner': require('components/increment/imarketvue/delivery/ViewProducts.vue')
+    'landing-categories': require('modules/home/Landing/Categories.vue'),
+    'landing-rider': require('modules/home/Landing/Rider.vue')
   },
   mounted(){
   },
@@ -42,9 +44,6 @@ export default {
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
-    },
-    showModal(){
-      $('#viewProductOnModal').modal('show')
     }
   }
 }

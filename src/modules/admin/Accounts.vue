@@ -212,10 +212,18 @@ export default{
           payload_value: 'desc'
         }, {
           title: 'Type ascending',
-          payload: 'status',
+          payload: 'account_type',
           payload_value: 'asc'
         }, {
           title: 'Type descending',
+          payload: 'account_type',
+          payload_value: 'desc'
+        }, {
+          title: 'Status ascending',
+          payload: 'status',
+          payload_value: 'asc'
+        }, {
+          title: 'Status descending',
           payload: 'status',
           payload_value: 'desc'
         }, {

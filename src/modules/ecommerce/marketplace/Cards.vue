@@ -4,8 +4,8 @@
   		<div class="position-absolute w-100">
   			<!-- <img class="img-fluid" src="https://www.arborday.org/images/hero/medium/hero-aerial-forest-evergreen-trees.jpg"> -->
   		</div>
-  		<h1 class="display-4 text-white">{{header}}</h1>
-  		<p class="lead text-white">{{subheader}}</p>
+  		<h1 class="display-4">{{header}}</h1>
+  		<p class="lead">{{subheader}}</p>
         <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
          <img alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
         </a>
@@ -35,9 +35,6 @@
      top: 0;
      left: 0;
      background-color:orange;
-  }
-  #jumboID{
-      background:url(~assets/img/featured.png) top/100% no-repeat;
   }
   /* .card .img-fluid{
     min-height: 5rem;
