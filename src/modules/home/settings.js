@@ -3,7 +3,7 @@ export default {
     title: 'A Moments of Delivered on Time.',
     subtitle: 'Sometimes the bests moments are the ones you did not plan at all. Download our app and order your food today!',
     description: 'Sometimes the bests moments are the ones you did not plan at all. Download our app and order your food today!',
-    image: require('src/assets/img/banner.png'),
+    image: require('src/assets/img/landings.png'),
     template: 'right',
     background: '#fff'
   }],
