@@ -11,7 +11,7 @@ export default {
     title: 'Be the one who can share happiness',
     subtitle: 'Great things in business are never done by one person; they are done by a team of people. Join our riders program today!',
     description: 'Great things in business are never done by one person; they are done by a team of people. Join our riders program today!',
-    image: require('src/assets/img/banner.png'),
+    image: require('src/assets/img/deliveryman.png'),
     template: 'right',
     background: '#fff'
   },
