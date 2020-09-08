@@ -1,17 +1,14 @@
 <template>
 
-  <div class="incre-row" v-if="data !== null">
+  <div class="incre-row row" v-if="data !== null">
     <div class="cw-banner" :style="{'background': data.background}">
-      <div class="image">
+      <div class="image col-sm-6">
         <img :src="data.image" style="margin-bottom: 5px;" width="100%">
       </div>
-      <div class="text">
+      <div class="text col-sm-6" >
         <span class="title">
           <h2>{{data.title}}</h2>
         </span>
-<!--         <span class="subtitle">
-          <h2>{{item.subtitle}}</h2>
-        </span> -->
         <span class="description">
           <p>
             <b>{{data.description}}</b>
