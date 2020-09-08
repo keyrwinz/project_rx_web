@@ -2,7 +2,7 @@
   <div class="cw-categories" id="services">
     <div class="holder">
       <span class="item text-center" v-for="item, index in data" v-if="data !== null" :class="{'active': item.title === selected.title}" @click="setSelected(item)">
-        <i :class="item.icon" class="text-white"></i>
+        <i :class="item.icon" class="text-white" style="font-size:42px;"></i>
         <span class="title">
           <h5 class="text-white">{{item.title}}</h5>
         </span>
@@ -17,15 +17,20 @@
 
         <span class="text-center">
           <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
+           <img class="button img-fluid float-left" style="width:48%;" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
           </a>
-          <a style="margin-left: 10px;" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-           <img class="button img-fluid float-left" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
+          <a :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
+           <img class="button img-fluid float-right" style="width:48%;" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
           </a>
         </span>
+
+        <p style="font-size:12px;">
+          {{selected.partDescription}}
+        </p>
+
       </div>
       <div class="selected-image">
-        <img :src="selected.image" width="100%">
+        <img :src="selected.image" width="80%" height="60%">
       </div>
     </div>
   </div>
@@ -38,7 +43,7 @@
 .cw-categories{
   width: 100%;
   float: left;
-  min-height: 100vh;
+  min-height: 70vh;
   background: $primary;
   overflow-y: hidden;
 }
@@ -80,6 +85,10 @@
   margin-top: 25px;
 }
 
+h5{
+  font-size:15px;
+}
+
 .item .description{
   text-align: justify;
   padding-top: 25px;
@@ -97,7 +106,7 @@
 .selected-details{
   width: 35%;
   float: left;
-  height: 300px;
+  height: 325px;
   background: $white;
   color: $black;
   text-align: justify;
@@ -112,11 +121,14 @@
 
 .selected-details p{
   width: 100%;
+  font-size:14px;
 }
 
 .selected-image{
   width: 65%;
   float: left;
+  text-align:center;
+  margin-top: 5px;
 }
 
 .button{
