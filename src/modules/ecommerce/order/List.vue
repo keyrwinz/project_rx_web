@@ -136,6 +136,7 @@
 
 
     <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
+    <support-messenger></support-messenger>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -227,7 +228,8 @@ export default {
     DeliveryConfirmation,
     OrdersSummaryExporter,
     InventorySummaryExporter,
-    GoogleMapModal
+    GoogleMapModal,
+    'support-messenger': require('components/increment/messengervue/overlay/Support.vue')
   },
   methods: {
     showMessage(item){
