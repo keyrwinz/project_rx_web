@@ -100,6 +100,9 @@
             <button class="btn btn-primary" @click="showModal(item)">
               <i class="fas fa-map-marker-alt"></i>
             </button>
+            <button class="btn btn-warning" @click="showMessage(item)">
+              <i class="fas fa-envelope"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -227,6 +230,9 @@ export default {
     GoogleMapModal
   },
   methods: {
+    showMessage(item){
+      ROUTER.push('/messenger')
+    },
     exportFile(name){
       if(this.date != null){
         if(name === 'orders_summary'){
