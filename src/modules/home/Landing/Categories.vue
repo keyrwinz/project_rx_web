@@ -17,10 +17,10 @@
 
         <span class="text-center">
           <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
+           <img class="button img-fluid float-left" width="48%" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
           </a>
           <a :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-           <img class="button img-fluid" style="margin-left: 5px;" alt='Get it on App Store' :src="require('assets/img/appstoreblack.png')"/>
+           <img class="button img-fluid" width="48%" style="margin-left: 5px;" alt='Get it on App Store' :src="require('assets/img/appstoreblack.png')"/>
           </a>
         </span>
 
