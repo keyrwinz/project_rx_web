@@ -17,16 +17,16 @@
 
         <span class="text-center">
           <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-           <img class="button img-fluid float-left" style="width:48%;" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
+           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
           </a>
           <a :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-           <img class="button img-fluid float-right" style="width:48%;" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
+           <img class="button img-fluid float-right" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
           </a>
         </span>
 
-        <p style="font-size:12px;">
+<!--         <p style="font-size:12px;">
           {{selected.partDescription}}
-        </p>
+        </p> -->
 
       </div>
       <div class="selected-image">

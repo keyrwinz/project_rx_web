@@ -29,6 +29,9 @@
             <button class="btn btn-primary" @click="showModal('update', item)">
               <i class="fa fa-edit"></i>
             </button>
+            <button class="btn btn-danger" @click="removeItem(item)">
+              <i class="fa fa-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -156,6 +159,16 @@ export default {
           this.data = null
           this.numPages = null
         }
+      })
+    },
+    removeItem(item){
+      let parameter = {
+        id: item.id
+      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('coupons/delete', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        this.retrieve()
       })
     }
   }

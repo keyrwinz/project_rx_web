@@ -21,7 +21,7 @@
         </span>
       </div>
       <div class="image" v-if="item.template === 'right'">
-        <img :src="item.image" style="margin-bottom: 5px;" width="130%;" height="100%">
+        <img :src="item.image" style="margin-bottom: 5px;" width="100%;" height="auto">
       </div>
     </div>
 	</div>
