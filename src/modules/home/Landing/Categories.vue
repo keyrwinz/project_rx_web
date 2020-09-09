@@ -8,7 +8,7 @@
         </span>
       </span>
     </div>
-    <div class="holder" v-if="selected !== null">
+    <div class="holder holder-content" v-if="selected !== null">
       <div class="selected-details">
         <label><b>{{selected.description}}</b></label>
         <p>
@@ -17,10 +17,10 @@
 
         <span class="text-center">
           <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
+           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
           </a>
           <a :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-           <img class="button img-fluid float-right" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
+           <img class="button img-fluid" style="margin-left: 5px;" alt='Get it on App Store' :src="require('assets/img/appstoreblack.png')"/>
           </a>
         </span>
 
@@ -141,6 +141,9 @@ h5{
   .holder, .item{
     width: 90%;
     margin: 25px 5% 50px 5%;
+  }
+  .holder-content{
+    display: none;
   }
 }
 </style>

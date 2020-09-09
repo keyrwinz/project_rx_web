@@ -15,7 +15,7 @@
           </p>
         </span>
         <span class="text-center">
-          <button class="btn btn-primary">Sign up today!</button>
+          <button class="button btn btn-primary" @click="redirect('/signup')">Sign up today!</button>
         </span>
       </div>
     </div>
@@ -26,7 +26,7 @@
 .cw-banner{
   width: 100%;
   float: left;
-  height: 600px;
+  min-height: 600px;
 }
 .text{
   width: 35%;
@@ -55,9 +55,7 @@
   display: block;
 }
 .button{
-  position:left;
-  height: 50px;
-  margin-right: 5px;
+  height: 50px !important;
 }
 
 @media screen and (max-width: 992px){
@@ -66,13 +64,16 @@
     margin-left: 5%;
     margin-right: 5%;
     margin-top: 50px;
+    margin-bottom: 100px;
   }
   .title{
     text-align: center;
   }
 
   .image{
-    display: none;
+    width: 100%;
+    margin-left: 0%;
+    margin-right: 0%;
   }
 }
 

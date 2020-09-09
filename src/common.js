@@ -35,6 +35,7 @@ export default {
   }],
   APP_NAME: 'RUNWAY EXPRESS',
   APP_NAME_HTML: '<b>RUNWAY EXPRESS</b>',
+  APP_ADDRESS: 'Davao, Philippines',
   APP_EMAIL: 'support@runwayexpress.com',
   COMPANY: 'RunwayExpress',
   COMPANY_URL: 'https://runwayexpress.com',

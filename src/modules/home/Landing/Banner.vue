@@ -13,10 +13,10 @@
         </span>
         <span class="text-center">
           <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstore.png')"/>
+           <img class="button img-fluid float-left" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
           </a>
           <a style="margin-left: 10px;" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-           <img class="button img-fluid float-left" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
+           <img class="button img-fluid float-left" alt='Get it on App Store' :src="require('assets/img/appstoreblack.png')"/>
           </a>
         </span>
       </div>
@@ -78,7 +78,8 @@
   }
 
   .image{
-    display: none;
+    width: 100%;
+    margin-right: 0%;
   }
 }
 
