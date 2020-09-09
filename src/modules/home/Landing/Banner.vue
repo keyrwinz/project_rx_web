@@ -21,7 +21,7 @@
         </span>
       </div>
       <div class="image" v-if="item.template === 'right'">
-        <img :src="item.image" style="margin-bottom: 5px;" width="100%;" height="auto">
+        <img :src="item.image" width="100%;" height="auto">
       </div>
     </div>
 	</div>
@@ -58,6 +58,7 @@
   float: left;
   margin-left: 1%;
   display: block;
+  margin-top: 50px;
 }
 .button{
   position:left;
