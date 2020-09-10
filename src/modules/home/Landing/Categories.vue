@@ -17,10 +17,10 @@
 
         <span class="text-center">
           <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-           <img class="button img-fluid float-left" width="48%" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
+           <img class="button img-fluid float-left" width="47.5%" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
           </a>
           <a :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-           <img class="button img-fluid" width="48%" style="margin-left: 5px;" alt='Get it on App Store' :src="require('assets/img/appstoreblack.png')"/>
+           <img class="button img-fluid" width="47.5%" style="margin-left: 2px;" alt='Get it on App Store' :src="require('assets/img/appstoreblack.png')"/>
           </a>
         </span>
 
@@ -106,7 +106,7 @@ h5{
 .selected-details{
   width: 35%;
   float: left;
-  height: 325px;
+  height: 300px;
   background: $white;
   color: $black;
   text-align: justify;

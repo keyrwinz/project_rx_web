@@ -27,7 +27,7 @@ export default {
     description: 'Just make it easy, click and wait for your documents.',
     subDescription: 'Want hassle-free? Do not worry, relax and let your errands run with us. Download our app today!',
     icon: 'fas fa-running',
-    image: require('src/assets/img/errands.jpg')
+    image: require('src/assets/img/errand.jpg')
   }, {
     title: 'Groceries',
     description: 'Groceries deliver at your doorstep.',
@@ -53,7 +53,7 @@ export default {
     description: 'Get more! Slow shopping no more.',
     subDescription: 'Life is hard enough already. Love shopping? Let us help you with making it easier and simpler for you. Download our app and shop for what you want today!',
     icon: 'fa fa-shopping-cart',
-    image: require('src/assets/img/shoponline.jpg')
+    image: require('src/assets/img/onlineshop.jpg')
   }, {
     title: 'Pharmacy & Cosmetics',
     description: 'Best way to shop for health & beauty.',
