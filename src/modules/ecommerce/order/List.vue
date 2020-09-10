@@ -230,7 +230,7 @@ export default {
     OrdersSummaryExporter,
     InventorySummaryExporter,
     GoogleMapModal,
-    'support-messenger': require('components/increment/messengervue/overlay/Support.vue')
+    'support-messenger': require('components/increment/messengervue/overlay/Holder.vue')
   },
   methods: {
     showMessage(item){

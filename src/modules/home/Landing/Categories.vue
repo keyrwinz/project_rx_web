@@ -133,7 +133,6 @@ h5{
 
 .button{
   position:left;
-  height: 50px;
   margin-right: 5px;
 }
 
