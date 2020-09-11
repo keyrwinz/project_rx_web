@@ -291,7 +291,6 @@ export default{
     },
     getDailySummary(date){
       if(this.user.subAccount.merchant === null){
-        console.log(this.user.subAccount.merchant)
         return
       }
       let parameter = {
