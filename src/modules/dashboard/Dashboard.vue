@@ -104,6 +104,20 @@
               </div>
             </center>
           </div>
+        </div>        
+        <div class="col-12 mt-2 border bg-light shadow-sm p-3 row m-0 rounded-lg">
+          <p class="col m-0 p-0 font-weight-bold">Summary of income</p>
+          <input type="month"  class="form-control" v-model="searchDate" @change="getIncomeRider()">
+        </div>
+        <div class="col-12 mt-4">
+            <topAffectedPlaces 
+              ref="realtimeChart" 
+              height="340" 
+              type="line" 
+              :options="options" 
+              :series="series"
+            >
+            </topAffectedPlaces>
         </div>
       </div>
     </div>
@@ -326,6 +340,24 @@ export default{
         date: this.searchDate
       }
       this.APIRequest('checkouts/summary_of_orders', parameter).then(response => {
+        if(response.data !== null){
+          this.series = response.data.series
+          this.optios.xaxis.categories = response.data.categories
+        }else{
+          this.series = []
+          this.optios.xaxis.categories = []
+        }
+      })
+    },
+    getIncomeRider(){
+      if(this.user === null){
+        return
+      }
+      let parameter = {
+        rider: this.user.userID,
+        date: this.searchDate
+      }
+      this.APIRequest('deliveries/monthly_summary', parameter).then(response => {
         if(response.data !== null){
           this.series = response.data.series
           this.optios.xaxis.categories = response.data.categories
