@@ -64,7 +64,50 @@ export default {
       $('#InventorySummaryExporterModal').modal('hide')
     },
     showModal(){
-      $('#InventorySummaryExporterModal').modal('show')
+      this.retrieve()
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.subAccount.merchant.id,
+          column: 'merchant_id',
+          clause: '='
+        },
+        {
+          value: this.date,
+          column: 'created_at',
+          clause: '>='
+        },
+        {
+          value: DateManipulation.getNextDay(this.date),
+          column: 'created_at',
+          clause: '<'
+        }],
+        sort: {
+          status: 'desc'
+        }
+      }
+      console.log(parameter)
+      $('#loading').css({display: 'block'})
+      this.APIRequest('checkout_items/summary_of_inventory', parameter).then(response => {
+        $('#loading').css({display: 'none'})
+        if(response.data.length > 0){
+          this.data.body = response.data
+        }else{
+          this.data.body = null
+        }
+        console.log(response.body)
+        this.currentDate = DateManipulation.currentDate()
+        this.queryDate = DateManipulation.dateFormat(new Date(this.date))
+        this.data.total[0].value = this.getTotal('sub_total')
+        this.data.total[1].value = this.getTotal('shipping_fee')
+        this.data.total[2].value = this.getTotal('tax')
+        this.data.total[3].value = this.getTotal('total')
+        this.data.total.forEach(element => {
+          this.totals[element.name] = element.value
+        })
+        $('#InventorySummaryExporterModal').modal('show')
+      })
     }
   }
 }
