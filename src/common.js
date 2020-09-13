@@ -129,7 +129,7 @@ export default {
   passwordLimit: 8,
   alertFlag: false,
   appUrl: {
-    android: 'https://playtore.test',
+    android: 'https://play.google.com/store/apps/details?id=com.runwayexpress',
     ios: 'https://appstore.test'
   },
   headerFlag: {
