@@ -15,8 +15,8 @@
         </div>
 
           <div class="modal-body px-5 row m-0"  v-if="!next">
-            <div class="container-fluid col-6">
-              <small class="ml-5">Typically in 1-4 business days <b>(Fees may apply)</b></small>
+            <div class="container-fluid col-12">
+              <small class="ml-1">Typically in 1-4 business days <b>(Fees may apply)</b></small>
               <div class="row mb-3 mt-3 mx-3 flex-column">
                 <div class="col-12 py-2 form-group row mx-0 align-items-center bank" v-for="(item, index) in banks" :key="index">
                   <input type="radio" name="bank" :id="'bank-'+index" :value="item" v-model="selectedBank">
@@ -33,8 +33,8 @@
               </div>
             </div>
 
-            <div class="container-fluid col-6" v-if="balance !== null">
-              <b class="ml-5">Pick your currency</b>
+            <div class="container-fluid col-12" v-if="balance !== null">
+              <b class="ml-1">Pick your currency</b>
               <div class="row mb-0 mt-3 mx-3 flex-column" >
                 <div class="col-12 py-2 form-group row mx-0 align-items-center bank" v-for="(item, index) in balance.filter(bal => bal.balance > 0)" :key="index">
                   <input type="radio" name="currency" :id="'currency-'+index" :value="item" v-model="selectedCurrency">
@@ -156,6 +156,20 @@
 
   .modal-dialog {
     transition: 1000ms width ease-in-out;
+  }
+
+  small {
+    font-size: 95%;
+  }
+
+  @media (max-width: 750px) {
+    .col-12 {
+      position: relative;
+      width: 100%;
+      min-height: 1px;
+      padding-right: 6px;
+      padding-left: 8px;
+    }
   }
 </style>
 <script>

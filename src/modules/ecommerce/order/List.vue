@@ -162,6 +162,16 @@
     width: 200px !important;
     float: left;
   }
+
+  @media (max-width: 992px) {
+    .form-control-custom{
+      width: 120.7px !important;
+      float: left;
+    }
+    .form-control {
+      font-size: 12px !important;
+    }
+  }
 </style>
 <script>
 import pdfFonts from 'pdfmake/build/vfs_fonts'
@@ -392,7 +402,6 @@ export default {
       $('#loading').css({display: 'block'})
       this.APIRequest('checkout_items/retrieve_on_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
-        console.log('list item ', response)
         if(response.data.length > 0){
           this.selectedProducts = response.data
           this.dataAdded = item
