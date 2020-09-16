@@ -229,8 +229,8 @@ export default {
     DeliveryConfirmation,
     OrdersSummaryExporter,
     InventorySummaryExporter,
-    GoogleMapModal,
-    'support-messenger': require('components/increment/messengervue/overlay/Support.vue')
+    GoogleMapModal
+    // 'support-messenger': require('components/increment/messengervue/overlay/Support.vue')
   },
   methods: {
     showMessage(item){
@@ -290,15 +290,19 @@ export default {
         }],
         sort: {
           status: 'desc'
-        }
+        },
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('checkouts/retrieve_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
         }else{
           this.data = null
+          this.numPages = null
         }
       })
     },
@@ -309,7 +313,6 @@ export default {
       let rider = AUTH.user.riders[0]
       this.data = this.data.map((item, index) => {
         if(parseInt(rider.checkout_id) === parseInt(item.id)){
-          console.log(rider)
           return {
             ...item,
             assigned_rider: rider.assigned_rider
@@ -392,7 +395,6 @@ export default {
       $('#loading').css({display: 'block'})
       this.APIRequest('checkout_items/retrieve_on_orders', parameter).then(response => {
         $('#loading').css({display: 'none'})
-        console.log('list item ', response)
         if(response.data.length > 0){
           this.selectedProducts = response.data
           this.dataAdded = item

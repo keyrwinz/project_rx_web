@@ -1,4 +1,3 @@
-import DateManipulation from './dateManipulation.js'
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
 pdfMake.vfs = pdfFonts.pdfMake.vfs
@@ -19,13 +18,13 @@ export default{
       }
     }
   },
-  toPDF(headerPDF, footerPDF, contentPDF){
-    pdfMake.createPdf(this.createDoc(headerPDF, footerPDF, contentPDF)).open()
+  toPDF(headerPDF, footerPDF, contentPDF, pageMargin){
+    pdfMake.createPdf(this.createDoc(headerPDF, footerPDF, contentPDF, pageMargin)).open()
   },
-  createDoc(headerPDF, footerPDF, contentPDF){
+  createDoc(headerPDF, footerPDF, contentPDF, pageMargin){
     return {
       pageSize: 'A4',
-      pageMargins: [10, 60, 10, 30],
+      pageMargins: pageMargin,
       header: headerPDF,
       footer: footerPDF,
       content: contentPDF,
@@ -35,7 +34,6 @@ export default{
         },
         filledHeader: {
           bold: true,
-          fontSize: 18,
           color: 'white',
           fillColor: '#FF5B04',
           alignment: 'center'
@@ -44,12 +42,26 @@ export default{
           fontSize: 12,
           alignment: 'center'
         },
+        subheader: {
+          bold: true
+        },
+        subheader1: {
+          bold: true,
+          fontSize: 10,
+          color: 'white',
+          fillColor: '#FF5B04',
+          alignment: 'center'
+        },
         title: {
           bold: true,
           fontSize: 18,
           alignment: 'center'
         },
         item: {
+          fontSize: 10
+        },
+        total: {
+          bold: true,
           fontSize: 10
         },
         footer: {
@@ -74,12 +86,16 @@ export default{
     })
     var tempArr = [{text: 'Total', style: 'boldHeader'}]
     for(let count = 1; count < data.headers.length; count++){
-      if(data.headers[count].type !== 'money'){
+      if(data.headers[count].type !== 'money' && data.headers[count].type !== 'int'){
         tempArr.push('')
       }else{
         data.total.forEach(totalElem => {
           if(totalElem.name === data.headers[count].name){
-            tempArr.push('PHP ' + (totalElem.value.toFixed(2)))
+            if(data.headers[count].type === 'money'){
+              tempArr.push('PHP ' + (totalElem.value.toFixed(2)))
+            }else{
+              tempArr.push(totalElem.value)
+            }
           }
         })
       }
