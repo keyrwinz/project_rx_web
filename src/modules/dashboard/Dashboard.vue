@@ -92,8 +92,32 @@
       </div>
 
       <div class="col-md-8 col-sm-12" v-if="user.type === 'RIDER'">
-        <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg text-center">
-          <label class="col m-0 p-0 font-weight-bold">Coming soon!</label>
+        <div class="col-12 mt-4 border bg-light shadow-sm p-3 row m-0 rounded-lg">
+          <label class="col m-0 p-0 font-weight-bold">Summary of Delivered Orders</label>
+        </div>
+        <div class="col-12 mt-4 row">
+          <div class="card border-success mb-3 col-md-6 col-sm-12 text-center" style="max-width: 18rem;" v-for="(item, index) in summaryDeliveredOrder" :key="index">
+            <center>
+              <div class="card-header bg-transparent border-success text-uppercase">{{item.status}}</div>
+              <div class="card-body text-center" :class="{'text-success': item.status === 'completed', 'text-warning': item.status === 'pending'}">
+                <h5 class="card-title">{{item.total}}</h5>
+              </div>
+            </center>
+          </div>
+        </div>        
+        <div class="col-12 mt-2 border bg-light shadow-sm p-3 row m-0 rounded-lg">
+          <p class="col m-0 p-0 font-weight-bold">Summary of income</p>
+          <input type="month"  class="form-control" v-model="searchDate" @change="getIncomeRider()">
+        </div>
+        <div class="col-12 mt-4">
+            <topAffectedPlaces 
+              ref="realtimeChart" 
+              height="340" 
+              type="line" 
+              :options="options" 
+              :series="series"
+            >
+            </topAffectedPlaces>
         </div>
       </div>
     </div>
@@ -106,34 +130,27 @@
 .w-90 {
   width: 94% !important;
 }
-
 .bg-primary{
   background: $primary !important;
 }
-
 .card, .card-header {
   background: transparent;
 }
-
 .card-header {
   border: none;
 }
-
 .card {
   border: none;
   border-bottom: 1px dotted #bbb !important;
 }
-
 .balance {
   font-size: 25px;
   font-weight: lighter;
 }
-
 button.dropdown:focus {
   box-shadow: none;
   outline: none;
 }
-
 .options {
   position: relative;
   width: 25px;
@@ -142,51 +159,41 @@ button.dropdown:focus {
   line-height: 25px;
   background: transparent;
 }
-
 .options:hover,
 .options[aria-expanded=true] {
   background: #ddd;
   cursor: pointer;
 }
-
 .dropdown-item {
   padding: 10px 20px !important;
   height: fit-content !important;
 }
-
 .dropdown-item:hover {
   color: $primary;
   cursor: pointer;
 }
-
 h4 {
   font-family: 'Helvetica';
   font-style: oblique;
   font-weight: 900;
 }
-
 .text-primary {
   color: $primary !important;
 }
-
 .text-warning {
   color: $warning !important;
 }
-
 .text-black {
   color: #000 !important;
 }
-
 .text-success {
   color: $success !important;
 }
-
 .half-rule {
   margin-left: 0;
   text-align: left;
   width: 50%;
 }
-
 .form-control{
   width: 200px !important;
   float: right !important;
@@ -207,13 +214,13 @@ export default{
       // ROUTER.push('/featured')
       ROUTER.push('/marketplace')
     }
-
     this.retrieve()
     let date = new Date()
     let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
     this.searchDate = date.getFullYear() + '-' + month
     this.getSummary()
     this.getDailySummary(date.getFullYear() + '-' + month + '-' + date.getDate())
+    this.getSummaryDeliveredOrders(date.getFullYear() + '-' + month + '-' + date.getDate())
   },
   data(){
     return {
@@ -239,7 +246,8 @@ export default{
       },
       series: [],
       searchDate: null,
-      dailySummary: []
+      dailySummary: [],
+      summaryDeliveredOrder: []
     }
   },
   props: {
@@ -280,7 +288,6 @@ export default{
         } else {
           this.balance = null
         }
-
         if(this.balance !== null) {
           this.balance.map((bal, ind) => {
             if(bal.balance >= this.largest.balance) {
@@ -339,6 +346,46 @@ export default{
         }else{
           this.series = []
           this.optios.xaxis.categories = []
+        }
+      })
+    },
+    getIncomeRider(){
+      if(this.user === null){
+        return
+      }
+      let parameter = {
+        rider: this.user.userID,
+        date: this.searchDate
+      }
+      this.APIRequest('deliveries/monthly_summary', parameter).then(response => {
+        if(response.data !== null){
+          this.series = response.data.series
+          this.optios.xaxis.categories = response.data.categories
+        }else{
+          this.series = []
+          this.optios.xaxis.categories = []
+        }
+      })
+    },
+    getSummaryDeliveredOrders(date){
+      if(this.user.subAccount.rider === null){
+        return
+      }
+      let parameter = {
+        rider: this.user.subAccount.id,
+        date: date
+      }
+      this.APIRequest('deliveries/daily_summary', parameter).then(response => {
+        if(response.data.length > 0){
+          this.summaryDeliveredOrder = response.data
+        }else{
+          this.summaryDeliveredOrder = [{
+            status: 'completed',
+            total: 0
+          }, {
+            status: 'pending',
+            total: 0
+          }]
         }
       })
     }

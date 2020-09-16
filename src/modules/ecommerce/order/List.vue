@@ -136,7 +136,7 @@
 
 
     <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
-    <support-messenger :messages="messages" v-if="messages.length > 0"></support-messenger>
+    <!-- <support-messenger :messages="messages" v-if="messages !== null"></support-messenger> -->
   </div>
 </template>
 <style lang="scss" scoped>
@@ -161,6 +161,16 @@
   .form-control-custom{
     width: 200px !important;
     float: left;
+  }
+
+  @media (max-width: 992px) {
+    .form-control-custom{
+      width: 120.7px !important;
+      float: left;
+    }
+    .form-control {
+      font-size: 12px !important;
+    }
   }
 </style>
 <script>
@@ -218,7 +228,7 @@ export default {
       propStyle: {
         'margin-top': '10vh !important;'
       },
-      messages: []
+      messages: null
     }
   },
   components: {
@@ -229,12 +239,12 @@ export default {
     DeliveryConfirmation,
     OrdersSummaryExporter,
     InventorySummaryExporter,
-    GoogleMapModal
-    // 'support-messenger': require('components/increment/messengervue/overlay/Support.vue')
+    GoogleMapModal,
+    'support-messenger': require('components/increment/messengervue/overlay/Holder.vue')
   },
   methods: {
     showMessage(item){
-      this.messages.push(item)
+      this.messages = item
     },
     exportFile(name){
       if(this.date != null){
