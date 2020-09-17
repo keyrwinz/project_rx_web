@@ -40,7 +40,8 @@ export default {
     messages: [],
     badge: 0,
     messengerGroupId: null,
-    group: null
+    group: null,
+    title: null
   },
   support: {
     messages: null,

@@ -136,7 +136,7 @@
 
 
     <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
-    <!-- <support-messenger :messages="messages" v-if="messages !== null"></support-messenger> -->
+    <support-messenger :messages="auth.messenger.messages" v-if="auth.messenger.messages.length > 0"></support-messenger>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -227,8 +227,7 @@ export default {
       locations: [],
       propStyle: {
         'margin-top': '10vh !important;'
-      },
-      messages: null
+      }
     }
   },
   components: {
@@ -244,7 +243,8 @@ export default {
   },
   methods: {
     showMessage(item){
-      this.messages = item
+      AUTH.messenger.title = item.code
+      AUTH.messenger.messages.push(item)
     },
     exportFile(name){
       if(this.date != null){
