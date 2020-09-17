@@ -97,10 +97,10 @@
             <button class="btn btn-warning" @click="generatePdf(item)">
               <i class="fa fa-print"></i>
             </button>
-            <button class="btn btn-primary" @click="showModal(item)">
+            <button class="btn btn-primary" v-if="item.status !== 'completed'" @click="showModal(item)">
               <i class="fas fa-map-marker-alt"></i>
             </button>
-            <button class="btn btn-warning" @click="showMessage(item)">
+            <button class="btn btn-warning" @click="showMessage(item)" v-if="item.status !== 'completed'">
               <i class="fas fa-envelope"></i>
             </button>
           </td>
