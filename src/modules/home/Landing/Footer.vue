@@ -17,8 +17,8 @@
         <li class="link"><a @click="openModal('#guideModal')">Guide</a></li>
       </ul>
     </div>
-    <div class="footer">
-      <ul class="footer-widget community" >
+    <div class="footer" id="secondfooter">
+      <ul class="footer-widget community">
           <span class="link">
             <a target="_BLANK" class="text-white" :href="'https://www.facebook.com/' + common.socialMedia.facebook" ><i class="fab fa-facebook"></i></a>
           </span>
@@ -34,24 +34,21 @@
           <span class="link">
             <a target="_BLANK" class="text-white" :href="'https://www.facebook.com/' + common.socialMedia.facebook" ><i class="fab fa-instagram"></i></a>
           </span>
-        
       </ul>
-      <ul class="footer-widget community" style="cursor:default">
+      <ul class="footer-widget community">
           <i class="fas fa-map-marker-alt"></i><span style="padding-left:5px;"> {{common.APP_ADDRESS}}</span>
       </ul>
-      <ul class="footer-widget community" style="padding-left:10px;padding-right:10px;" >
-        <div>
-          <span class="link">
-            <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
-              <img height="50px;" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
-            </a>
-          </span>
-          <span class="link">
-            <a style="margin-left: 10px;" :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
-              <img height="50px;" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
-            </a>
-          </span>
-        </div>
+      <ul class="footer-widget community" >
+        <span class="link" >
+          <a class="" :href="common.appUrl.android" v-if="common.appUrl.android !== null">
+            <img height="50px;" alt='Get it on Google Play' :src="require('assets/img/playstoreblack.png')"/>
+          </a>
+        </span>
+        <span class="link">
+          <a :href="common.appUrl.ios" v-if="common.appUrl.ios !== null" >
+            <img height="50px;" alt='Get it on App Store' :src="require('assets/img/appstore.png')"/>
+          </a>
+        </span>
       </ul>
         <span class="copyright">
         <label>Copyright @{{common.COPYRIGHT}}. All rights reserved.</label>
@@ -114,9 +111,12 @@ footer-widget .title:hover{
   cursor: default;
   text-decoration: none;
 }
-.community div{
-  position: absolute;
-  bottom:0px;
+#secondfooter ul:nth-child(2){
+  cursor: default;
+  margin-top: 20px;
+}
+#secondfooter ul:nth-child(1){
+  margin-top: 25px;
 }
 .community .links{
   width: 100%;
@@ -156,7 +156,7 @@ footer-widget .title:hover{
   font-size: 12px;
   text-align: center;
   margin-top: 45px;
-  margin-bottom: 20     px;
+  margin-bottom: 20px;
   color: #fff !important;
 }
 @media (max-width: 992px){
