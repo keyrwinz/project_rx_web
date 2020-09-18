@@ -4,22 +4,53 @@
       <div :class="['modal-dialog', {'modal-md': !next}]">
         <div class="modal-content">
           <div class="modal-header">
+            <i class="fa fa-arrow-left" @click="back()" v-if="next"></i>
             <h5 class="modal-title"></h5>
             <button type="button" class="close" aria-label="Close" @click="hide()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
-        <div class="modal-header">
-          <h2 class="text-center font-weight-lighter col-12" id="transferHead">Transfer to your bank</h2>
+        <div class="modal-header" v-if="!next">
+          <h2 class="text-center font-weight-lighter col-12" id="transferHead">Transfer</h2>
+        </div>
+        <div class="modal-header" v-if="next">
+          <h2 class="text-center font-weight-lighter col-12" id="transferHead">Transfer to {{selectedBank.name}}</h2>
         </div>
 
-          <div class="modal-body px-5 row m-0"  v-if="!next">
+          <div class="modal-body px-5 row m-0" v-if="!next">
+            <div class="container-fluid col-12" v-if="balance !== null">
+              <b class="ml-1">Pick your currency</b>
+              <div v-if="balance.length > 1" class="row mb-0 mt-3 mx-3 flex-column" >
+                <div style="text-align: center" class="col-12 py-2 form-group bank" v-for="(item, index) in balance.filter(bal => bal.balance > 0)" :key="index">
+                  <center>
+                    <input type="radio" name="currency" :id="'currency-'+index" :value="item" v-model="selectedCurrency">
+                    <label :for="'currency-'+index" class="ml-2 mb-0">
+                        <b>{{item.currency}}</b>
+                    </label>
+                  </center>
+                </div>
+              </div>
+              <div v-if="balance.length <= 1" >
+                <div style="text-align: center" class="col-12 py-2 form-group bank" v-for="(item, index) in balance.filter(bal => bal.balance > 0)" :key="index">
+                  <center>
+                    <input type="radio" name="currency" :id="'currency-'+index" :value="item" v-model="selectedCurrency">
+                    <label :for="'currency-'+index" class="ml-2 mb-0">
+                        <b>{{item.currency}}</b>
+                    </label>
+                  </center>
+                </div>
+              </div>
+            </div>
+
             <div class="container-fluid col-12">
               <small class="ml-1">Typically in 1-4 business days <b>(Fees may apply)</b></small>
               <div class="row mb-3 mt-3 mx-3 flex-column">
-                <div class="col-12 py-2 form-group row mx-0 align-items-center bank" v-for="(item, index) in banks" :key="index">
-                  <input type="radio" name="bank" :id="'bank-'+index" :value="item" v-model="selectedBank">
+                <div class="col-12 py-2 form-group row mx-0 align-items-center bank">
+                  <select class="form-control form-control" v-model="selectedBank">
+                    <option v-for="(item, index) in banks" :key="index" :value="item">{{item.name}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.number}}</option>
+                  </select>
+                  <!-- <input type="radio" name="bank" :id="'bank-'+index" :value="item" v-model="selectedBank">
                   <label :for="'bank-'+index" class="ml-2 mb-0 row align-items-center">
                     <div class="icon text-center mr-2">
                       <h3 class="fa fa-university"></h3>
@@ -28,19 +59,7 @@
                       <b>{{item.name}}</b><br>
                       <small class="text-muted">{{item.number}}</small>
                     </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="container-fluid col-12" v-if="balance !== null">
-              <b class="ml-1">Pick your currency</b>
-              <div class="row mb-0 mt-3 mx-3 flex-column" >
-                <div class="col-12 py-2 form-group row mx-0 align-items-center bank" v-for="(item, index) in balance.filter(bal => bal.balance > 0)" :key="index">
-                  <input type="radio" name="currency" :id="'currency-'+index" :value="item" v-model="selectedCurrency">
-                  <label :for="'currency-'+index" class="ml-2 mb-0">
-                      <b>{{item.currency}}</b>
-                  </label>
+                  </label> -->
                 </div>
               </div>
             </div>
@@ -51,9 +70,13 @@
           </div>
 
           <div class="modal-body px-5 row m-0" v-if="next">
-            <div class="conainer-fluid col-12 row m-0">
+            <div class="container-fluid col-12 row m-0">
               <input type="number" name="amount" id="amount" v-model="amount" autocomplete="off">
               <label for="amount" id="hide" class="mx-auto pr-2" :currency="selectedCurrency.currency">{{currency.displayWithCurrency(amount, selectedCurrency.currency)}}</label>
+              <div class="col-12 mt-2 text-center" v-if="!showFee">
+                <p style="margin-bottom: 0rem !important"><b>Processing Fee:</b>
+                {{currency.displayWithCurrency(0, selectedCurrency.currency)}}</p> 
+              </div>
               <div class="col-12 mt-3 text-center" style="font-size: 1.2rem">
                 <b>Available Balance</b> 
                 <br>
@@ -82,7 +105,7 @@
     top: 0;
     z-index: -100;
   }
-
+  
   #hide {
     position: relative;
     font-size: 40px;
@@ -100,7 +123,6 @@
     position: absolute;
     left: 100%;
     font-size: 16px;
-    content: attr(currency);
   }
 
   #amount:focus ~ #hide {
@@ -142,26 +164,44 @@
     width: 30px;
   }
 
-  .row .bank {
-    border-bottom: 1px dashed #ccc;
-  }
+  // .row .bank {
+  //   border-bottom: 1px dashed #ccc;
+  // }
 
-  .row .bank:first-child {
-    border-top: 2px solid #ccc;
-  }
+  // .row .bank:first-child {
+  //   border-top: 2px solid #ccc;
+  // }
 
-  .row .bank:last-child {
-    border-bottom: 2px solid #ccc;
-  }
+  // .row .bank:last-child {
+  //   border-bottom: 2px solid #ccc;
+  // }
 
   .modal-dialog {
     transition: 1000ms width ease-in-out;
+    width: 450px;
   }
 
   small {
     font-size: 95%;
   }
+  
+  .ml-1 {
+    text-align: center;
+  }
 
+  select.form-control {
+    height: 50px !important;
+  }
+
+  .col-12 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 6px;
+    padding-left: 8px;
+    text-align: center;
+  }
+  
   @media (max-width: 750px) {
     .col-12 {
       position: relative;
@@ -169,6 +209,7 @@
       min-height: 1px;
       padding-right: 6px;
       padding-left: 8px;
+      text-align: center;
     }
   }
 </style>
@@ -194,12 +235,13 @@ export default {
       amount: 0,
       transferred: false,
       next: false,
+      showFee: true,
       selectedBank: null,
       selectedCurrency: null,
       banks: [
         {id: 12, name: 'GCash Main', type: 'gcash', number: '09668816743'},
-        {id: 24, name: 'Bank (Landbank)', type: 'bank', number: '4153-2842-12'},
-        {id: 32, name: 'Bank (BDO)', type: 'bank', number: '1482-1928-23'}
+        {id: 24, name: 'Landbank', type: 'bank', number: '4153-2842-12'},
+        {id: 32, name: 'BDO', type: 'bank', number: '1482-1928-23'}
       ]
     }
   },
@@ -214,7 +256,14 @@ export default {
   methods: {
     retrieve(){
     },
+    back(){
+      this.next = false
+      this.showFee = true
+    },
     show(){
+      if(this.balance.length <= 1){
+        this.selectedCurrency = this.balance[0]
+      }
       $('#transferFunds').modal('show')
     },
     hide() {
@@ -222,14 +271,21 @@ export default {
       this.selectedCurrency = null
       this.next = false
       this.transferred = false
+      this.showFee = true
       $('#transferFunds').modal('hide')
     },
     setAmount() {
+      console.log(this.selectedBank)
       $('#transferFunds .error').remove()
       if(!this.selectedCurrency) {
         $('<div>', {
           class: 'text-danger col-8 pl-3 ml-3 mb-3 error',
           html: 'Please choose a currency for transfer.'
+        }).insertBefore('#transferFunds #next')
+      } else if(!this.selectedBank){
+        $('<div>', {
+          class: 'text-danger col-8 pl-3 ml-3 mb-3 error',
+          html: 'Please choose a bank for transfer.'
         }).insertBefore('#transferFunds #next')
       } else {
         this.next = true
@@ -248,6 +304,7 @@ export default {
           html: 'Your balance is not enough.'
         }).insertBefore('#transferFunds #next')
       } else {
+        this.showFee = false
         // this.$refs.otp.generateOTP()
       }
     },
