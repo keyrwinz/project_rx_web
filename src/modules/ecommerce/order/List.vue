@@ -136,7 +136,7 @@
 
 
     <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
-    <support-messenger :messages="auth.messenger.messages" v-if="auth.messenger.messages.length > 0"></support-messenger>
+    <messenger v-if="auth.messenger.data !== null"></messenger>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -239,12 +239,12 @@ export default {
     OrdersSummaryExporter,
     InventorySummaryExporter,
     GoogleMapModal,
-    'support-messenger': require('components/increment/messengervue/overlay/Holder.vue')
+    'messenger': require('components/increment/messengervue/overlay/Holder.vue')
   },
   methods: {
     showMessage(item){
       AUTH.messenger.title = item.code
-      AUTH.messenger.messages.push(item)
+      AUTH.messenger.data = item
     },
     exportFile(name){
       if(this.date != null){

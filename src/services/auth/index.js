@@ -41,7 +41,8 @@ export default {
     badge: 0,
     messengerGroupId: null,
     group: null,
-    title: null
+    title: null,
+    data: null
   },
   support: {
     messages: null,
