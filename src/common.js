@@ -82,6 +82,7 @@ export default {
     channel: 'runway',
     private: 'runway_broadcast',
     notifications: 'Notifications',
+    locationSharing: 'LocationSharing',
     rider: 'Rider',
     messages: 'Message',
     validation: 'Validation',

@@ -1008,6 +1008,9 @@
             .listen(COMMON.pusher.notifications, e => {
               AUTH.addNotification(e.data)
             })
+            .listen(COMMON.pusher.locationSharing, e => {
+              AUTH.locationSharing(e.data)
+            })
             .listen(COMMON.pusher.messages, e => {
               AUTH.addMessage(e.data)
             })

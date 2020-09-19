@@ -65,7 +65,18 @@ export default {
   },
   google: {
     code: null,
-    scope: null
+    scope: null,
+    maps: {
+      map: null,
+      markers: []
+    }
+  },
+  checkout: {
+    data: null,
+    rider: null,
+    customer: null,
+    merchant: null,
+    locations: []
   },
   echo: null,
   currentPath: false,
@@ -435,5 +446,60 @@ export default {
       this.playNotificationSoundOnce()
     }else{
     }
+  },
+  locationSharing(data){
+    if(this.checkout.data !== null && data.sender === 'rider' && parseInt(data.checkout_id) === this.checkout.data.id){
+      let tempLocation = []
+      tempLocation.push({
+        longitude: parseFloat(data.longitude),
+        latitude: parseFloat(data.latitude),
+        country: '',
+        route: '',
+        locality: '',
+        sender: 'rider'
+      })
+      if(this.checkout.merchant !== null){
+        tempLocation.push(this.checkout.merchant)
+      }
+      if(this.checkout.customer !== null){
+        tempLocation.push(this.checkout.customer)
+      }
+      this.checkout.locations = tempLocation
+      this.checkout.rider = data
+      this.updateMap(tempLocation)
+    }
+  },
+  updateMap(locations){
+    for (var i = 0; i < this.google.maps.markers.length; i++) {
+      this.google.maps.markers[i].setMap(null)
+    }
+    this.google.maps.markers = []
+    locations.forEach(el => {
+      var infowindow = new window.google.maps.InfoWindow({
+        content: `<b>${el.route}, ${el.locality}, ${el.country}</b>`
+      })
+      let icon = null
+      if(el.sender === 'rider'){
+        icon = {
+          url: require('src/assets/img/rider.png'),
+          scaledSize: new window.google.maps.Size(50, 50),
+          origin: new window.google.maps.Point(0, 0),
+          anchor: new window.google.maps.Point(0, 0)
+        }
+      }else{
+        icon = {
+          url: `https://maps.google.com/mapfiles/ms/icons/red-dot.png`
+        }
+      }
+      var marker = new window.google.maps.Marker({
+        position: { lat: Number(el.latitude), lng: Number(el.longitude) },
+        map: this.google.maps.map,
+        icon: icon
+      })
+      marker.addListener('click', function() {
+        infowindow.open(this.google.maps.map, marker)
+      })
+      this.google.maps.markers.push(marker)
+    })
   }
 }

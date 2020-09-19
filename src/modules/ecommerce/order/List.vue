@@ -135,7 +135,7 @@
     <empty v-if="data === null" :title="'Orders will come soon!'" :action="'Keep going!'"></empty>
 
 
-    <GoogleMapModal ref="mapModal" :place_data="locations" :propStyle="propStyle" v-if="locations.length > 0"></GoogleMapModal>
+    <GoogleMapModal ref="mapModal" :place_data="auth.checkout.locations" :propStyle="propStyle" v-if="auth.checkout.locations.length > 0"></GoogleMapModal>
     <messenger v-if="auth.messenger.data !== null"></messenger>
   </div>
 </template>
@@ -188,7 +188,7 @@ import DeliveryConfirmation from 'src/modules/ecommerce/rider/Confirmed.vue'
 import DateManipulation from './handlers/dateManipulation.js'
 import OrdersSummaryExporter from './OrdersSummaryExporter.vue'
 import InventorySummaryExporter from './InventorySummaryExporter.vue'
-import GoogleMapModal from 'src/components/increment/generic/map/ModalGeneric.vue'
+import GoogleMapModal from 'src/components/increment/generic/map/ModalGenericGlobal.vue'
 import TemplatePdf from './Template.js'
 export default {
   mounted(){
@@ -224,7 +224,6 @@ export default {
       },
       waitingBroadcast: [],
       date: null,
-      locations: [],
       propStyle: {
         'margin-top': '10vh !important;'
       }
@@ -268,12 +267,22 @@ export default {
       this.APIRequest('locations/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
-          this.locations = [{
+          AUTH.checkout.data = item
+          AUTH.checkout.customer = {
             longitude: parseFloat(response.data[0].longitude),
             latitude: parseFloat(response.data[0].latitude),
             route: response.data[0].route,
             locality: response.data[0].locality,
-            country: response.data[0].country
+            country: response.data[0].country,
+            sender: 'customer'
+          }
+          AUTH.checkout.locations = [{
+            longitude: parseFloat(response.data[0].longitude),
+            latitude: parseFloat(response.data[0].latitude),
+            route: response.data[0].route,
+            locality: response.data[0].locality,
+            country: response.data[0].country,
+            sender: 'customer'
           }]
           setTimeout(() => {
             this.$refs.mapModal.showModal()
