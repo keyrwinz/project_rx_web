@@ -77,10 +77,10 @@
             </label>
           </td>
           <td class="text-uppercase">
-            {{item.assigned_rider}}
+            {{item.assigned_rider ? item.assigned_rider.name : null}}
           </td>
           <td>
-            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'pending', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled'}">{{item.status}}</label>
+            <label class="badge text-uppercase" :class="{'badge-warning': item.status === 'on_progress', 'badge-success': item.status === 'completed', 'badge-danger': item.status === 'camcelled' || item.status === 'pending'}">{{item.status}}</label>
             <label class="badge">{{item.type}}</label>
           </td>
 
@@ -88,21 +88,37 @@
             {{currency.displayWithCurrency(item.total, item.currency ? item.currency : 'PHP')}}
           </td>
           <td>
-            <button class="btn btn-primary" @click="retrieveItems(item)">
+            <!-- <button class="btn btn-primary" @click="retrieveItems(item)">
               <i class="fa fa-eye"></i>
-            </button>
-            <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
+            </button> -->
+<!--             <button class="btn btn-success" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
               <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i>
-            </button>
-            <button class="btn btn-warning" @click="generatePdf(item)">
+            </button> -->
+<!--             <button class="btn btn-warning" @click="generatePdf(item)">
               <i class="fa fa-print"></i>
-            </button>
-            <button class="btn btn-primary" v-if="item.status !== 'completed'" @click="showModal(item)">
+            </button> -->
+<!--             <button class="btn btn-primary" v-if="item.status !== 'completed'" @click="showModal(item)">
               <i class="fas fa-map-marker-alt"></i>
-            </button>
-            <button class="btn btn-warning" @click="showMessage(item)" v-if="item.status !== 'completed'">
+            </button> -->
+            <!-- <button class="btn btn-warning" @click="showMessage(item)" v-if="item.status !== 'completed'">
               <i class="fas fa-envelope"></i>
-            </button>
+            </button> -->
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" @click="showMessage(item)" v-if="item.status !== 'completed'"><i class="fa fa-eye"></i> Message</a>
+                <a class="dropdown-item" @click="retrieveItems(item)"><i class="fa fa-eye"></i> Show products</a>
+                <a class="dropdown-item" @click="broadcastRiders(item)" v-if="item.status === 'pending' && item.assigned_rider === null">
+                  <i :class="{'fa fa-biking': waitingBroadcast.indexOf(item.id) < 0, 'fas fa-spinner fa-spin': waitingBroadcast.indexOf(item.id) >= 0}"></i> Show products
+                </a>
+                <a class="dropdown-item" @click="generatePdf(item)"><i class="fa fa-print"></i> Print receipt</a>
+                <a class="dropdown-item" v-if="item.status !== 'completed'" @click="showModal(item)"><i class="fa fa-map-marker-alt"></i> Track locations</a>
+                <a class="dropdown-item" @click="sendRate('customer', item)" v-if="item.status !== 'pending'"><i class="fa fa-star"></i> Rate Customer</a>
+                <a class="dropdown-item" @click="sendRate('rider', item)" v-if="item.assigned_rider !== null"><i class="fa fa-star"></i> Rate Rider</a>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -137,6 +153,7 @@
 
     <GoogleMapModal ref="mapModal" :place_data="auth.checkout.locations" :propStyle="propStyle" v-if="auth.checkout.locations.length > 0"></GoogleMapModal>
     <messenger v-if="auth.messenger.data !== null"></messenger>
+    <rating-create ref="createRating"></rating-create>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -161,6 +178,20 @@
   .form-control-custom{
     width: 200px !important;
     float: left;
+  }
+
+  .btn-primary:hover, .dropdown button:focus, .fa:hover{
+    background-color: $primary !important;
+    color: $white;
+  }
+
+  .dropdown-item{
+    padding-top: 5px !important;
+    height: auto !important;
+    padding-bottom: 5px !important;
+  }
+  .dropdown-item:hover{
+    cursor: pointer;
   }
 
   @media (max-width: 992px) {
@@ -238,7 +269,8 @@ export default {
     OrdersSummaryExporter,
     InventorySummaryExporter,
     GoogleMapModal,
-    'messenger': require('components/increment/messengervue/overlay/Holder.vue')
+    'messenger': require('components/increment/messengervue/overlay/Holder.vue'),
+    'rating-create': require('components/increment/generic/rating/Create.vue')
   },
   methods: {
     showMessage(item){
@@ -442,6 +474,14 @@ export default {
           this.PdfTemplate.template()
         }
       })
+    },
+    sendRate(type, data){
+      // payload, payloadValue, payload1, payloadValue1
+      if(type === 'rider' && data.assigned_rider !== null){
+        this.$refs.createRating.show(type, data.assigned_rider.id, 'checkout', data.id)
+      }else{
+        this.$refs.createRating.show(type, data.account_id, 'checkout', data.id)
+      }
     }
   }
 }
