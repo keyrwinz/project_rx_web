@@ -163,7 +163,7 @@
     margin-right: 5%;
     margin-left: 5%;
     margin-top: 25px;
-    margin-bottom: 50px;
+    margin-bottom: 200px;
   }
   i{
     padding-right: 0px !important;
