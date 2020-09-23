@@ -316,8 +316,7 @@ export default {
   },
   addMessage(message){
     if(parseInt(message.messenger_group_id) === this.messenger.messengerGroupId && parseInt(message.account_id) !== this.user.userID){
-      $('#alertModal').modal('show')
-      this.playNotificationSound()
+      this.playNotificationSoundOnce()
       this.messenger.messages.push(message)
     }
   },
